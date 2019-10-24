@@ -48,10 +48,11 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             float price = resultSet.getFloat(i++);
             Calendar creationDate = Calendar.getInstance();
             creationDate.setTime(resultSet.getTimestamp(i++));
-
+            int units = resultSet.getInt(i++);
+            
             /* Return movie. */
-            return new Bike(bikeId, description, price,
-                    creationDate);
+            return new Bike(bikeId, description, creationDate,
+            		price, units);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -100,9 +101,10 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
                 float price = resultSet.getFloat(i++);
                 Calendar creationDate = Calendar.getInstance();
                 creationDate.setTime(resultSet.getTimestamp(i++));
+                int units = resultSet.getInt(i++);
 
-                bikes.add(new Bike(bikeId, description,
-                        price, creationDate));
+                bikes.add(new Bike(bikeId, description, creationDate,
+                		price, units));
 
             }
 
@@ -130,7 +132,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             int i = 1;
             preparedStatement.setString(i++, bike.getDescription());
             preparedStatement.setFloat(i++, bike.getPrice());
-            preparedStatement.setLong(i++, bike.getMovieId());
+            preparedStatement.setLong(i++, bike.getBikeId());
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();
