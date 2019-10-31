@@ -10,6 +10,8 @@ public class Bike {
 	private float price;
 	private int units;
 	private Calendar creationDate;
+	private int numberOfRates;
+	private int avgRate;
 
 	public Bike(String description, Calendar startDate, float price, int units) {
 		this.description = description;
@@ -79,6 +81,22 @@ public class Bike {
 		this.creationDate = creationDate;
 	}
 
+	public int getNumberOfRates() {
+		return numberOfRates;
+	}
+
+	public void setNumberofRates(int numberOfRates) {
+		this.numberOfRates = numberOfRates;
+	}
+	
+	public int getAvgRate() {
+		return avgRate;
+	}
+
+	public void setAvgRate(int avgRate) {
+		this.avgRate = avgRate;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
