@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
@@ -19,8 +21,8 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "SELECT movieId, userId, expirationDate,"
-                + " creditCardNumber, price, movieUrl, saleDate FROM Sale WHERE saleId = ?";
+        String queryString = "SELECT bikeId, email, creditCard, initDate,"
+                + " endDate, numberBikes FROM Book WHERE bookId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -38,21 +40,67 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
 
             /* Get results. */
             i = 1;
+            Long bikeId = resultSet.getLong(i++);
             String email = resultSet.getString(i++);
+            String creditCard = resultSet.getString(i++);
             Calendar initDate = Calendar.getInstance();
             initDate.setTime(resultSet.getTimestamp(i++));
-            String creditCard = resultSet.getString(i++);
-            int numberBikes = resultSet.getInt(i++);
             Calendar endDate = Calendar.getInstance();
             endDate.setTime(resultSet.getTimestamp(i++));
-            Calendar bookDate = Calendar.getInstance();
-            bookDate.setTime(resultSet.getTimestamp(i++));
+            int numberBikes = resultSet.getInt(i++);
 
             /* Return book. */
-            return new Book(bookId, email, creditCard,
-                    initDate, endDate, numberBikes, bookDate);
+            return new Book(bookId, bikeId, email, creditCard,
+                    initDate, endDate, numberBikes);
 
             
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    
+    @Override
+    public List<Book> findByUser(Connection connection, String email) {
+
+    	/* Create "queryString". */
+        String queryString = "SELECT bookId, bikeId, email, creditCard," 
+        		+ " endDate, numberBikes, bookDate WHERE email = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+        	
+        	/* Fill "preparedStatement". */
+        	int i = 1;
+        	preparedStatement.setString(i++, email);
+        	
+            /* Execute query. */
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            /* Read books. */
+            List<Book> books = new ArrayList<Book>();
+
+            while (resultSet.next()) {
+
+                i = 1;
+                Long bookId = new Long(resultSet.getLong(i++));
+                Long bikeId = new Long(resultSet.getLong(i++));
+                String creditCard = resultSet.getString(i++);
+                Calendar initDate = Calendar.getInstance();
+                initDate.setTime(resultSet.getTimestamp(i++));
+                Calendar endDate = Calendar.getInstance();
+                endDate.setTime(resultSet.getTimestamp(i++));
+                int numberBikes = resultSet.getInt(i++);
+                Calendar bookDate = Calendar.getInstance();
+                bookDate.setTime(resultSet.getTimestamp(i++));
+                
+                books.add(new Book(bookId, bikeId, email, creditCard, initDate,
+                        endDate, numberBikes, bookDate));
+
+            }
+
+            /* Return books. */
+            return books;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,26 +112,26 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "UPDATE Sale"
-                + " SET movieId = ?, userId = ?, expirationDate = ?, "
-                + " creditCardNumber = ?, price = ? WHERE saleId = ?";
+        String queryString = "UPDATE Book"
+                + " SET bikeId = ?, email = ?, creditCard = ?,"
+                + " initDate = ?, endDate = ?, numberBikes = ?,"
+                + " bookRate = ? WHERE bookId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
             /* Fill "preparedStatement". */
             int i = 1;
+            preparedStatement.setLong(i++, book.getBikeId());
             preparedStatement.setString(i++, book.getEmail());
-            Timestamp dateInit = book.getInitDate() != null ? new Timestamp(
-            		book.getInitDate().getTime().getTime()) : null;
-            preparedStatement.setTimestamp(i++, dateInit);
-            Timestamp dateEnd = book.getEndDate() != null ? new Timestamp(
-            		book.getEndDate().getTime().getTime()) : null;
-            preparedStatement.setTimestamp(i++, dateEnd);
-            Timestamp dateBook = book.getBookDate() != null ? new Timestamp(
-                    book.getBookDate().getTime().getTime()) : null;
-            preparedStatement.setTimestamp(i++, dateBook);
             preparedStatement.setString(i++, book.getCreditCard());
+            Timestamp initDate = book.getInitDate() != null ? new Timestamp(
+            		book.getInitDate().getTime().getTime()) : null;
+            preparedStatement.setTimestamp(i++, initDate);
+            Timestamp endDate = book.getEndDate() != null ? new Timestamp(
+            		book.getEndDate().getTime().getTime()) : null;
+            preparedStatement.setTimestamp(i++, endDate);
             preparedStatement.setInt(i++, book.getNumberBikes());
+            preparedStatement.setInt(i++, book.getBookRate());
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();
@@ -104,7 +152,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "DELETE FROM Sale WHERE" + " saleId = ?";
+        String queryString = "DELETE FROM Book WHERE bookId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 

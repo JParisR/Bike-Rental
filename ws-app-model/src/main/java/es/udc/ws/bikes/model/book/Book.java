@@ -5,14 +5,17 @@ import java.util.Calendar;
 public class Book {
 
 	private Long bookId;
+	private Long bikeId;
 	private String email;
 	private String creditCard;
 	private Calendar initDate;
 	private Calendar endDate;
 	private int numberBikes;
 	private Calendar bookDate;
+	private int bookRate;
 	
-	public Book(String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes) {
+	public Book(String email, String creditCard, Calendar initDate, 
+			Calendar endDate, int numberBikes) {
 	
 		this.email = email;
 		this.creditCard = creditCard;
@@ -21,17 +24,28 @@ public class Book {
 		this.numberBikes = numberBikes;
 	}
 	
-	public Book(Long bookId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes) {
+	public Book(Long bookId, Long bikeId, String email, String creditCard, 
+			Calendar initDate, Calendar endDate, int numberBikes) {
 		this(email, creditCard, initDate, endDate, numberBikes);
 		this.bookId = bookId;
+		this.bikeId = bikeId;
 	}
 	
-	public Book(Long bookId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate) {
-		this(email, creditCard, initDate, endDate, numberBikes);
+	public Book(Long bookId, Long bikeId, String email, 
+			String creditCard, Calendar initDate, Calendar endDate, 
+			int numberBikes, Calendar bookDate) {
+		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes);
 		this.bookDate = bookDate;
 		if (bookDate != null) {
 			this.bookDate.set(Calendar.MILLISECOND, 0);
 		}
+	}
+	
+	public Book(Long bookId, Long bikeId, String email, 
+			String creditCard, Calendar initDate, Calendar endDate, 
+			int numberBikes, Calendar bookDate, int bookRate) {
+		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+		this.bookRate = bookRate;
 	}
 
 	public Long getBookId() {
@@ -40,6 +54,14 @@ public class Book {
 
 	public void setBookId(Long bookId) {
 		this.bookId = bookId;
+	}
+	
+	public Long getBikeId() {
+		return bikeId;
+	}
+
+	public void setBikeId(Long bikeId) {
+		this.bikeId = bikeId;
 	}
 
 	public String getEmail() {
@@ -88,6 +110,14 @@ public class Book {
 
 	public void setBookDate(Calendar bookDate) {
 		this.bookDate = bookDate;
+	}
+	
+	public int getBookRate() {
+		return bookRate;
+	}
+	
+	public void setBookRate(int bookRate) {
+		this.bookRate = bookRate;
 	}
 
 	@Override

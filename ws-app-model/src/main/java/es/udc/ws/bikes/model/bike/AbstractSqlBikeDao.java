@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import es.udc.ws.bikes.model.bike.Bike;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 /**
@@ -25,8 +27,10 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "SELECT bikeId "
-                + " description, price, creationDate FROM Bike WHERE bikeId = ?";
+        String queryString = "SELECT description"
+        		+ " startDate, price, units,"
+        		+ " avgRate, numberOfRates"
+        		+ " FROM Bike WHERE bikeId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -45,38 +49,41 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             /* Get results. */
             i = 1;
             String description = resultSet.getString(i++);
+            Calendar startDate = Calendar.getInstance();
+            startDate.setTime(resultSet.getTimestamp(i++));
             float price = resultSet.getFloat(i++);
+            int units = resultSet.getInt(i++);
             Calendar creationDate = Calendar.getInstance();
             creationDate.setTime(resultSet.getTimestamp(i++));
-            int units = resultSet.getInt(i++);
+            double avgRate = resultSet.getDouble(i++);
+            int numberOfRates = resultSet.getInt(i++);
             
-            /* Return movie. */
-            return new Bike(bikeId, description, creationDate,
-            		price, units);
+            /* Return bike. */
+            return new Bike(bikeId, description, startDate, price, 
+            		units, creationDate, avgRate, numberOfRates);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
     }
-
+    
     @Override
     public List<Bike> findByKeywords(Connection connection, String keywords) {
 
         /* Create "queryString". */
         String[] words = keywords != null ? keywords.split(" ") : null;
-        String queryString = "SELECT bikeId"
-                + " description, price, creationDate FROM Bike";
+        String queryString = "SELECT bikeId, description, startDate,"
+                + " creation Date, avgRate, numberOfRates FROM Bike";
         if (words != null && words.length > 0) {
             queryString += " WHERE";
             for (int i = 0; i < words.length; i++) {
                 if (i > 0) {
                     queryString += " AND";
                 }
-                queryString += " LOWER(title) LIKE LOWER(?)";
+                queryString += " LOWER(description) LIKE LOWER(?)";
             }
         }
-        queryString += " ORDER BY bikeId";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -90,7 +97,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             /* Execute query. */
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            /* Read movies. */
+            /* Read bikes. */
             List<Bike> bikes = new ArrayList<Bike>();
 
             while (resultSet.next()) {
@@ -98,17 +105,21 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
                 int i = 1;
                 Long bikeId = new Long(resultSet.getLong(i++));
                 String description = resultSet.getString(i++);
-                float price = resultSet.getFloat(i++);
+                Calendar startDate = Calendar.getInstance();
+                startDate.setTime(resultSet.getTimestamp(i++));
+                Float price = resultSet.getFloat(i++);
+                int units = resultSet.getInt(i++);
                 Calendar creationDate = Calendar.getInstance();
                 creationDate.setTime(resultSet.getTimestamp(i++));
-                int units = resultSet.getInt(i++);
+                Double avgRate = resultSet.getDouble(i++);
+                int numberOfRates = resultSet.getInt(i++);
 
-                bikes.add(new Bike(bikeId, description, creationDate,
-                		price, units));
+                bikes.add(new Bike(bikeId, description, startDate, price,
+                        units, creationDate, avgRate, numberOfRates));
 
             }
 
-            /* Return movies. */
+            /* Return bikes. */
             return bikes;
 
         } catch (SQLException e) {
@@ -122,15 +133,20 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "UPDATE Bike"
-                + " SET description = ?, "
-                + "price = ? WHERE bikeId = ?";
-
+        String queryString = "UPDATE Bike "
+                + "SET description = ?, "
+                + "startDate = ?, "
+                + "price = ?, "
+                + "units = ? WHERE bikeId = ?";
+        
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
             /* Fill "preparedStatement". */
             int i = 1;
             preparedStatement.setString(i++, bike.getDescription());
+            Timestamp startDate = bike.getStartDate() != null  ? new Timestamp(
+            		bike.getStartDate().getTime().getTime()) : null;
+            preparedStatement.setTimestamp(i++, startDate);
             preparedStatement.setFloat(i++, bike.getPrice());
             preparedStatement.setLong(i++, bike.getBikeId());
 

@@ -11,26 +11,32 @@ public class Bike {
 	private int units;
 	private Calendar creationDate;
 	private int numberOfRates;
-	private int avgRate;
+	private double avgRate;
 
-	public Bike(String description, Calendar startDate, float price, int units) {
+	public Bike(String description, Calendar startDate, float price, 
+			int units, Calendar creationDate) {
 		this.description = description;
 		this.startDate = startDate;
 		this.price = price;
 		this.units = units;
-	}
-	
-	public Bike(Long bikeId, String description, Calendar startDate, float price, int units) {
-		this(description, startDate, price, units);
-		this.bikeId = bikeId;
-	}
-	
-	public Bike(Long bikeId, String description, Calendar startDate, float price, int units, Calendar creationDate) {
-		this(bikeId, description, startDate, price, units);
 		this.creationDate = creationDate;
 		if (creationDate != null) {
 			this.creationDate.set(Calendar.MILLISECOND, 0);
-		}	
+		}
+	}
+	
+	public Bike(Long bikeId, String description, Calendar startDate, 
+			float price, int units, Calendar creationDate) {
+		this(description, startDate, price, units, creationDate);
+		this.bikeId = bikeId;
+	}
+	
+	public Bike(Long bikeId, String description, Calendar startDate, 
+			float price, int units, Calendar creationDate,
+			double avgRate, int numberOfRates) {
+		this(bikeId, description, startDate, price, units, creationDate);
+		this.avgRate = avgRate;
+		this.numberOfRates = numberOfRates;
 	}
 
 	public Long getBikeId() {
@@ -81,7 +87,7 @@ public class Bike {
 		this.creationDate = creationDate;
 	}
 
-	public int getNumberOfRates() {
+	public double getNumberOfRates() {
 		return numberOfRates;
 	}
 
@@ -89,11 +95,11 @@ public class Bike {
 		this.numberOfRates = numberOfRates;
 	}
 	
-	public int getAvgRate() {
+	public double getAvgRate() {
 		return avgRate;
 	}
 
-	public void setAvgRate(int avgRate) {
+	public void setAvgRate(double avgRate) {
 		this.avgRate = avgRate;
 	}
 	
@@ -144,6 +150,10 @@ public class Bike {
 		if (units != other.units)
 			return false;
 		return true;
+	}
+	
+	public double getAvgRating () {
+		return avgRate/numberOfRates;
 	}
 }
 	
