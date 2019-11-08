@@ -1,33 +1,32 @@
 package es.udc.ws.bikes.model.bikesservice.exceptions;
 
-
 @SuppressWarnings("serial")
 public class InvalidNumberOfBikesException extends Exception{
 
-  //  private Long bikeId;
-  //  private Calendar startDate;
+	private int numberBikes;
+  	private int numberBikesBook;
 
     public InvalidNumberOfBikesException(int numberBikes, int numberBikesBook) {
         super("Bike with id=\"" + numberBikes + 
               "\" can´t be updated to = \"" + 
               numberBikesBook + "\")");
-       // this.bikeId = bikeId;
-       // this.startDate = startDate;
-    }
-/*
-    public Long getBikeId() {
-        return bikeId;
+        this.numberBikes = numberBikes;
+        this.numberBikesBook = numberBikesBook;
     }
 
-    public Calendar getStartDate() {
-        return startDate;
+    public int getNumberBikes() {
+        return numberBikes;
     }
 
-    public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
+    public int getNumberBikesBook() {
+        return numberBikesBook;
     }
 
-    public void setBikeId(Long bikeId) {
-        this.bikeId = bikeId;
-    }*/
+    public void setNumberBikes(int numberBikes) {
+        this.numberBikes = numberBikes;
+    }
+
+    public void setNumberBikesBook(int numberBikesBook) {
+        this.numberBikesBook = numberBikesBook;
+    }
 }

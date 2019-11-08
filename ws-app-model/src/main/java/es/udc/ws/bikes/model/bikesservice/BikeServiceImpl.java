@@ -35,7 +35,8 @@ public class BikeServiceImpl implements BikeService{
 	}
 
 	private void validateBike(Bike bike) throws InputValidationException {
-
+		
+		PropertyValidator.validateLong("bikeId", bike.getBikeId(), 0, MAX_BIKEID);
 		PropertyValidator.validateMandatoryString("description", bike.getDescription());
 		PropertyValidator.validateDouble("price", bike.getPrice(), 0, MAX_PRICE);
 
@@ -171,6 +172,15 @@ public class BikeServiceImpl implements BikeService{
 			throw new RuntimeException(e);
 		}
 	}
+	/* FALTA AÑADIR EL DAO.
+	public List<Bike> findBikesAvailable(Calendar startDate){
+		try (Connection connection = dataSource.getConnection()) {
+			return bikeDao.findByCalendar(connection, startDate);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}*/
 	
 	@Override
 	public Book bookBike(Long bookId, Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
@@ -194,9 +204,8 @@ public class BikeServiceImpl implements BikeService{
 				Bike bike = bikeDao.find(connection, bikeId);
 				if (bike.getUnits() < numberBikes) {
 					throw new InvalidNumberOfBikesException(bike.getUnits(),numberBikes);
-					
 				}
-				else if(bike.getStartDate().before(initDate)){ //COMPROBAR ESTO
+				else if(bike.getStartDate().after(initDate)){ //COMPROBAR ESTO
 					throw new InvalidStartDateException(bike.getBikeId(), initDate);
 				}
 			

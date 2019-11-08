@@ -22,7 +22,7 @@ public interface BikeService {
 	
     public List<Bike> findBikesByKeywords(String keywords);
     
-    //public List<Bike> findBikesAvailable(String keywords); HACER ESTO
+  //  public List<Bike> findBikesAvailable(Calendar StartDate);
 
     public Book bookBike(Long bookId, Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
             throws InvalidStartDateException, InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
