@@ -15,8 +15,7 @@ import es.udc.ws.bikes.model.bike.SqlBikeDaoFactory;
 import es.udc.ws.bikes.model.book.SqlBookDao;
 import es.udc.ws.bikes.model.book.SqlBookDaoFactory;
 import es.udc.ws.bikes.model.book.Book;
-import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidStartDateException;
-import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidNumberOfBikesException;
+import es.udc.ws.bikes.model.bikesservice.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
@@ -51,7 +50,6 @@ public class BikeServiceImpl implements BikeService{
 		try (Connection connection = dataSource.getConnection()) {
 
 			try {
-
 				/* Prepare connection. */
 				connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
@@ -93,7 +91,7 @@ public class BikeServiceImpl implements BikeService{
 
 				/* Do work. */
 				Bike bikeAux = bikeDao.find(connection, bike.getBikeId()); 
-				if (bikeAux.getStartDate().before(bike.getStartDate()) ) {
+				if (bikeAux.getStartDate().before(bike.getStartDate()) ) { //COMPROBAR ESTO
 					throw new InvalidStartDateException(bikeAux.getBikeId(), bikeAux.getStartDate()); 
 				}
 				
@@ -118,6 +116,18 @@ public class BikeServiceImpl implements BikeService{
 
 	}
 	
+	@Override
+	public Bike findBike(Long bikeId) throws InstanceNotFoundException {
+
+		try (Connection connection = dataSource.getConnection()) {
+			return bikeDao.find(connection, bikeId);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	
+	}
+	
+	@Override
     public void removeBike(Long bikeId) throws InstanceNotFoundException{
 		
     	try (Connection connection = dataSource.getConnection()) {
@@ -151,18 +161,9 @@ public class BikeServiceImpl implements BikeService{
     	
     }
     
-	public Bike findBike(Long bikeId) throws InstanceNotFoundException {
-
-		try (Connection connection = dataSource.getConnection()) {
-			return bikeDao.find(connection, bikeId);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	
-	}
 	
 	@Override
-	public List<Bike> findMovies(String keywords) {
+	public List<Bike> findBikesByKeywords(String keywords) {
 
 		try (Connection connection = dataSource.getConnection()) {
 			return bikeDao.findByKeywords(connection, keywords);
@@ -173,10 +174,14 @@ public class BikeServiceImpl implements BikeService{
 	
 	@Override
 	public Book bookBike(Long bookId, Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
-			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException {
+			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateException {
 
 		PropertyValidator.validateCreditCard(creditCard);
+		if((initDate.getTimeInMillis() - endDate.getTimeInMillis())/24 * 60 * 60 * 1000 > MAX_BOOK_DAYS) {
+			throw new InvalidDaysOfBookException(initDate, endDate);
+		}
 		
+				
 		try (Connection connection = dataSource.getConnection()) {
 
 			try {
@@ -191,6 +196,10 @@ public class BikeServiceImpl implements BikeService{
 					throw new InvalidNumberOfBikesException(bike.getUnits(),numberBikes);
 					
 				}
+				else if(bike.getStartDate().before(initDate)){ //COMPROBAR ESTO
+					throw new InvalidStartDateException(bike.getBikeId(), initDate);
+				}
+			
 				Book book = bookDao.create(connection, new Book(bookId, bikeId, email, creditCard, initDate,
 							endDate, numberBikes, Calendar.getInstance()));
 
@@ -228,6 +237,16 @@ public class BikeServiceImpl implements BikeService{
 			throw new RuntimeException(e);
 		}
 
+	}
+	
+	@Override
+	public List<Book> findBookByUser(String email) throws InstanceNotFoundException{
+
+		try (Connection connection = dataSource.getConnection()) {
+			return bookDao.findByUser(connection, email);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }
