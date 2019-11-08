@@ -26,6 +26,8 @@ import es.udc.ws.bikes.model.bikesservice.BikeServiceFactory;
 import es.udc.ws.bikes.model.book.Book;
 import es.udc.ws.bikes.model.book.SqlBookDao;
 import es.udc.ws.bikes.model.book.SqlBookDaoFactory;
+import es.udc.ws.movies.model.movieservice.MovieServiceFactory;
+import es.udc.ws.movies.model.sale.SqlSaleDaoFactory;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
@@ -34,7 +36,25 @@ import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidNumberOfBikesExcepti
 import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidStartDateException;;
 
 public class BikeServiceTest {
+	private final long NON_EXISTENT_BIKEID = -1;
+	private final long NON_EXISTENT_SALE_ID = -1;
+	private final String USER_ID = "ws-user";
 
+	private final String VALID_CREDIT_CARD_NUMBER = "1234567890123456";
+	private final String INVALID_CREDIT_CARD_NUMBER = "";
+
+	private static BikeService bikeService = null;
+
+	private static SqlBookDao bookDao = null;
+	@BeforeClass
+	public static void init() {
+		DataSource datasource = new SimpleDataSource();
+		
+		bikeService = BikeServiceFactory.getService();
+
+		bookDao = SqlBookDaoFactory.getDao();
+	}
+	
 	@Test
 	public void testAddBike() {
 		fail("Not yet implemented");
