@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import static es.udc.ws.bikes.model.util.ModelConstants.BASE_URL;
 import static es.udc.ws.bikes.model.util.ModelConstants.MAX_PRICE;
-import static es.udc.ws.movies.model.util.ModelConstants.MAX_PRICE;
-import static es.udc.ws.movies.model.util.ModelConstants.MAX_RUNTIME;
-import static es.udc.ws.movies.model.util.ModelConstants.MOVIE_DATA_SOURCE;
 import static es.udc.ws.bikes.model.util.ModelConstants.MAX_BOOK_DAYS;
 import static es.udc.ws.bikes.model.util.ModelConstants.BIKE_DATA_SOURCE;
 import static org.junit.Assert.assertEquals;
@@ -29,8 +26,6 @@ import es.udc.ws.bikes.model.bikesservice.BikeServiceFactory;
 import es.udc.ws.bikes.model.book.Book;
 import es.udc.ws.bikes.model.book.SqlBookDao;
 import es.udc.ws.bikes.model.book.SqlBookDaoFactory;
-import es.udc.ws.movies.model.movie.Movie;
-import es.udc.ws.movies.model.sale.Sale;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
@@ -39,7 +34,7 @@ import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidNumberOfBikesExcepti
 import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidStartDateException;;
 
 public class BikeServiceTest {
-	private final long NON_EXISTENT_BIKEID = -1;
+	private final long NON_EXISTENT_BIKE_ID = -1;
 	private final long NON_EXISTENT_SALE_ID = -1;
 	private final String USER_ID = "ws-user";
 
@@ -95,11 +90,11 @@ public class BikeServiceTest {
 			
 			try {
 				
-				/*Prepara la conexión*/
+				/*Prepare connection*/
 				connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
 				
-				/*Elimina la reserva*/
+				/*Do work*/
 				bookDao.remove(connection, bookId);
 				
 				/*Commit*/
@@ -129,11 +124,11 @@ public class BikeServiceTest {
 
 			try {
 
-				/* Prepara la conexión */
+				/* Prepare connection */
 				connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
 
-				/* Actualiza la reserva*/
+				/* Do work */
 				bookDao.update(connection, book);
 
 				/* Commit. */
@@ -168,13 +163,12 @@ public class BikeServiceTest {
 			assertEquals(addedBike, foundBike);
 		
 		} finally {
-			// Borramos la bici de prueba
+			// Clear Database
 			if (addedBike!=null) {
 				removeBike(addedBike.getBikeId());
 			}
 		}
 		
-		//fail("Not yet implemented");
 	}
 	
 	@Test
@@ -215,23 +209,23 @@ public class BikeServiceTest {
 			}
 			assertTrue(exceptionCatched);
 
-			// Check movie price >= 0
+			// Check bike price >= 0
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setPrice((short) -1);
+			bike = getValidBike();
+			bike.setPrice((short) -1);
 			try {
-				addedMovie = movieService.addMovie(movie);
+				addedBike = bikeService.addBike(bike);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
 			assertTrue(exceptionCatched);
 
-			// Check movie price <= MAX_PRICE
+			// Check bike price <= MAX_PRICE
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setRuntime((short) (MAX_PRICE + 1));
+			bike = getValidBike();
+			bike.setPrice((short) (MAX_PRICE + 1));
 			try {
-				addedMovie = movieService.addMovie(movie);
+				addedBike = bikeService.addBike(bike);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
@@ -240,14 +234,35 @@ public class BikeServiceTest {
 		} finally {
 			if (!exceptionCatched) {
 				// Clear Database
-				removeMovie(addedMovie.getMovieId());
+				removeBike(addedBike.getBikeId());
 			}
 		}
 	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testFindNonExistentMovie() throws InstanceNotFoundException {
+
+		bikeService.findBike(NON_EXISTENT_BIKE_ID);
+
+	}
 
 	@Test
-	public void testUpdateBike() {
-		fail("Not yet implemented");
+	public void testUpdateBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
+		Bike bike = createBike(getValidBike());
+		try {
+			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike description", Calendar.getInstance(), 19.95F, 1, Calendar.getInstance());
+			
+			bikeService.updateBike(bikeToUpdate);
+			
+			Bike updatedBike = bikeService.findBike(bike.getBikeId());
+			
+			bikeToUpdate.setCreationDate(bike.getCreationDate());
+			assertEquals(bikeToUpdate, updatedBike);
+			
+		} finally {
+			//Clear Database
+			removeBike(bike.getBikeId());
+		}
 	}
 
 	@Test
