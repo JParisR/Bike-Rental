@@ -478,7 +478,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, INVALID_NUMBER_OF_BIKES);
+			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
 		
 		} finally {
 			if (book != null) {
@@ -489,5 +489,32 @@ public class BikeServiceTest {
 		
 	}
 	
-	
+	@Test(expected = InvalidStartDateException.class)
+	public void testBookInvalidStartDate() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
+		
+		Bike bike = createBike(getValidBike());
+		Book book = null;
+		
+		try {
+			
+			Calendar initDate = Calendar.getInstance();
+			initDate.set(Calendar.YEAR, 1970);
+			initDate.set(Calendar.MONTH, Calendar.AUGUST);
+			initDate.add(Calendar.DAY_OF_MONTH, 0);
+			initDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar endDate = Calendar.getInstance();
+			endDate.add(Calendar.DAY_OF_MONTH, 5);
+			endDate.set(Calendar.MILLISECOND, 0);
+			
+			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, INVALID_NUMBER_OF_BIKES);
+		
+		} finally {
+			if (book != null) {
+				removeBook(book.getBookId());
+			}
+			removeBike(bike.getBikeId());
+		}
+		
+	}
 }
