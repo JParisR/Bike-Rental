@@ -50,7 +50,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             int numberBikes = resultSet.getInt(i++);
 
             /* Return book. */
-            return new Book(bookId, bikeId, email, creditCard,
+            return new Book(bikeId, email, creditCard,
                     initDate, endDate, numberBikes);
 
             
@@ -82,7 +82,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             while (resultSet.next()) {
 
                 i = 1;
-                Long bookId = new Long(resultSet.getLong(i++));
+                //Long bookId = new Long(resultSet.getLong(i++));
                 Long bikeId = new Long(resultSet.getLong(i++));
                 String creditCard = resultSet.getString(i++);
                 Calendar initDate = Calendar.getInstance();
@@ -93,7 +93,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
                 Calendar bookDate = Calendar.getInstance();
                 bookDate.setTime(resultSet.getTimestamp(i++));
                 
-                books.add(new Book(bookId, bikeId, email, creditCard, initDate,
+                books.add(new Book(bikeId, email, creditCard, initDate,
                         endDate, numberBikes, bookDate));
 
             }

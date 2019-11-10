@@ -50,10 +50,10 @@ public class Jdb3CcSqlBookDao extends AbstractSqlBookDao{
                 throw new SQLException(
                         "JDBC driver did not return generated key.");
             }
-            Long bookId = resultSet.getLong(1);
+            //Long bookId = resultSet.getLong(1);
 
             /* Return sale. */
-            return new Book(bookId, book.getBikeId(), book.getEmail(), 
+            return new Book(book.getBikeId(), book.getEmail(), 
             		book.getCreditCard(), book.getInitDate(), book.getEndDate(),
             		book.getNumberBikes(), book.getBookDate());
             
