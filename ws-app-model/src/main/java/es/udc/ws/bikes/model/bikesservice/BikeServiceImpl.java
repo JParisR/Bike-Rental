@@ -183,7 +183,7 @@ public class BikeServiceImpl implements BikeService{
 	}*/
 	
 	@Override
-	public Book bookBike(Long bookId, Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
+	public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
 			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateException {
 
 		PropertyValidator.validateCreditCard(creditCard);
@@ -209,9 +209,10 @@ public class BikeServiceImpl implements BikeService{
 					throw new InvalidStartDateException(bike.getBikeId(), initDate);
 				}
 			
-				Book book = bookDao.create(connection, new Book(bookId, bikeId, email, creditCard, initDate,
+				Book book = bookDao.create(connection, new Book(bike.getBikeId() ,email, creditCard, initDate,
 							endDate, numberBikes, Calendar.getInstance()));
-
+				
+				
 				/* Commit. */
 				connection.commit();
 
