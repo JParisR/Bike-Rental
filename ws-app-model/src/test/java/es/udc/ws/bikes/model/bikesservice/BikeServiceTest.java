@@ -36,11 +36,11 @@ import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidStartDateException;;
 
 public class BikeServiceTest {
 	private final long NON_EXISTENT_BIKE_ID = -1;
-	private final long NON_EXISTENT_SALE_ID = -1;
+	private final long NON_EXISTENT_BOOK_ID = -1;
 	private final String USER_EMAIL = "ws-user@udc.es";
 
 	private final String VALID_CREDIT_CARD_NUMBER = "1234567890123456";
-	private final String INVALID_CREDIT_CARD_NUMBER = "";
+	private final String INVALID_CREDIT_CARD= "";
 	
 	private final int NUMBER_OF_BIKES = 2;
 	
@@ -358,9 +358,96 @@ public class BikeServiceTest {
 		
 	}
 
-	@Test
-	public void testFindBook() {
-		fail("Not yet implemented");
+	@Test(expected = InputValidationException.class)
+	public void testUpdateInvalidBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
+		Bike bike = createBike(getValidBike());
+		try {
+			// Check bikeId not null
+			bike = bikeService.findBike(bike.getBikeId());
+			bike.setBikeId(null);
+			bikeService.updateBike(bike);
+		} finally {
+			//Clear database
+			removeBike(bike.getBikeId());
+		}
+//		fail("Not yet implemented");
 	}
-
+	
+	@Test(expected = InputValidationException.class)
+	public void testUpdateNonExistentBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
+		Bike bike = getValidBike();
+		bike.setBikeId(NON_EXISTENT_BIKE_ID);
+		bike.setCreationDate(Calendar.getInstance());
+		bikeService.updateBike(bike);
+		
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testNonExistentRemoveBike() throws InstanceNotFoundException {
+		
+		bikeService.removeBike(NON_EXISTENT_BIKE_ID);
+		
+	}
+	
+	@Test(expected = InputValidationException.class)
+	public void testBookBikeWithInvalidCreditCard() throws InputValidationException, InvalidStartDateException, InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException {
+		Bike bike = createBike(getValidBike());
+		try {
+			
+			Calendar initDate = Calendar.getInstance();
+			initDate.add(Calendar.DAY_OF_MONTH, 0);
+			initDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar endDate = Calendar.getInstance();
+			endDate.add(Calendar.DAY_OF_MONTH, 5);
+			endDate.set(Calendar.MILLISECOND, 0);
+			
+			Book book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, INVALID_CREDIT_CARD, initDate, endDate, NUMBER_OF_BIKES);
+			removeBook(book.getBookId());
+		} finally {
+			removeBike(bike.getBikeId());
+		}
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testBookNonExistentBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
+		
+		Calendar initDate = Calendar.getInstance();
+		initDate.add(Calendar.DAY_OF_MONTH, 0);
+		initDate.set(Calendar.MILLISECOND, 0);
+		
+		Calendar endDate = Calendar.getInstance();
+		endDate.add(Calendar.DAY_OF_MONTH, 5);
+		endDate.set(Calendar.MILLISECOND, 0);
+		
+		Book book = bikeService.bookBike(NON_EXISTENT_BIKE_ID, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
+		/*Clear database*/
+		removeBook(book.getBikeId());
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void testFindNonExistentBook() throws InstanceNotFoundException{
+		
+		bikeService.findBook(NON_EXISTENT_BOOK_ID);
+		
+	}
+	
+	@Test(expected = InvalidDaysOfBookException.class)
+	public void testBookInvalidDays() throws InputValidationException, InstanceNotFoundException, InvalidDaysOfBookException {
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
