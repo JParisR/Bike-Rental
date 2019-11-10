@@ -30,17 +30,20 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
+import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidDaysOfBookException;
 import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidNumberOfBikesException;
 import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidStartDateException;;
 
 public class BikeServiceTest {
 	private final long NON_EXISTENT_BIKE_ID = -1;
 	private final long NON_EXISTENT_SALE_ID = -1;
-	private final String USER_ID = "ws-user";
+	private final String USER_EMAIL = "ws-user@udc.es";
 
 	private final String VALID_CREDIT_CARD_NUMBER = "1234567890123456";
 	private final String INVALID_CREDIT_CARD_NUMBER = "";
-
+	
+	private final int NUMBER_OF_BIKES = 2;
+	
 	private static BikeService bikeService = null;
 
 	private static SqlBookDao bookDao = null;
@@ -54,12 +57,12 @@ public class BikeServiceTest {
 		bookDao = SqlBookDaoFactory.getDao();
 	}
 	
-	private Bike getValidBike(Long bikeId){
-		return new Bike(bikeId , "Bike description", Calendar.getInstance() , 19.95F,  1, Calendar.getInstance());
+	private Bike getValidBike(Long bikeId, String description){
+		return new Bike(bikeId , description , Calendar.getInstance() , 19.95F,  1, Calendar.getInstance());
 	}
 	
 	private Bike getValidBike() {
-		return getValidBike((long) 0);
+		return getValidBike((long) 0, "Bike description");
 	}
 	
 	private Bike createBike(Bike bike) {
@@ -240,7 +243,7 @@ public class BikeServiceTest {
 	}
 	
 	@Test(expected = InstanceNotFoundException.class)
-	public void testFindNonExistentMovie() throws InstanceNotFoundException {
+	public void testFindNonExistentBike() throws InstanceNotFoundException {
 
 		bikeService.findBike(NON_EXISTENT_BIKE_ID);
 
@@ -265,24 +268,94 @@ public class BikeServiceTest {
 		}
 	}
 
-	@Test
-	public void testRemoveBike() {
-		fail("Not yet implemented");
+	@Test(expected = InstanceNotFoundException.class)
+	public void testRemoveBike() throws InstanceNotFoundException {
+		
+		Bike bike = createBike(getValidBike());
+		boolean exceptionCatched = false;
+		try {
+			bikeService.removeBike(bike.getBikeId());
+		} catch (InstanceNotFoundException e) {
+			exceptionCatched = true;
+		}
+		assertTrue(!exceptionCatched);
+
+		bikeService.findBike(bike.getBikeId());
+
 	}
 
 	@Test
-	public void testFindBike() {
-		fail("Not yet implemented");
+	public void testFindBikes() {
+		//Add bikes
+		
+		List<Bike> bikes = new LinkedList<Bike>();
+		Bike bike1 = createBike(getValidBike((long) 0, "Bike description 1"));
+		bikes.add(bike1);
+		Bike bike2 = createBike(getValidBike((long) 0, "Bike description 2"));
+		bikes.add(bike2);
+		Bike bike3 = createBike(getValidBike((long) 0, "Bike description 3"));
+		bikes.add(bike3);
+		
+		try {
+			List<Bike> foundBikes = bikeService.findBikesByKeywords("biKe Description");
+			assertEquals(bikes, foundBikes);
+			
+			foundBikes = bikeService.findBikesByKeywords("Bi Description 2");
+			assertEquals(1, foundBikes.size());
+			assertEquals(bikes.get(1), foundBikes.get(0));
+			
+			foundBikes = bikeService.findBikesByKeywords("description 9999");
+			assertEquals(0, foundBikes.size());
+		} finally {
+			//Clear Database
+			for (Bike bike : bikes) {
+				removeBike(bike.getBikeId());
+			}
+		}
+		
 	}
 
 	@Test
-	public void testFindMovies() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testBookBike() {
-		fail("Not yet implemented");
+	public void testBookBikeAndFindBook() 
+			throws InstanceNotFoundException, InputValidationException, InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
+		
+		Bike bike = createBike(getValidBike());
+		Book book = null;
+		
+		try {
+			
+			/* Book bike*/
+			Calendar initDate = Calendar.getInstance();
+			initDate.add(Calendar.DAY_OF_MONTH, 0);
+			initDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar endDate = Calendar.getInstance();
+			endDate.add(Calendar.DAY_OF_MONTH, 5);
+			endDate.set(Calendar.MILLISECOND, 0);
+			
+			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
+			
+			/*Find book*/
+			Book foundBook = bikeService.findBook(book.getBookId());
+			
+			/*Check book*/
+			assertEquals(book, foundBook);
+			assertEquals(VALID_CREDIT_CARD_NUMBER, foundBook.getCreditCard());
+			assertEquals(USER_EMAIL, foundBook.getEmail());
+			assertEquals(book.getBikeId(), foundBook.getBikeId());
+			assertEquals(initDate, foundBook.getInitDate());
+			assertEquals(endDate, foundBook.getEndDate());
+			assertTrue(Calendar.getInstance().after(foundBook.getBookDate()));
+			assertEquals(book.getNumberBikes(), foundBook.getNumberBikes());
+			
+		} finally {
+			//Clear database: remove book (if created) and bike
+			if (book != null) {
+				removeBook(book.getBookId());
+			}
+			removeBike(bike.getBikeId());
+		}
+		
 	}
 
 	@Test

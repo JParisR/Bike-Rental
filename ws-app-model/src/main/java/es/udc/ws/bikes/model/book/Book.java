@@ -24,17 +24,16 @@ public class Book {
 		this.numberBikes = numberBikes;
 	}
 	
-	public Book(Long bookId, Long bikeId, String email, String creditCard, 
+	public Book(Long bikeId, String email, String creditCard, 
 			Calendar initDate, Calendar endDate, int numberBikes) {
 		this(email, creditCard, initDate, endDate, numberBikes);
-		this.bookId = bookId;
 		this.bikeId = bikeId;
 	}
 	
-	public Book(Long bookId, Long bikeId, String email, 
+	public Book(Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
 			int numberBikes, Calendar bookDate) {
-		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes);
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes);
 		this.bookDate = bookDate;
 		if (bookDate != null) {
 			this.bookDate.set(Calendar.MILLISECOND, 0);
@@ -44,8 +43,10 @@ public class Book {
 	public Book(Long bookId, Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
 			int numberBikes, Calendar bookDate, int bookRate) {
-		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+		this.bookId = bookId;
 		this.bookRate = bookRate;
+		
 	}
 
 	public Long getBookId() {
