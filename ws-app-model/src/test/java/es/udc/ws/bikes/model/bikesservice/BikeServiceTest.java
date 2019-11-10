@@ -2,9 +2,7 @@ package es.udc.ws.bikes.model.bikesservice;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import static es.udc.ws.bikes.model.util.ModelConstants.BASE_URL;
 import static es.udc.ws.bikes.model.util.ModelConstants.MAX_PRICE;
-import static es.udc.ws.bikes.model.util.ModelConstants.MAX_BOOK_DAYS;
 import static es.udc.ws.bikes.model.util.ModelConstants.BIKE_DATA_SOURCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,7 +16,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import es.udc.ws.bikes.model.bike.Bike;
 import es.udc.ws.bikes.model.bikesservice.BikeService;
@@ -51,7 +48,10 @@ public class BikeServiceTest {
 	
 	@BeforeClass
 	public static void init() {
+		
 		DataSource datasource = new SimpleDataSource();
+		
+		DataSourceLocator.addDataSource(BIKE_DATA_SOURCE, datasource);
 		
 		bikeService = BikeServiceFactory.getService();
 
