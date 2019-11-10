@@ -490,14 +490,4 @@ public class BikeServiceTest {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
