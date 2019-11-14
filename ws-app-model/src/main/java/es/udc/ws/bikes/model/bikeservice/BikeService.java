@@ -24,7 +24,7 @@ public interface BikeService {
     
     //  public List<Bike> findBikesAvailable(Calendar StartDate);
 
-    public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
+    public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate)
             throws InvalidStartDateException, InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
 
     public Book findBook(Long bookId) throws InstanceNotFoundException;

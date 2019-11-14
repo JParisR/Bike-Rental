@@ -50,7 +50,6 @@ public class BikeServiceImpl implements BikeService{
 	public Bike addBike(Bike bike) throws InputValidationException {
 
 		validateBike(bike);
-		bike.setCreationDate(Calendar.getInstance());
 
 		try (Connection connection = dataSource.getConnection()) {
 
@@ -95,9 +94,9 @@ public class BikeServiceImpl implements BikeService{
 				connection.setAutoCommit(false);
 
 				/* Do work. */
-				Bike bikeAux = bikeDao.find(connection, bike.getBikeId()); 
-				if (bikeAux.getStartDate().before(bike.getStartDate()) ) { //COMPROBAR ESTO
-					throw new InvalidStartDateException(bikeAux.getBikeId(), bikeAux.getStartDate()); 
+				Book bookAux = bookDao.find(connection, bike.getBikeId());
+				if (bookAux.getInitDate().before(bike.getStartDate()) ) {
+					throw new InvalidStartDateException(bookAux.getBikeId(), bookAux.getInitDate()); 
 				}
 				
 				bikeDao.update(connection, bike);
@@ -187,11 +186,11 @@ public class BikeServiceImpl implements BikeService{
 	}*/
 	
 	@Override
-	public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes)
+	public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate)
 			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateException {
 
 		PropertyValidator.validateCreditCard(creditCard);
-		if((initDate.getTimeInMillis() - endDate.getTimeInMillis())/(24 * 60 * 60 * 1000) > MAX_BOOK_DAYS) {
+		if((endDate.getTimeInMillis() - initDate.getTimeInMillis()) / (24 * 60 * 60 * 1000) > MAX_BOOK_DAYS) {
 			throw new InvalidDaysOfBookException(initDate, endDate);
 		}
 		
@@ -209,12 +208,12 @@ public class BikeServiceImpl implements BikeService{
 				if (bike.getUnits() < numberBikes) {
 					throw new InvalidNumberOfBikesException(bike.getUnits(),numberBikes);
 				}
-				else if(bike.getStartDate().after(initDate)){ //COMPROBAR ESTO
+				else if(bike.getStartDate().after(initDate)){
 					throw new InvalidStartDateException(bike.getBikeId(), initDate);
 				}
 			
 				Book book = bookDao.create(connection, new Book(bike.getBikeId(), email, creditCard, initDate,
-							endDate, numberBikes, Calendar.getInstance()));
+							endDate, numberBikes, bookDate));
 				
 				
 				/* Commit. */
