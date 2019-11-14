@@ -29,7 +29,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
         /* Create "queryString". */
         String queryString = "SELECT description"
         		+ " startDate, price, units,"
-        		+ " avgRate, numberOfRates"
+        		+ " creationDate, avgRate, numberOfRates"
         		+ " FROM Bike WHERE bikeId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {

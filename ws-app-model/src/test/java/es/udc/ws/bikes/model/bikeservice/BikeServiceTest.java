@@ -51,7 +51,9 @@ public class BikeServiceTest {
 	
 	@BeforeClass
 	public static void init() {
-		DataSource datasource = new SimpleDataSource();
+		DataSource dataSource = new SimpleDataSource();
+		
+		DataSourceLocator.addDataSource(BIKE_DATA_SOURCE, dataSource);
 		
 		bikeService = BikeServiceFactory.getService();
 
@@ -59,7 +61,11 @@ public class BikeServiceTest {
 	}
 	
 	private Bike getValidBike(Long bikeId, String description){
-		return new Bike(bikeId , description , Calendar.getInstance() , 19.95F,  1, Calendar.getInstance());
+		Calendar startDate = Calendar.getInstance();
+		startDate.set(Calendar.MILLISECOND, 0);
+		Calendar creationDate = Calendar.getInstance();
+		creationDate.set(Calendar.MILLISECOND, 0);
+		return new Bike(bikeId, description, startDate, 19.95F, 1, creationDate);
 	}
 	
 	private Bike getValidBike() {

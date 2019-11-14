@@ -14,7 +14,7 @@ public class Jdbc3CcSqlBikeDao extends AbstractSqlBikeDao {
 
         /* Create "queryString". */
         String queryString = "INSERT INTO Bike"
-                + " (description, startDate, price, units"
+                + " (description, startDate, price, units,"
                 + " creationDate) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
