@@ -27,7 +27,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "SELECT description"
+        String queryString = "SELECT description,"
         		+ " startDate, price, units,"
         		+ " creationDate, avgRate, numberOfRates"
         		+ " FROM Bike WHERE bikeId = ?";
@@ -55,7 +55,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             int units = resultSet.getInt(i++);
             Calendar creationDate = Calendar.getInstance();
             creationDate.setTime(resultSet.getTimestamp(i++));
-            double avgRate = resultSet.getDouble(i++);
+        	double avgRate = resultSet.getDouble(i++);
             int numberOfRates = resultSet.getInt(i++);
             
             /* Return bike. */
@@ -73,8 +73,8 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
         /* Create "queryString". */
         String[] words = keywords != null ? keywords.split(" ") : null;
-        String queryString = "SELECT bikeId, description, startDate,"
-                + " creation Date, avgRate, numberOfRates FROM Bike";
+        String queryString = "SELECT bikeId, description, startDate, price,"
+                + " units, creationDate, avgRate, numberOfRates FROM Bike";
         if (words != null && words.length > 0) {
             queryString += " WHERE";
             for (int i = 0; i < words.length; i++) {
@@ -148,6 +148,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             		bike.getStartDate().getTime().getTime()) : null;
             preparedStatement.setTimestamp(i++, startDate);
             preparedStatement.setFloat(i++, bike.getPrice());
+            preparedStatement.setInt(i++, bike.getUnits());
             preparedStatement.setLong(i++, bike.getBikeId());
 
             /* Execute query. */

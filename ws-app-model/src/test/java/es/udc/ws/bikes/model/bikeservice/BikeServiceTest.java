@@ -296,9 +296,9 @@ public class BikeServiceTest {
 		List<Bike> bikes = new LinkedList<Bike>();
 		Bike bike1 = createBike(getValidBike((long) 0, "Bike description 1"));
 		bikes.add(bike1);
-		Bike bike2 = createBike(getValidBike((long) 0, "Bike description 2"));
+		Bike bike2 = createBike(getValidBike((long) 1, "Bike description 2"));
 		bikes.add(bike2);
-		Bike bike3 = createBike(getValidBike((long) 0, "Bike description 3"));
+		Bike bike3 = createBike(getValidBike((long) 2, "Bike description 3"));
 		bikes.add(bike3);
 		
 		try {
@@ -307,7 +307,7 @@ public class BikeServiceTest {
 			
 			foundBikes = bikeService.findBikesByKeywords("Bi Description 2");
 			assertEquals(1, foundBikes.size());
-			assertEquals(bikes.get(1), foundBikes.get(0));
+			assertEquals(bikes.get(0), foundBikes.get(0));
 			
 			foundBikes = bikeService.findBikesByKeywords("description 9999");
 			assertEquals(0, foundBikes.size());
@@ -329,7 +329,7 @@ public class BikeServiceTest {
 		
 		try {
 			
-			/* Book bike*/
+			// Book bike
 			Calendar initDate = Calendar.getInstance();
 			initDate.add(Calendar.DAY_OF_MONTH, 0);
 			initDate.set(Calendar.MILLISECOND, 0);
@@ -340,10 +340,10 @@ public class BikeServiceTest {
 			
 			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
 			
-			/*Find book*/
+			// Find book
 			Book foundBook = bikeService.findBook(book.getBookId());
 			
-			/*Check book*/
+			//Check book
 			assertEquals(book, foundBook);
 			assertEquals(VALID_CREDIT_CARD_NUMBER, foundBook.getCreditCard());
 			assertEquals(USER_EMAIL, foundBook.getEmail());
@@ -429,7 +429,7 @@ public class BikeServiceTest {
 		endDate.set(Calendar.MILLISECOND, 0);
 		
 		Book book = bikeService.bookBike(NON_EXISTENT_BIKE_ID, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
-		/*Clear database*/
+		//Clear database
 		removeBook(book.getBookId());
 	}
 	
@@ -482,7 +482,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
+			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, INVALID_NUMBER_OF_BIKES);
 		
 		} finally {
 			if (book != null) {
@@ -511,7 +511,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, INVALID_NUMBER_OF_BIKES);
+			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES);
 		
 		} finally {
 			if (book != null) {

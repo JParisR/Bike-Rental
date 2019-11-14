@@ -29,21 +29,21 @@ public class BikeServiceImpl implements BikeService{
 	private SqlBookDao bookDao = null;
 
 	public BikeServiceImpl() {
-		try {
 		dataSource = DataSourceLocator.getDataSource(BIKE_DATA_SOURCE);
 		bikeDao = SqlBikeDaoFactory.getDao();
 		bookDao = SqlBookDaoFactory.getDao();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void validateBike(Bike bike) throws InputValidationException {
 		
-		PropertyValidator.validateLong("bikeId", bike.getBikeId(), 0, MAX_BIKEID);
-		PropertyValidator.validateMandatoryString("description", bike.getDescription());
-		PropertyValidator.validateDouble("price", bike.getPrice(), 0, MAX_PRICE);
-
+		if (bike.getBikeId() == null) {
+			throw new InputValidationException("The bikeId can't be null");
+		}
+		else {
+			PropertyValidator.validateLong("bikeId", bike.getBikeId(), 0, MAX_BIKEID);
+			PropertyValidator.validateMandatoryString("description", bike.getDescription());
+			PropertyValidator.validateDouble("price", bike.getPrice(), 0, MAX_PRICE);
+		}
 	}
 
 	@Override
@@ -191,7 +191,7 @@ public class BikeServiceImpl implements BikeService{
 			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateException {
 
 		PropertyValidator.validateCreditCard(creditCard);
-		if((initDate.getTimeInMillis() - endDate.getTimeInMillis())/24 * 60 * 60 * 1000 > MAX_BOOK_DAYS) {
+		if((initDate.getTimeInMillis() - endDate.getTimeInMillis())/(24 * 60 * 60 * 1000) > MAX_BOOK_DAYS) {
 			throw new InvalidDaysOfBookException(initDate, endDate);
 		}
 		
@@ -213,7 +213,7 @@ public class BikeServiceImpl implements BikeService{
 					throw new InvalidStartDateException(bike.getBikeId(), initDate);
 				}
 			
-				Book book = bookDao.create(connection, new Book(bike.getBikeId() ,email, creditCard, initDate,
+				Book book = bookDao.create(connection, new Book(bike.getBikeId(), email, creditCard, initDate,
 							endDate, numberBikes, Calendar.getInstance()));
 				
 				
