@@ -48,14 +48,8 @@ public class BikeServiceTest {
 	
 	@BeforeClass
 	public static void init() {
-<<<<<<< HEAD:ws-app-model/src/test/java/es/udc/ws/bikes/model/bikeservice/BikeServiceTest.java
-		DataSource dataSource = new SimpleDataSource();
 		
-		DataSourceLocator.addDataSource(BIKE_DATA_SOURCE, dataSource);
-=======
-		
-		DataSource datasource = new SimpleDataSource();
->>>>>>> eb27fc3973f77a45d529920927b8bde9f8ea8cf5:ws-app-model/src/test/java/es/udc/ws/bikes/model/bikesservice/BikeServiceTest.java
+		DataSource datasource = new SimpleDataSource();		
 		
 		DataSourceLocator.addDataSource(BIKE_DATA_SOURCE, datasource);
 		
