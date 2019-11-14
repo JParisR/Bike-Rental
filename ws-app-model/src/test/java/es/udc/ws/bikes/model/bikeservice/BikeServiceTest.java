@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.model.bikesservice;
+package es.udc.ws.bikes.model.bikeservice;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -21,8 +21,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import es.udc.ws.bikes.model.bike.Bike;
-import es.udc.ws.bikes.model.bikesservice.BikeService;
-import es.udc.ws.bikes.model.bikesservice.BikeServiceFactory;
+import es.udc.ws.bikes.model.bikeservice.BikeService;
+import es.udc.ws.bikes.model.bikeservice.BikeServiceFactory;
 import es.udc.ws.bikes.model.book.Book;
 import es.udc.ws.bikes.model.book.SqlBookDao;
 import es.udc.ws.bikes.model.book.SqlBookDaoFactory;
@@ -30,9 +30,9 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
-import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidDaysOfBookException;
-import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidNumberOfBikesException;
-import es.udc.ws.bikes.model.bikesservice.exceptions.InvalidStartDateException;;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidDaysOfBookException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidNumberOfBikesException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateException;;
 
 public class BikeServiceTest {
 	private final long NON_EXISTENT_BIKE_ID = -1;
