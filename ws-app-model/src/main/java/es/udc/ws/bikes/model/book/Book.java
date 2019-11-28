@@ -42,11 +42,16 @@ public class Book {
 	
 	public Book(Long bookId, Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes, Calendar bookDate, int bookRate) {
+			int numberBikes, Calendar bookDate) {
 		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
 		this.bookId = bookId;
+	}
+	
+	public Book(Long bookId, Long bikeId, String email, 
+			String creditCard, Calendar initDate, Calendar endDate, 
+			int numberBikes, Calendar bookDate, int bookRate) {
+		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
 		this.bookRate = bookRate;
-		
 	}
 
 	public Long getBookId() {
@@ -125,6 +130,7 @@ public class Book {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((bikeId == null) ? 0 : bikeId.hashCode());
 		result = prime * result + ((bookDate == null) ? 0 : bookDate.hashCode());
 		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
 		result = prime * result + ((creditCard == null) ? 0 : creditCard.hashCode());
@@ -144,6 +150,11 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
+		if (bikeId == null) {
+			if (other.bikeId != null)
+				return false;
+		} else if (!bikeId.equals(other.bikeId))
+			return false;
 		if (bookDate == null) {
 			if (other.bookDate != null)
 				return false;

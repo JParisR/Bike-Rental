@@ -22,7 +22,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
 
         /* Create "queryString". */
         String queryString = "SELECT bikeId, email, creditCard, initDate,"
-                + " endDate, numberBikes FROM Book WHERE bookId = ?";
+                + " endDate, numberBikes, bookDate FROM Book WHERE bookId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -48,10 +48,12 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             Calendar endDate = Calendar.getInstance();
             endDate.setTime(resultSet.getTimestamp(i++));
             int numberBikes = resultSet.getInt(i++);
+            Calendar bookDate = Calendar.getInstance();
+            bookDate.setTime(resultSet.getTimestamp(i++));
 
             /* Return book. */
-            return new Book(bikeId, email, creditCard,
-                    initDate, endDate, numberBikes);
+            return new Book(bookId, bikeId, email, creditCard,
+                    initDate, endDate, numberBikes, bookDate);
 
             
         } catch (SQLException e) {

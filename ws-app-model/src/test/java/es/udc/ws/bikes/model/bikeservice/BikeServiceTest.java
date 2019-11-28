@@ -124,41 +124,6 @@ public class BikeServiceTest {
 		}
 	}
 	
-	private void updateBook(Book book) {
-
-		DataSource dataSource = DataSourceLocator.getDataSource(BIKE_DATA_SOURCE);
-
-		try (Connection connection = dataSource.getConnection()) {
-
-			try {
-
-				/* Prepare connection */
-				connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-				connection.setAutoCommit(false);
-
-				/* Do work */
-				bookDao.update(connection, book);
-
-				/* Commit. */
-				connection.commit();
-
-			} catch (InstanceNotFoundException e) {
-				connection.commit();
-				throw new RuntimeException(e);
-			} catch (SQLException e) {
-				connection.rollback();
-				throw new RuntimeException(e);
-			} catch (RuntimeException | Error e) {
-				connection.rollback();
-				throw e;
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-
-	}
-	
 	@Test
 	public void testAddBikeAndFindBike() throws InputValidationException, InstanceNotFoundException{
 		Bike bike = getValidBike();
@@ -255,10 +220,25 @@ public class BikeServiceTest {
 	}
 
 	@Test
-	public void testUpdateBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
+	public void testUpdateBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, InvalidNumberOfBikesException, 
+				InvalidDaysOfBookException {
 		Bike bike = createBike(getValidBike());
 		try {
 			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike description", Calendar.getInstance(), 19.95F, 1, bike.getCreationDate());
+			
+			Calendar initDate = Calendar.getInstance();
+			initDate.add(Calendar.DAY_OF_MONTH, 0);
+			initDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar bookDate = Calendar.getInstance();
+			bookDate.add(Calendar.DAY_OF_MONTH, 0);
+			bookDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar endDate = Calendar.getInstance();
+			endDate.add(Calendar.DAY_OF_MONTH, 5);
+			endDate.set(Calendar.MILLISECOND, 0);
+			
+			bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
 			
 			bikeService.updateBike(bikeToUpdate);
 			
