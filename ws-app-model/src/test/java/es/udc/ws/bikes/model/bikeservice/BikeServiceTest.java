@@ -294,18 +294,18 @@ public class BikeServiceTest {
 		//Add bikes
 		
 		List<Bike> bikes = new LinkedList<Bike>();
-		Bike bike1 = createBike(getValidBike((long) 0, "Bike description 1"));
+		Bike bike1 = createBike(getValidBike((long) 0, "Bici verde 1"));
 		bikes.add(bike1);
-		Bike bike2 = createBike(getValidBike((long) 1, "Bike description 2"));
+		Bike bike2 = createBike(getValidBike((long) 1, "Bici verde 2"));
 		bikes.add(bike2);
-		Bike bike3 = createBike(getValidBike((long) 2, "Bike description 3"));
+		Bike bike3 = createBike(getValidBike((long) 2, "Bici verde 3"));
 		bikes.add(bike3);
 		
 		try {
-			List<Bike> foundBikes = bikeService.findBikesByKeywords("Bike description");
-			//assertEquals(bikes, foundBikes); No funciona correctamente.
+			List<Bike> foundBikes = bikeService.findBikesByKeywords("verDe");
+			assertEquals(bikes, foundBikes);
 			
-			foundBikes = bikeService.findBikesByKeywords("Bike description 2");
+			foundBikes = bikeService.findBikesByKeywords("Bici verde 2");
 			assertEquals(1, foundBikes.size());
 			assertEquals(bikes.get(1), foundBikes.get(0));
 			
