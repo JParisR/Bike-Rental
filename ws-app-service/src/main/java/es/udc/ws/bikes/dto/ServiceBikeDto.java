@@ -1,7 +1,5 @@
 package es.udc.ws.bikes.dto;
 
-import java.util.Calendar;
-
 public class ServiceBikeDto {
 	
 	private Long bikeId;
