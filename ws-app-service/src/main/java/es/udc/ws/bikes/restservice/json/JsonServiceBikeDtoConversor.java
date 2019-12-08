@@ -41,7 +41,7 @@ public class JsonServiceBikeDtoConversor {
 		return bikesNode;
 	}
 	
-	public static ServiceBikeDto toServiceMovieDto(InputStream jsonBike) throws ParsingException {
+	public static ServiceBikeDto toServiceBikeDto(InputStream jsonBike) throws ParsingException {
 		try {
 			ObjectMapper objectMapper = ObjectMapperFactory.instance();
 			JsonNode rootNode = objectMapper.readTree(jsonBike);
@@ -51,7 +51,7 @@ public class JsonServiceBikeDtoConversor {
 			} else {
 				ObjectNode bikeObject = (ObjectNode) rootNode;
 
-				JsonNode bikeIdNode = bikeObject.get("movieId");
+				JsonNode bikeIdNode = bikeObject.get("bikeId");
 				Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 
 				String description = bikeObject.get("description").textValue().trim();
