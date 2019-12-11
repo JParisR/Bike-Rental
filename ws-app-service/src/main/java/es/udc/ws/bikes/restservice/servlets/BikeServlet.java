@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import es.udc.ws.bikes.dto.ServiceBikeDto;
 import es.udc.ws.bikes.model.bike.Bike;
 import es.udc.ws.bikes.model.bikeservice.BikeServiceFactory;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateException;
 import es.udc.ws.bikes.restservice.json.JsonServiceExceptionConversor;
 import es.udc.ws.bikes.restservice.json.JsonServiceBikeDtoConversor;
 import es.udc.ws.bikes.serviceutil.BikeToBikeDtoConversor;
@@ -52,9 +53,9 @@ public class BikeServlet extends HttpServlet {
 		}
 		bikeDto = BikeToBikeDtoConversor.toBikeDto(bike);
 
-		String movieURL = ServletUtils.normalizePath(req.getRequestURL().toString()) + "/" + movie.getMovieId();
+		String bikeURL = ServletUtils.normalizePath(req.getRequestURL().toString()) + "/" + bike.getBikeId();
 		Map<String, String> headers = new HashMap<>(1);
-		headers.put("Location", movieURL);
+		headers.put("Location", bikeURL);
 
 		ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_CREATED,
 				JsonServiceBikeDtoConversor.toObjectNode(bikeDto), headers);
@@ -66,7 +67,7 @@ public class BikeServlet extends HttpServlet {
 		String path = ServletUtils.normalizePath(req.getPathInfo());
 		if (path == null || path.length() == 0) {
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST, JsonServiceExceptionConversor
-					.toInputValidationException(new InputValidationException("Invalid Request: " + "invalid movie id")),
+					.toInputValidationException(new InputValidationException("Invalid Request: " + "invalid bike id")),
 					null);
 			return;
 		}
@@ -107,6 +108,10 @@ public class BikeServlet extends HttpServlet {
 		} catch (InstanceNotFoundException ex) {
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
 					JsonServiceExceptionConversor.toInstanceNotFoundException(ex), null);
+			return;
+		} catch (InvalidStartDateException ex) {
+			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
+					JsonServiceExceptionConversor.toInvalidStartDateException(ex), null);
 			return;
 		}
 		ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);
