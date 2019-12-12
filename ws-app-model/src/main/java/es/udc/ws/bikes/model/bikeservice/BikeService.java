@@ -16,16 +16,21 @@ public interface BikeService {
     public void updateBike(Bike bike) throws InputValidationException,
     		InstanceNotFoundException, InvalidStartDateException;
     
+    
     public Bike findBike(Long bikeId) throws InstanceNotFoundException;
     
     public void removeBike(Long bikeId) throws InstanceNotFoundException;
 	
     public List<Bike> findBikesByKeywords(String keywords);
     
-    //  public List<Bike> findBikesAvailable(Calendar StartDate);
+    public List<Bike> findBikesByKeywords(String keywords, Calendar startDate);
 
-    public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate)
-            throws InvalidStartDateException, InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
+    public void rateBook(Long bookId, int rate) throws InstanceNotFoundException,
+    		InvalidStartDateException;
+    
+    public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, 
+    		int numberBikes, Calendar bookDate) throws InvalidStartDateException, InstanceNotFoundException, 
+    		InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
 
     public Book findBook(Long bookId) throws InstanceNotFoundException;
     

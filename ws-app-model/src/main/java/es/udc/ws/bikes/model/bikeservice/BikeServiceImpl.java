@@ -94,7 +94,7 @@ public class BikeServiceImpl implements BikeService{
 				connection.setAutoCommit(false);
 
 				/* Do work. */
-				Book bookAux = bookDao.find(connection, bike.getBikeId());
+				Book bookAux = bookDao.findByBikeId(connection, bike.getBikeId());
 				if (bookAux.getInitDate().before(bike.getStartDate()) ) {
 					throw new InvalidStartDateException(bookAux.getBikeId(), bookAux.getInitDate()); 
 				}
@@ -175,15 +175,53 @@ public class BikeServiceImpl implements BikeService{
 			throw new RuntimeException(e);
 		}
 	}
-	/* FALTA AÑADIR EL DAO.
-	public List<Bike> findBikesAvailable(Calendar startDate){
+	public List<Bike> findBikesByKeywords(String keywords, Calendar startDate) {
+		
 		try (Connection connection = dataSource.getConnection()) {
-			return bikeDao.findByCalendar(connection, startDate);
+			return bikeDao.findByKeywords(connection, keywords, startDate);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 		
-	}*/
+	}
+
+    public void rateBook(Long bookId, int rate) throws InstanceNotFoundException,
+    		InvalidStartDateException {
+    	
+    	Calendar actualDate = Calendar.getInstance();
+    	
+    	try (Connection connection = dataSource.getConnection()) {
+    		
+    		try {
+    			
+    			/* Prepare connection */
+    			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+    			connection.setAutoCommit(false);
+    			
+    			/* Do work */
+    			Book book = bookDao.findByBookId(connection, bookId);
+    			Bike bike = bikeDao.find(connection, book.getBikeId());
+    			
+    			if (bike.getStartDate().after(actualDate)) {
+    				throw new InvalidStartDateException(bike.getBikeId(), bike.getStartDate());
+    			}
+    			
+    			book.setBookRate(rate);
+    			bookDao.update(connection, book);
+    		
+    		} catch (SQLException e) {
+    			connection.commit();
+    			throw e;
+    		} catch (InstanceNotFoundException e) {
+    			connection.rollback();
+    			throw e;
+    		}
+    		
+		} catch (SQLException e) {
+    		throw new RuntimeException(e);
+    	}
+    	
+    }
 	
 	@Override
 	public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate)
@@ -243,7 +281,7 @@ public class BikeServiceImpl implements BikeService{
 
 		try (Connection connection = dataSource.getConnection()) {
 
-			Book book = bookDao.find(connection, bookId);
+			Book book = bookDao.findByBookId(connection, bookId);
 				return book;
 			
 		} catch (SQLException e) {

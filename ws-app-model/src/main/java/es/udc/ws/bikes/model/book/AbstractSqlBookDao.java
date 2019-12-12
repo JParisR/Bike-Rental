@@ -17,12 +17,58 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
     }
 
     @Override
-    public Book find(Connection connection, Long bookId)
+    public Book findByBikeId(Connection connection, Long bikeId)
+            throws InstanceNotFoundException {
+
+        /* Create "queryString". */
+        String queryString = "SELECT bookId, email, creditCard, initDate,"
+                + " endDate, numberBikes, bookDate FROM Book WHERE bikeId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+            /* Fill "preparedStatement". */
+            int i = 1;
+            preparedStatement.setLong(i++, bikeId.longValue());
+
+            /* Execute query. */
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                throw new InstanceNotFoundException(bikeId,
+                		Book.class.getName());
+            }
+
+            /* Get results. */
+            i = 1;
+            Long bookId = resultSet.getLong(i++);
+            String email = resultSet.getString(i++);
+            String creditCard = resultSet.getString(i++);
+            Calendar initDate = Calendar.getInstance();
+            initDate.setTime(resultSet.getTimestamp(i++));
+            Calendar endDate = Calendar.getInstance();
+            endDate.setTime(resultSet.getTimestamp(i++));
+            int numberBikes = resultSet.getInt(i++);
+            Calendar bookDate = Calendar.getInstance();
+            bookDate.setTime(resultSet.getTimestamp(i++));
+
+            /* Return book. */
+            return new Book(bookId, bikeId, email, creditCard,
+                    initDate, endDate, numberBikes, bookDate);
+
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public Book findByBookId(Connection connection, Long bookId)
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
         String queryString = "SELECT bikeId, email, creditCard, initDate,"
-                + " endDate, numberBikes, bookDate FROM Book WHERE bookId = ?";
+                + " endDate, numberBikes, bookDate, bookRate FROM Book WHERE bookId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -50,10 +96,11 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             int numberBikes = resultSet.getInt(i++);
             Calendar bookDate = Calendar.getInstance();
             bookDate.setTime(resultSet.getTimestamp(i++));
+            int bookRate = resultSet.getInt(i++);
 
             /* Return book. */
             return new Book(bookId, bikeId, email, creditCard,
-                    initDate, endDate, numberBikes, bookDate);
+                    initDate, endDate, numberBikes, bookDate, bookRate);
 
             
         } catch (SQLException e) {
@@ -134,6 +181,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             preparedStatement.setTimestamp(i++, endDate);
             preparedStatement.setInt(i++, book.getNumberBikes());
             preparedStatement.setInt(i++, book.getBookRate());
+            preparedStatement.setLong(i++, book.getBookId());
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();

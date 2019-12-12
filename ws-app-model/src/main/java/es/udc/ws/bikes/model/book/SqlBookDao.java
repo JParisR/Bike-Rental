@@ -8,8 +8,11 @@ public interface SqlBookDao {
 	
 	public Book create(Connection connection, Book book);
 
-    public Book find(Connection connection, Long bikeId)
+    public Book findByBikeId(Connection connection, Long bikeId)
             throws InstanceNotFoundException;
+    
+    public Book findByBookId(Connection connection, Long bookId)
+    		throws InstanceNotFoundException;
     
     public List<Book> findByUser(Connection connection, String email);
 

@@ -127,6 +127,73 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
         }
 
     }
+    
+    @Override
+    public List<Bike> findByKeywords(Connection connection, String keywords, 
+    		Calendar date) {
+
+        /* Create "queryString". */
+        String[] words = keywords != null ? keywords.split(" ") : null;
+        String queryString = "SELECT bikeId, description, startDate, price,"
+                + " units, creationDate, avgRate, numberOfRates FROM Bike";
+        if (words != null && words.length > 0) {
+            queryString += " WHERE";
+            for (int i = 0; i < words.length; i++) {
+                if (i > 0) {
+                    queryString += " AND";
+                }
+                queryString += " LOWER(description) LIKE LOWER(?)";
+            }
+        }
+        queryString += " AND startDate <= ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+        	
+        	int i = 0;
+            if (words != null) {
+                /* Fill "preparedStatement". */
+                for (i = 0; i < words.length; i++) {
+                    preparedStatement.setString(i + 1, "%" + words[i] + "%");
+                }
+            }
+            
+            date.set(Calendar.MILLISECOND, 0);
+            Timestamp dateBd = new Timestamp(date.getTimeInMillis());
+            preparedStatement.setTimestamp(i++, dateBd);
+
+            /* Execute query. */
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            /* Read bikes. */
+            List<Bike> bikes = new ArrayList<Bike>();
+
+            while (resultSet.next()) {
+
+                i = 1;
+                Long bikeId = new Long(resultSet.getLong(i++));
+                String description = resultSet.getString(i++);
+                Calendar startDate = Calendar.getInstance();
+                startDate.setTime(resultSet.getTimestamp(i++));
+                Float price = resultSet.getFloat(i++);
+                int units = resultSet.getInt(i++);
+                Calendar creationDate = Calendar.getInstance();
+                creationDate.setTime(resultSet.getTimestamp(i++));
+                Double avgRate = resultSet.getDouble(i++);
+                int numberOfRates = resultSet.getInt(i++);
+
+                bikes.add(new Bike(bikeId, description, startDate, price,
+                        units, creationDate, avgRate, numberOfRates));
+
+            }
+
+            /* Return bikes. */
+            return bikes;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @Override
     public void update(Connection connection, Bike bike)

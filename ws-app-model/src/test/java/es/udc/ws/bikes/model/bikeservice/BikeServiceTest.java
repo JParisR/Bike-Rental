@@ -224,7 +224,10 @@ public class BikeServiceTest {
 				InvalidDaysOfBookException {
 		Bike bike = createBike(getValidBike());
 		try {
-			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike description", Calendar.getInstance(), 19.95F, 1, bike.getCreationDate());
+			Calendar newDate = Calendar.getInstance();
+			newDate.set(Calendar.MONTH, Calendar.NOVEMBER);
+			float newPrice = 24.95f;
+			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike description", newDate, newPrice, 1, bike.getCreationDate());
 			
 			Calendar initDate = Calendar.getInstance();
 			initDate.add(Calendar.DAY_OF_MONTH, 0);
@@ -245,7 +248,14 @@ public class BikeServiceTest {
 			Bike updatedBike = bikeService.findBike(bike.getBikeId());
 			
 			bikeToUpdate.setCreationDate(bike.getCreationDate());
-			assertEquals(bikeToUpdate, updatedBike);
+			assertEquals(bikeToUpdate.getBikeId(), updatedBike.getBikeId());
+			assertEquals(bikeToUpdate.getClass(), updatedBike.getClass());
+			assertEquals(bikeToUpdate.getCreationDate(), updatedBike.getCreationDate());
+			assertEquals(bikeToUpdate.getDescription(), updatedBike.getDescription());
+			assertEquals(bikeToUpdate.getPrice(), updatedBike.getPrice(), 0.001d);
+			assertEquals(bikeToUpdate.getUnits(), updatedBike.getUnits());
+			assertEquals(bikeToUpdate.getAvgRating(), updatedBike.getAvgRating(), 0.001d);
+			assertEquals(bikeToUpdate.getNumberOfRates(), updatedBike.getNumberOfRates(), 0.01);
 			
 		} finally {
 			//Clear Database
@@ -346,18 +356,53 @@ public class BikeServiceTest {
 		}
 		
 	}
+	
+	@Test
+	public void testRateBook() throws InputValidationException, InvalidStartDateException, 
+			InstanceNotFoundException, InvalidNumberOfBikesException, InvalidDaysOfBookException {
+		
+		Bike bike = createBike(getValidBike());
+		
+		try {
+			
+			bikeService.addBike(bike);
+			
+			Calendar initDate = Calendar.getInstance();
+			initDate.add(Calendar.DAY_OF_MONTH, 0);
+			initDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar bookDate = Calendar.getInstance();
+			bookDate.add(Calendar.DAY_OF_MONTH, 0);
+			bookDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar endDate = Calendar.getInstance();
+			endDate.add(Calendar.DAY_OF_MONTH, 5);
+			endDate.set(Calendar.MILLISECOND, 0);
+			
+			Book book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, 1, bookDate);
+			
+			bikeService.rateBook(book.getBookId(), 7);
+			
+			assertEquals(7, bikeService.findBook(book.getBookId()).getBookRate());
+			
+		} finally {
+			removeBike(bike.getBikeId());
+		}
+		
+	}
 
 	@Test(expected = InputValidationException.class)
 	public void testUpdateInvalidBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
+		
 		Bike bike = createBike(getValidBike());
+		
 		try {
 			// Check bikeId not null
 			bike = bikeService.findBike(bike.getBikeId());
 			bike.setBikeId(null);
 			bikeService.updateBike(bike);
 		} finally {
-			//Clear database
-			//removeBike(bike.getBikeId());
+			removeBike(bike.getBikeId());
 		}
 	}
 	
@@ -394,10 +439,8 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			Book book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, INVALID_CREDIT_CARD, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+			bikeService.bookBike(bike.getBikeId(), USER_EMAIL, INVALID_CREDIT_CARD, initDate, endDate, NUMBER_OF_BIKES, bookDate);
 			
-			//Clear database
-			removeBook(book.getBookId());
 		} finally {
 			//Clear database
 			removeBike(bike.getBikeId());
@@ -405,8 +448,9 @@ public class BikeServiceTest {
 	}
 	
 	@Test(expected = InstanceNotFoundException.class)
-	public void testBookNonExistentBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
-		
+	public void testBookNonExistentBike() throws InputValidationException, InstanceNotFoundException, 
+			InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
+
 		Calendar initDate = Calendar.getInstance();
 		initDate.add(Calendar.DAY_OF_MONTH, 0);
 		initDate.set(Calendar.MILLISECOND, 0);
@@ -419,9 +463,8 @@ public class BikeServiceTest {
 		endDate.add(Calendar.DAY_OF_MONTH, 5);
 		endDate.set(Calendar.MILLISECOND, 0);
 		
-		Book book = bikeService.bookBike(NON_EXISTENT_BIKE_ID, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
-		//Clear database
-		removeBook(book.getBookId());
+		bikeService.bookBike(NON_EXISTENT_BIKE_ID, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+		
 	}
 	
 	@Test(expected = InstanceNotFoundException.class)
@@ -455,7 +498,7 @@ public class BikeServiceTest {
 			
 		} finally {
 			if (book != null) {
-				//removeBook(book.getBookId());
+				removeBook(book.getBookId());
 			}
 			removeBike(bike.getBikeId());
 		}
