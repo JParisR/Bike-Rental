@@ -244,7 +244,7 @@ public class BikeServiceImpl implements BikeService{
 				/* Do work. */
 				Bike bike = bikeDao.find(connection, bikeId);
 				if (bike.getUnits() < numberBikes) {
-					throw new InvalidNumberOfBikesException(bike.getUnits(),numberBikes);
+					throw new InvalidNumberOfBikesException(bike.getBikeId(), bike.getUnits(),numberBikes);
 				}
 				else if(bike.getStartDate().after(initDate)){
 					throw new InvalidStartDateException(bike.getBikeId(), initDate);
