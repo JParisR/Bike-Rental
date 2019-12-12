@@ -1,14 +1,16 @@
 package es.udc.ws.bikes.client.ui;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+
 import es.udc.ws.bikes.client.service.ClientBikeService;
 import es.udc.ws.bikes.client.service.ClientBikeServiceFactory;
 import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
-public class BikeServiceClient {
-
+public class BikeServiceClientAdm {
     public static void main(String[] args) {
 
         if(args.length == 0) {
@@ -16,8 +18,49 @@ public class BikeServiceClient {
         }
         ClientBikeService clientBikeService =
                 ClientBikeServiceFactory.getService();
-        
-        if("-f".equalsIgnoreCase(args[0])) {
+        if("-a".equalsIgnoreCase(args[0])) {
+            validateArgs(args, 6, new int[] {2, 3, 5});
+
+            // [add] BikeServiceClient -a <bikeId><description> <price> <units>
+
+            try {
+                Long bikeId = clientBikeService.addBike(new ClientBikeDto(Long.valueOf(args[1]), 
+                		args[2], null, Short.valueOf(args[3]),Short.valueOf(args[4]), Short.valueOf(args[5]), Double.valueOf(args[6])));
+                
+            //    (Long bikeId, String description, Calendar startDate, float price,
+              //  		int units, int numberOfRates, double avgRate)
+
+                System.out.println("Bike " + bikeId + " created sucessfully");
+
+            } catch (NumberFormatException | InputValidationException ex) {
+                ex.printStackTrace(System.err);
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }
+
+        } else if("-u".equalsIgnoreCase(args[0])) {
+           validateArgs(args, 7, new int[] {1, 3, 4, 6});
+
+           // [update] BikeServiceClient -u <bikeId> <title> <hours> <minutes> <description> <price>
+
+           try {
+        	   Calendar startDate = Calendar.getInstance();  //REPASAR ESTO
+        	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        	   startDate.setTime(sdf.parse(args[3]));
+               
+        	   clientBikeService.updateBike(new ClientBikeDto(Long.valueOf(args[1]), 
+                args[2], startDate, Short.valueOf(args[4]),Short.valueOf(args[5]), Short.valueOf(args[6]), Double.valueOf(args[7])));
+
+                System.out.println("Bike " + args[1] + " updated sucessfully");
+
+            } catch (NumberFormatException | InputValidationException |
+                     InstanceNotFoundException ex) {
+                ex.printStackTrace(System.err);
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }
+
+        } else if("-f".equalsIgnoreCase(args[0])) {
             validateArgs(args, 2, new int[] {});
 
             // [find] BikeServiceClient -f <keywords>
@@ -40,73 +83,7 @@ public class BikeServiceClient {
                 ex.printStackTrace(System.err);
             }
 
-        } else if("-b".equalsIgnoreCase(args[0])) {
-            validateArgs(args, 4, new int[] {1});
-
-            // [book] BikeServiceClient -b <bikeId> <userId> <creditCardNumber>
-
-            Long bookId;
-            try {
-                bookId = clientBikeService.bookBike(Long.parseLong(args[1]),
-                        args[2], args[3]);
-
-                System.out.println("Bike " + args[1] +
-                        " purchased sucessfully with sale number " +
-                        bookId);
-
-            } catch (NumberFormatException | InstanceNotFoundException |
-                     InputValidationException ex) {
-                ex.printStackTrace(System.err);
-            } catch (Exception ex) {
-                ex.printStackTrace(System.err);
-            }
-
-        } else if("-f".equalsIgnoreCase(args[0])) {
-            validateArgs(args, 2, new int[] {});
-
-            // [findBooks] BikeServiceClient -f <keywords> Obtener las reservas de un usuario.
-
-            try {
-                List<ClientBikeDto> bikes = clientBikeService.findBikes(args[1]);
-                System.out.println("Found " + bikes.size() +
-                        " bike(s) with keywords '" + args[1] + "'");
-                for (int i = 0; i < bikes.size(); i++) {
-                    ClientBikeDto bikeDto = bikes.get(i);
-                    System.out.println("Id: " + bikeDto.getBikeId() +
-                            ", Description: " + bikeDto.getDescription() +
-                            ", StartDate: " + bikeDto.getStartDate() +
-                            ", Price: " + bikeDto.getPrice() +
-                            ", Description: " + bikeDto.getUnits());
-
-                            
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace(System.err);
-            }
-            
-        } else if("-p".equalsIgnoreCase(args[0])) {
-            validateArgs(args, 2, new int[] {});
-
-            // [PuntuarBooks] BikeServiceClient -p <keywords> Puntuar las reservas
-
-            try {
-                List<ClientBikeDto> bikes = clientBikeService.findBikes(args[1]);
-                System.out.println("Found " + bikes.size() +
-                        " bike(s) with keywords '" + args[1] + "'");
-                for (int i = 0; i < bikes.size(); i++) {
-                    ClientBikeDto bikeDto = bikes.get(i);
-                    System.out.println("Id: " + bikeDto.getBikeId() +
-                            ", Description: " + bikeDto.getDescription() +
-                            ", StartDate: " + bikeDto.getStartDate() +
-                            ", Price: " + bikeDto.getPrice() +
-                            ", Description: " + bikeDto.getUnits());
-
-                            
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace(System.err);
-            }
-        }
+        } 
     }
 
     public static void validateArgs(String[] args, int expectedArgs,
@@ -138,4 +115,5 @@ public class BikeServiceClient {
                 "    [buy]    BikeServiceClient -b <bikeId> <userId> <creditCardNumber>\n" +
                 "    [get]    BikeServiceClient -g <saleId>\n");
     }
+
 }

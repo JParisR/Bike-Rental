@@ -9,8 +9,7 @@ public class ClientBikeDto {
 	private Calendar startDate;
 	private float price;
 	private int units;
-	private int numberOfRates;
-	private double avgRate;
+
 
     public ClientBikeDto() {
     }    
@@ -22,8 +21,6 @@ public class ClientBikeDto {
         this.description = description;
         this.price = price;
         this.units = units;
-        this.numberOfRates = numberOfRates;
-        this.avgRate = avgRate;
 
     }
 
@@ -67,27 +64,10 @@ public class ClientBikeDto {
 		this.units = units;
 	}
 
-	public int getNumberOfRates() {
-		return numberOfRates;
-	}
-
-	public void setNumberOfRates(int numberOfRates) {
-		this.numberOfRates = numberOfRates;
-	}
-
-	public double getAvgRate() {
-		return avgRate;
-	}
-
-	public void setAvgRate(double avgRate) {
-		this.avgRate = avgRate;
-	}
-
 	@Override
 	public String toString() {
 		return "ClientBikeDto [bikeId=" + bikeId + ", description=" + description + ", startDate=" + startDate
-				+ ", price=" + price + ", units=" + units + ", numberOfRates=" + numberOfRates + ", avgRate=" + avgRate
-				+ "]";
+				+ ", price=" + price + ", units=" + units + "]";
 	}
 
 }

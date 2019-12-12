@@ -20,36 +20,19 @@ public class MockClientBikeService implements ClientBikeService{
     }
 
     @Override
-    public void removeBike(Long BikeId) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public List<ClientBikeDto> findBikes(String keywords) {
 
         List<ClientBikeDto> Bikes = new ArrayList<>();
-
-        Bikes.add(new ClientBikeDto(1L, "Bike1 description",
-                (short) 2, 10F, 1, 0,0));
-      //  Bikes.add(new ClientBikeDto(2L, "Bike2",
-        //        (short) 2, (short) 0, "Bike2 description", 10F));
+        Calendar startDate = Calendar.getInstance(); //MIRAR ESTO
         
-        //(Long bikeId, String description, Calendar startDate, float price,
-        	//	int units, int numberOfRates, double avgRate)
+        Bikes.add(new ClientBikeDto(1L, "Bike1 description", startDate, 10F, 1, 0,0));
 
         return Bikes;
 
     }
 
     @Override
-    public Long buyBike(Long BikeId, String userId, String creditCardNumber) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getBikeUrl(Long saleId) {
+    public Long bookBike(Long BikeId, String userId, String creditCardNumber) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -14,14 +14,9 @@ public interface ClientBikeService {
     public void updateBike(ClientBikeDto Bike)
             throws InputValidationException, InstanceNotFoundException;
 
-    public void removeBike(Long BikeId) throws InstanceNotFoundException;
-
     public List<ClientBikeDto> findBikes(String keywords);
 
-    public Long buyBike(Long BikeId, String userId, String creditCardNumber)
+    public Long bookBike(Long BikeId, String userId, String creditCardNumber)
             throws InstanceNotFoundException, InputValidationException;
-
-    public String getBikeUrl(Long bookId)
-            throws InstanceNotFoundException;
 
 }

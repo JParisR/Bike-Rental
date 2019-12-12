@@ -3,8 +3,10 @@ package es.udc.ws.bikes.client.service.rest.json;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
+import java.text.*;
+import java.util.Date;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -24,9 +26,8 @@ public class JsonClientBikeDtoConversor {
 		if (Bike.getBikeId() != null) {
 			BikeObject.put("BikeId", Bike.getBikeId());
 		}
-		BikeObject.put("runtime", Bike.getRuntimeHours() * 60 + Bike.getRuntimeMinutes()).
-			put("price", Bike.getPrice()).
-			put("title", Bike.getTitle()).
+		BikeObject.put("price", Bike.getPrice()).
+			put("units", Bike.getUnits()).
 			put("description", Bike.getDescription());
 
 		return BikeObject;
@@ -81,13 +82,28 @@ public class JsonClientBikeDtoConversor {
 			JsonNode BikeIdNode = BikeObject.get("BikeId");
 			Long BikeId = (BikeIdNode != null) ? BikeIdNode.longValue() : null;
 
-			String title = BikeObject.get("title").textValue().trim();
 			String description = BikeObject.get("description").textValue().trim();
-			short runtime = BikeObject.get("runtime").shortValue();
 			float price = BikeObject.get("price").floatValue();
-
-			return new ClientBikeDto(BikeId, title, (short) (runtime / 60), (short) (runtime % 60), description,
-					price);
+			int units = BikeObject.get("units").intValue();
+			int numberOfRates = BikeObject.get("numberOfRates").intValue();
+			double avgRate = BikeObject.get("avgRate").doubleValue();
+			String startDateString = BikeObject.get("startDate").textValue().trim(); //MIRAR ESTO
+			
+			Date DateAux = null;
+			try {
+				DateAux = new SimpleDateFormat("dd/MM/yyyy").parse(startDateString);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Calendar startDate = Calendar.getInstance();
+			startDate.setTime(DateAux);
+			
+			//JsonNode startDateNode = movieObject.get("startDate");
+	        //Calendar startDate = BikeObject.get("startDate");     //Calendar.getInstance();
+	
+			return new ClientBikeDto(BikeId, description, startDate, price, units, numberOfRates,
+					avgRate);
 		}
 	}
 
