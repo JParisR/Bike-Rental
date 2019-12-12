@@ -18,13 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
 import es.udc.ws.bikes.client.service.ClientBikeService;
-import es.udc.ws.bikes.client.service.exceptions.ClientBookExpirationException;
 import es.udc.ws.bikes.client.service.rest.json.JsonClientExceptionConversor;
 import es.udc.ws.bikes.client.service.rest.json.JsonClientBikeDtoConversor;
 import es.udc.ws.bikes.client.service.rest.json.JsonClientBookDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.bikes.client.service.exceptions.ClientInvalidStartDateException;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
@@ -75,24 +75,6 @@ public class RestClientBikeService implements ClientBikeService{
     }
 
     @Override
-    public void removeBike(Long BikeId) throws InstanceNotFoundException {
-
-        try {
-
-            HttpResponse response = Request.Delete(getEndpointAddress() + "Bikes/" + BikeId).
-                    execute().returnResponse();
-
-            validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
-
-        } catch (InstanceNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
     public List<ClientBikeDto> findBikes(String keywords) {
 
         try {
@@ -113,7 +95,7 @@ public class RestClientBikeService implements ClientBikeService{
     }
 
     @Override
-    public Long buyBike(Long BikeId, String userId, String creditCardNumber)
+    public Long bookBike(Long BikeId, String userId, String creditCardNumber)
             throws InstanceNotFoundException, InputValidationException {
 
         try {
@@ -139,11 +121,11 @@ public class RestClientBikeService implements ClientBikeService{
         }
 
     }
-
+/*
     @Override
     public String getBikeUrl(Long BookId) throws InstanceNotFoundException,
-            /*ClientBookExpirationException*/ {
-
+            /*ClientBookExpirationException {
+/*
         try {
 
             HttpResponse response = Request.Get(getEndpointAddress() + "Books/" + BookId).
@@ -161,7 +143,7 @@ public class RestClientBikeService implements ClientBikeService{
         }
 
     }
-
+*/
     private synchronized String getEndpointAddress() {
         if (endpointAddress == null) {
             endpointAddress = ConfigurationParametersManager
@@ -187,7 +169,7 @@ public class RestClientBikeService implements ClientBikeService{
     }
 
     private void validateStatusCode(int successCode, HttpResponse response)
-            throws InstanceNotFoundException, /*ClientBookExpirationException,*/
+            throws InstanceNotFoundException, ClientInvalidStartDateException,
             InputValidationException, ParsingException {
 
         try {
@@ -211,7 +193,7 @@ public class RestClientBikeService implements ClientBikeService{
                             response.getEntity().getContent());
 
                 case HttpStatus.SC_GONE:
-                    throw JsonClientExceptionConversor.fromBookExpirationException(
+                    throw JsonClientExceptionConversor.fromInvalidStartDateException(
                             response.getEntity().getContent());
 
                 default:

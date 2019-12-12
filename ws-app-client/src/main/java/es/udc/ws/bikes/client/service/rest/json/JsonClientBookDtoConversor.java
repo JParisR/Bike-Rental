@@ -27,12 +27,15 @@ public class JsonClientBookDtoConversor {
 				JsonNode BookIdNode = movieObject.get("BookId");
 				Long BookId = (BookIdNode != null) ? BookIdNode.longValue() : null;
 
-				Long movieId = movieObject.get("movieId").longValue();
-				String movieUrl = movieObject.get("movieUrl").textValue().trim();
-				JsonNode expirationDateNode = movieObject.get("expirationDate");
-				Calendar expirationDate = getExpirationDate(expirationDateNode);
+				Long bikeId = movieObject.get("bikeId").longValue();
+				int numberBikes = movieObject.get("numberBikes").intValue();
+				JsonNode initDateNode = movieObject.get("initDate");
+				Calendar initDate = getInitDate(initDateNode);
+				JsonNode endDateNode = movieObject.get("endDate");
+				Calendar endDate = getInitDate(endDateNode);
 
-				return new ClientBookDto(BookId, movieId, expirationDate, movieUrl);
+				return new ClientBookDto(BookId, bikeId, initDate, endDate, numberBikes);
+
 
 			}
 		} catch (ParsingException ex) {
@@ -41,15 +44,15 @@ public class JsonClientBookDtoConversor {
 			throw new ParsingException(e);
 		}
 	}
+ //COMPROBAR ESTO
+	private static Calendar getInitDate(JsonNode initDateNode) {
 
-	private static Calendar getExpirationDate(JsonNode expirationDateNode) {
-
-		if (expirationDateNode == null) {
+		if (initDateNode == null) {
 			return null;
 		}
-		int day = expirationDateNode.get("day").intValue();
-		int month = expirationDateNode.get("month").intValue();
-		int year = expirationDateNode.get("year").intValue();
+		int day = initDateNode.get("day").intValue();
+		int month = initDateNode.get("month").intValue();
+		int year = initDateNode.get("year").intValue();
 		Calendar releaseDate = Calendar.getInstance();
 
 		releaseDate.set(Calendar.DAY_OF_MONTH, day);

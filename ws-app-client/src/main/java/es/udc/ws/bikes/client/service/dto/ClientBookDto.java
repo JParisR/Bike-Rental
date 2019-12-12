@@ -9,19 +9,18 @@ public class ClientBookDto {
 	private Calendar initDate;
 	private Calendar endDate;
 	private int numberBikes;
-	private int bookRate;
+	
 
     public ClientBookDto() {
     }    
     
     public ClientBookDto(Long bookId, Long bikeId, Calendar initDate,  Calendar endDate,
-            int numberBikes, int bookRate) {
+            int numberBikes) {
     	 this.bookId = bookId;
     	 this.bikeId = bikeId;
     	 this.initDate = initDate;
     	 this.endDate = endDate;
-    	 this.numberBikes = numberBikes;
-    	 this.bookRate = bookRate;    
+    	 this.numberBikes = numberBikes;   
     }
 
 	public Long getBookId() {
@@ -63,14 +62,4 @@ public class ClientBookDto {
 	public void setNumberBikes(int numberBikes) {
 		this.numberBikes = numberBikes;
 	}
-
-	public int getBookRate() {
-		return bookRate;
-	}
-
-	public void setBookRate(int bookRate) {
-		this.bookRate = bookRate;
-	}
-    
-    
 }
