@@ -396,18 +396,16 @@ public class BikeServiceTest {
 		
 		Bike bike = createBike(getValidBike());
 		
-		try {
-			// Check bikeId not null
-			bike = bikeService.findBike(bike.getBikeId());
-			bike.setBikeId(null);
-			bikeService.updateBike(bike);
-		} finally {
-			removeBike(bike.getBikeId());
-		}
+		// Check bikeId not null
+		bike = bikeService.findBike(bike.getBikeId());
+		bike.setBikeId(null);
+		bikeService.updateBike(bike);
+		
 	}
 	
 	@Test(expected = InputValidationException.class)
 	public void testUpdateNonExistentBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
+		
 		Bike bike = getValidBike();
 		bike.setBikeId(NON_EXISTENT_BIKE_ID);
 		bike.setCreationDate(Calendar.getInstance());
