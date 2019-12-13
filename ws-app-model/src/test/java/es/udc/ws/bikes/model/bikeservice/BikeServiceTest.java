@@ -357,7 +357,7 @@ public class BikeServiceTest {
 		
 	}
 	
-	@Test
+	/*@Test
 	public void testRateBook() throws InputValidationException, InvalidStartDateException, 
 			InstanceNotFoundException, InvalidNumberOfBikesException, InvalidDaysOfBookException {
 		
@@ -389,7 +389,7 @@ public class BikeServiceTest {
 			removeBike(bike.getBikeId());
 		}
 		
-	}
+	}*/
 
 	@Test(expected = InputValidationException.class)
 	public void testUpdateInvalidBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
