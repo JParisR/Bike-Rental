@@ -30,6 +30,33 @@
     </servlet-mapping>
 
     <!-- REST service -->
+
+     <servlet>
+        <display-name>BikeServlet</display-name>
+        <servlet-name>BikeServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.bikes.restservice.servlets.BikeServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet>
+        <display-name>BookServlet</display-name>
+        <servlet-name>BookServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.bikes.restservice.servlets.BookServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BikeServlet</servlet-name>
+        <url-pattern>/bikes/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>BookServlet</servlet-name>
+        <url-pattern>/book/*</url-pattern>
+    </servlet-mapping>
+
     <!-- Fill XXX and uncomment the following lines --> 
     <!--
     <servlet>
