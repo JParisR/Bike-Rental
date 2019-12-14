@@ -1,8 +1,8 @@
-package es.udc.ws.bikes.client.service.dto;
+package es.udc.ws.bikes.adminClient.service.dto;
 
 import java.util.Calendar;
 
-public class ClientBookDto {
+public class AdminClientBookDto {
 
 	private Long bookId;
 	private Long bikeId;
@@ -11,10 +11,10 @@ public class ClientBookDto {
 	private int numberBikes;
 	private int bookRate;
 
-    public ClientBookDto() {
+    public AdminClientBookDto() {
     }    
     
-    public ClientBookDto(Long bookId, Long bikeId, Calendar initDate,  Calendar endDate,
+    public AdminClientBookDto(Long bookId, Long bikeId, Calendar initDate,  Calendar endDate,
             int numberBikes, int bookRate) {
     	 this.bookId = bookId;
     	 this.bikeId = bikeId;

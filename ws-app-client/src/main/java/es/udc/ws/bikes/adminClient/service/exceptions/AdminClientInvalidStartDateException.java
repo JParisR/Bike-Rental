@@ -1,14 +1,14 @@
-package es.udc.ws.bikes.client.service.exceptions;
+package es.udc.ws.bikes.adminClient.service.exceptions;
 
 import java.util.Calendar;
 
 @SuppressWarnings("serial")
-public class ClientInvalidStartDateException extends Exception{
+public class AdminClientInvalidStartDateException extends Exception{
 
     private Long bikeId;
     private Calendar startDate;
 
-    public ClientInvalidStartDateException(Long bikeId, Calendar startDate) {
+    public AdminClientInvalidStartDateException(Long bikeId, Calendar startDate) {
         super("Bike with id=\"" + bikeId + 
               "\" can´t be updated to = \"" + 
               startDate + "\")");

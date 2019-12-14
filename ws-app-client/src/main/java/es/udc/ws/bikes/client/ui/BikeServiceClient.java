@@ -4,6 +4,7 @@ import java.util.List;
 import es.udc.ws.bikes.client.service.ClientBikeService;
 import es.udc.ws.bikes.client.service.ClientBikeServiceFactory;
 import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.dto.ClientBookDto;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
@@ -32,9 +33,8 @@ public class BikeServiceClient {
                             ", Description: " + bikeDto.getDescription() +
                             ", StartDate: " + bikeDto.getStartDate() +
                             ", Price: " + bikeDto.getPrice() +
-                            ", Description: " + bikeDto.getUnits());
-
-                            
+                            ", Units: " + bikeDto.getUnits());
+                    
                 }
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
@@ -61,23 +61,23 @@ public class BikeServiceClient {
                 ex.printStackTrace(System.err);
             }
 
-        } else if("-f".equalsIgnoreCase(args[0])) {
+        } else if("-fb".equalsIgnoreCase(args[0])) {
             validateArgs(args, 2, new int[] {});
 
-            // [findBooks] BikeServiceClient -f <keywords> Obtener las reservas de un usuario.
+            // [findBooks] BikeServiceClient -fb <email> Obtener las reservas de un usuario.
 
             try {
-                List<ClientBikeDto> bikes = clientBikeService.findBikes(args[1]);
-                System.out.println("Found " + bikes.size() +
+                List<ClientBookDto> books = clientBikeService.findBooks(args[1]);
+                System.out.println("Found " + books.size() +
                         " bike(s) with keywords '" + args[1] + "'");
-                for (int i = 0; i < bikes.size(); i++) {
-                    ClientBikeDto bikeDto = bikes.get(i);
-                    System.out.println("Id: " + bikeDto.getBikeId() +
-                            ", Description: " + bikeDto.getDescription() +
-                            ", StartDate: " + bikeDto.getStartDate() +
-                            ", Price: " + bikeDto.getPrice() +
-                            ", Description: " + bikeDto.getUnits());
-
+                for (int i = 0; i < books.size(); i++) {
+                    ClientBookDto bookDto = books.get(i);
+                    System.out.println("Id: " + bookDto.getBookId() +
+                            ", bikeId: " + bookDto.getBikeId() +
+                            ", InitDate: " + bookDto.getInitDate() +
+                            ", EndDate: " + bookDto.getEndDate() +
+                            ", NumberBikes: " + bookDto.getNumberBikes() +
+                            ", BookRate: " + bookDto.getBookRate());
                             
                 }
             } catch (Exception ex) {

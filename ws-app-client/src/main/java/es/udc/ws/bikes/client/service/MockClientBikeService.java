@@ -4,20 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.dto.*;
 
 public class MockClientBikeService implements ClientBikeService{
-
-    @Override
-    public Long addBike(ClientBikeDto Bike) {
-        // TODO Auto-generated method stub
-        return (long) 0;
-    }
-
-    @Override
-    public void updateBike(ClientBikeDto Bike) {
-
-    }
 
     @Override
     public List<ClientBikeDto> findBikes(String keywords) {
@@ -30,10 +19,22 @@ public class MockClientBikeService implements ClientBikeService{
         return Bikes;
 
     }
-
+    
+    @Override
+    public List<ClientBookDto> findBooks(String userId) {
+    	 // TODO Auto-generated method stub
+    	return null;
+    }
+    
     @Override
     public Long bookBike(Long BikeId, String userId, String creditCardNumber) {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    public Long rateBook(Long BookId, String userId) {
+    	 // TODO Auto-generated method stub
+    	return null;
     }
 }

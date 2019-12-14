@@ -1,24 +1,24 @@
-package es.udc.ws.bikes.client.service;
+package es.udc.ws.bikes.adminClient.service;
 
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 
-public class ClientBikeServiceFactory {
+public class AdminClientBikeServiceFactory {
 
 	private final static String CLASS_NAME_PARAMETER
 			= "ClientBikeServiceFactory.className";
-	private static Class<ClientBikeService> serviceClass = null;
+	private static Class<AdminClientBikeService> serviceClass = null;
 	
-	private ClientBikeServiceFactory() {
+	private AdminClientBikeServiceFactory() {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private synchronized static Class<ClientBikeService> getServiceClass() {
+	private synchronized static Class<AdminClientBikeService> getServiceClass() {
 	
 		if (serviceClass == null) {
 		    try {
 		        String serviceClassName = ConfigurationParametersManager
 		                .getParameter(CLASS_NAME_PARAMETER);
-		        serviceClass = (Class<ClientBikeService>) Class.forName(serviceClassName);
+		        serviceClass = (Class<AdminClientBikeService>) Class.forName(serviceClassName);
 		    } catch (Exception e) {
 		        throw new RuntimeException(e);
 		    }
@@ -27,10 +27,10 @@ public class ClientBikeServiceFactory {
 		
 	}
 	
-	public static ClientBikeService getService() {
+	public static AdminClientBikeService getService() {
 	
 		try {
-		    return (ClientBikeService) getServiceClass().newInstance();
+		    return (AdminClientBikeService) getServiceClass().newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 		    throw new RuntimeException(e);
 		}
