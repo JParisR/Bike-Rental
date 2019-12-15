@@ -64,7 +64,7 @@ public class BikeServiceAdminClient {
             // [find] BikeServiceClient -f <keywords>
 
             try {
-                List<AdminClientBikeDto> bikes = AdminClientBikeService.findBikes(args[1]);
+                List<AdminClientBikeDto> bikes = clientBikeService.findBikes(args[1]);
                 System.out.println("Found " + bikes.size() +
                         " bike(s) with keywords '" + args[1] + "'");
                 for (int i = 0; i < bikes.size(); i++) {
