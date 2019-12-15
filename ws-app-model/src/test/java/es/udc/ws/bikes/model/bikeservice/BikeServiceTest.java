@@ -81,6 +81,12 @@ public class BikeServiceTest {
 		return addedBike;
 	}
 	
+	private Book getValidBook(Long bikeId, Calendar initDate, Calendar endDate, Calendar bookDate) {
+		
+		return new Book(bikeId, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+	
+	}
+	
 	private void removeBike(Long bikeId) {
 	
 		try {
@@ -241,7 +247,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+			bikeService.bookBike(getValidBook(bike.getBikeId(), initDate, endDate, bookDate));
 			
 			bikeService.updateBike(bikeToUpdate);
 			
@@ -332,7 +338,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+			book = bikeService.bookBike(getValidBook(bike.getBikeId(), initDate, endDate, bookDate));
 			
 			// Find book
 			Book foundBook = bikeService.findBook(book.getBookId());
@@ -357,7 +363,7 @@ public class BikeServiceTest {
 		
 	}
 	
-	/*@Test
+	@Test
 	public void testRateBook() throws InputValidationException, InvalidStartDateException, 
 			InstanceNotFoundException, InvalidNumberOfBikesException, InvalidDaysOfBookException {
 		
@@ -379,17 +385,18 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			Book book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, 1, bookDate);
+			Book book = bikeService.bookBike(getValidBook(bike.getBikeId(), initDate, endDate, bookDate));
 			
-			bikeService.rateBook(book.getBookId(), 7);
+			int rate = 7;
+			bikeService.rateBook(book.getBookId(), rate);
 			
-			assertEquals(7, bikeService.findBook(book.getBookId()).getBookRate());
+			assertEquals(rate, bikeService.findBook(book.getBookId()).getBookRate());
 			
 		} finally {
 			removeBike(bike.getBikeId());
 		}
 		
-	}*/
+	}
 
 	@Test(expected = InputValidationException.class)
 	public void testUpdateInvalidBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
@@ -421,7 +428,8 @@ public class BikeServiceTest {
 	}
 	
 	@Test(expected = InputValidationException.class)
-	public void testBookBikeWithInvalidCreditCard() throws InputValidationException, InvalidStartDateException, InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException {
+	public void testBookBikeWithInvalidCreditCard() throws InputValidationException, InvalidStartDateException, InstanceNotFoundException, 
+			InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException {
 		Bike bike = createBike(getValidBike());
 		try {
 			
@@ -437,7 +445,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			bikeService.bookBike(bike.getBikeId(), USER_EMAIL, INVALID_CREDIT_CARD, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+			bikeService.bookBike(new Book(bike.getBikeId(), USER_EMAIL, INVALID_CREDIT_CARD, initDate, endDate, NUMBER_OF_BIKES, bookDate));
 			
 		} finally {
 			//Clear database
@@ -461,7 +469,7 @@ public class BikeServiceTest {
 		endDate.add(Calendar.DAY_OF_MONTH, 5);
 		endDate.set(Calendar.MILLISECOND, 0);
 		
-		bikeService.bookBike(NON_EXISTENT_BIKE_ID, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+		bikeService.bookBike(new Book(NON_EXISTENT_BIKE_ID, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate));
 		
 	}
 	
@@ -473,7 +481,8 @@ public class BikeServiceTest {
 	}
 	
 	@Test(expected = InvalidDaysOfBookException.class)
-	public void testBookInvalidDays() throws InputValidationException, InstanceNotFoundException, InvalidDaysOfBookException, InvalidStartDateException, InvalidNumberOfBikesException {
+	public void testBookInvalidDays() throws InputValidationException, InstanceNotFoundException, InvalidDaysOfBookException, InvalidStartDateException,
+			InvalidNumberOfBikesException {
 		
 		Bike bike = createBike(getValidBike());
 		Book book = null;
@@ -492,7 +501,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 27);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+			book = bikeService.bookBike(new Book(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate));
 			
 		} finally {
 			if (book != null) {
@@ -503,7 +512,8 @@ public class BikeServiceTest {
 	}
 	
 	@Test(expected = InvalidNumberOfBikesException.class)
-	public void testBookInvalidNumberOfBikes() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
+	public void testBookInvalidNumberOfBikes() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, 
+			InvalidNumberOfBikesException, InvalidDaysOfBookException{
 		
 		Bike bike = createBike(getValidBike());
 		Book book = null;
@@ -522,7 +532,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, INVALID_NUMBER_OF_BIKES, bookDate);
+			book = bikeService.bookBike(new Book(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, INVALID_NUMBER_OF_BIKES, bookDate));
 		
 		} finally {
 			if (book != null) {
@@ -534,7 +544,8 @@ public class BikeServiceTest {
 	}
 	
 	@Test(expected = InvalidStartDateException.class)
-	public void testBookInvalidStartDate() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, InvalidNumberOfBikesException, InvalidDaysOfBookException{
+	public void testBookInvalidStartDate() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException, 
+			InvalidNumberOfBikesException, InvalidDaysOfBookException{
 		
 		Bike bike = createBike(getValidBike());
 		Book book = null;
@@ -557,7 +568,7 @@ public class BikeServiceTest {
 			endDate.add(Calendar.DAY_OF_MONTH, 5);
 			endDate.set(Calendar.MILLISECOND, 0);
 			
-			book = bikeService.bookBike(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+			book = bikeService.bookBike(new Book(bike.getBikeId(), USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate));
 		
 		} finally {
 			if (book != null) {

@@ -224,12 +224,12 @@ public class BikeServiceImpl implements BikeService{
     }
 	
 	@Override
-	public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate)
+	public Book bookBike(Book book)
 			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateException {
 
-		PropertyValidator.validateCreditCard(creditCard);
-		if((endDate.getTimeInMillis() - initDate.getTimeInMillis()) / (24 * 60 * 60 * 1000) > MAX_BOOK_DAYS) {
-			throw new InvalidDaysOfBookException(initDate, endDate);
+		PropertyValidator.validateCreditCard(book.getCreditCard());
+		if((book.getEndDate().getTimeInMillis() - book.getInitDate().getTimeInMillis()) / (24 * 60 * 60 * 1000) > MAX_BOOK_DAYS) {
+			throw new InvalidDaysOfBookException(book.getInitDate(), book.getEndDate());
 		}
 		
 				
@@ -242,22 +242,22 @@ public class BikeServiceImpl implements BikeService{
 				connection.setAutoCommit(false);
 
 				/* Do work. */
-				Bike bike = bikeDao.find(connection, bikeId);
-				if (bike.getUnits() < numberBikes) {
-					throw new InvalidNumberOfBikesException(bike.getBikeId(), bike.getUnits(),numberBikes);
+				Bike bike = bikeDao.find(connection, book.getBikeId());
+				if (bike.getUnits() < book.getNumberBikes()) {
+					throw new InvalidNumberOfBikesException(bike.getBikeId(), bike.getUnits(),book.getNumberBikes());
 				}
-				else if(bike.getStartDate().after(initDate)){
-					throw new InvalidStartDateException(bike.getBikeId(), initDate);
+				else if(bike.getStartDate().after(book.getInitDate())){
+					throw new InvalidStartDateException(bike.getBikeId(), book.getInitDate());
 				}
 			
-				Book book = bookDao.create(connection, new Book(bike.getBikeId(), email, creditCard, initDate,
-							endDate, numberBikes, bookDate));
+				Book createdBook = bookDao.create(connection, new Book(bike.getBikeId(), book.getEmail(), book.getCreditCard(), 
+								book.getInitDate(), book.getEndDate(), book.getNumberBikes(), book.getBookDate()));
 				
 				
 				/* Commit. */
 				connection.commit();
 
-				return book;
+				return createdBook;
 
 			} catch (InstanceNotFoundException e) {
 				connection.commit();

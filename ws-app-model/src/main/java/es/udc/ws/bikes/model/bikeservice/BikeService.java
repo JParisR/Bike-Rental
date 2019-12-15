@@ -28,8 +28,7 @@ public interface BikeService {
     public void rateBook(Long bookId, int rate) throws InstanceNotFoundException,
     		InvalidStartDateException;
     
-    public Book bookBike(Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, 
-    		int numberBikes, Calendar bookDate) throws InvalidStartDateException, InstanceNotFoundException, 
+    public Book bookBike(Book book) throws InvalidStartDateException, InstanceNotFoundException, 
     		InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
 
     public Book findBook(Long bookId) throws InstanceNotFoundException;
