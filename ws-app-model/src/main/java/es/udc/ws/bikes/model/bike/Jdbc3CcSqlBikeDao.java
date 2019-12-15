@@ -44,7 +44,7 @@ public class Jdbc3CcSqlBikeDao extends AbstractSqlBikeDao {
             }
             Long bikeId = resultSet.getLong(1);
 
-            /* Return movie. */
+            /* Return bike. */
             return new Bike(bikeId, bike.getDescription(), bike.getStartDate(), 
             		bike.getPrice(), bike.getUnits(), bike.getCreationDate());
 

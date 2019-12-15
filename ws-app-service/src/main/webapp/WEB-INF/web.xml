@@ -54,7 +54,7 @@
 
     <servlet-mapping>
         <servlet-name>BookServlet</servlet-name>
-        <url-pattern>/book/*</url-pattern>
+        <url-pattern>/books/*</url-pattern>
     </servlet-mapping>
 
     <!-- Fill XXX and uncomment the following lines --> 

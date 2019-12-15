@@ -23,6 +23,7 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.servlet.ServletUtils;
 
+@SuppressWarnings("serial")
 public class BookServlet extends HttpServlet{
 
 	 @Override
@@ -153,10 +154,12 @@ public class BookServlet extends HttpServlet{
 	        }
 	        
 	        Book book = null;
+	        Book bookBike = null;
 	        try {
 	        	
 	        	//Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate
-	            book = BikeServiceFactory.getService().bookBike(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+	            bookBike = new Book(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+	        	book = BikeServiceFactory.getService().bookBike(bookBike);
 	        } catch (InstanceNotFoundException ex) {
 	            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
 	            		JsonServiceExceptionConversor.toInstanceNotFoundException(ex), null);

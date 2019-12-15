@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.client.service.rest.json;
+package es.udc.ws.bikes.service.rest.json;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-import es.udc.ws.bikes.client.service.exceptions.ClientInvalidStartDateException;
+import es.udc.ws.bikes.service.exceptions.ClientBookExpirationException;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.json.ObjectMapperFactory;
@@ -56,7 +56,7 @@ public class JsonClientExceptionConversor {
 	        }
 	    }
 
-	    public static ClientInvalidStartDateException fromInvalidStartDateException(InputStream ex)
+	    public static ClientBookExpirationException fromBookExpirationException(InputStream ex)
 	            throws ParsingException {
 	        try {
 
@@ -65,8 +65,8 @@ public class JsonClientExceptionConversor {
 				if (rootNode.getNodeType() != JsonNodeType.OBJECT) {
 					throw new ParsingException("Unrecognized JSON (object expected)");
 				} else {
-					JsonNode data = rootNode.path("saleExpirationException");
-					Long bikeId = data.get("bikeId").longValue();
+					JsonNode data = rootNode.path("bookExpirationException");
+					Long bookId = data.get("bookId").longValue();
 					String expirationDate = data.get("expirationDate").textValue();
 		            Calendar calendar = null;
 		            if (expirationDate != null) {
@@ -74,7 +74,7 @@ public class JsonClientExceptionConversor {
 		                calendar = Calendar.getInstance();
 		                calendar.setTime(sdf.parse(expirationDate));
 		            }
-		            return new ClientInvalidStartDateException(bikeId, calendar);
+		            return new ClientBookExpirationException(bookId, calendar);
 				}
 
 	        } catch (Exception e) {

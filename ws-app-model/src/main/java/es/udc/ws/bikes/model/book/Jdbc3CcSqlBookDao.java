@@ -51,7 +51,7 @@ public class Jdbc3CcSqlBookDao extends AbstractSqlBookDao{
             }
             Long bookId = resultSet.getLong(1);
 
-            /* Return sale. */
+            /* Return book. */
             return new Book(bookId, book.getBikeId(), book.getEmail(), 
             		book.getCreditCard(), book.getInitDate(), book.getEndDate(),
             		book.getNumberBikes(), book.getBookDate());

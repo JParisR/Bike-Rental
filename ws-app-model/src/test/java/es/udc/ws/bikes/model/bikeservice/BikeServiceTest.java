@@ -177,7 +177,7 @@ public class BikeServiceTest {
 			}
 			assertTrue(exceptionCatched);
 
-			// Check movie description not empty
+			// Check bike description not empty
 			exceptionCatched = false;
 			bike = getValidBike();
 			bike.setDescription("");
