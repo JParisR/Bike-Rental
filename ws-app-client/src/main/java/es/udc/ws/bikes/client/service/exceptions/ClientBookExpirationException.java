@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.service.exceptions;
+package es.udc.ws.bikes.client.service.exceptions;
 
 import java.util.Calendar;
 

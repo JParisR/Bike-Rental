@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.service.rest.json;
+package es.udc.ws.bikes.client.service.rest.json;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-import es.udc.ws.bikes.service.exceptions.ClientBookExpirationException;
+import es.udc.ws.bikes.client.service.exceptions.ClientBookExpirationException;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.json.ObjectMapperFactory;

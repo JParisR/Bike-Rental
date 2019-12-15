@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.service.rest;
+package es.udc.ws.bikes.client.service.rest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,12 +16,12 @@ import org.apache.http.entity.ContentType;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import es.udc.ws.bikes.service.ClientBikeService;
-import es.udc.ws.bikes.service.dto.ClientBikeDto;
-import es.udc.ws.bikes.service.exceptions.ClientBookExpirationException;
-import es.udc.ws.bikes.service.rest.json.JsonClientExceptionConversor;
-import es.udc.ws.bikes.service.rest.json.JsonClientBikeDtoConversor;
-import es.udc.ws.bikes.service.rest.json.JsonClientBookDtoConversor;
+import es.udc.ws.bikes.client.service.ClientBikeService;
+import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.exceptions.ClientBookExpirationException;
+import es.udc.ws.bikes.client.service.rest.json.JsonClientExceptionConversor;
+import es.udc.ws.bikes.client.service.rest.json.JsonClientBikeDtoConversor;
+import es.udc.ws.bikes.client.service.rest.json.JsonClientBookDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;

@@ -1,7 +1,6 @@
-package es.udc.ws.bikes.service;
+package es.udc.ws.bikes.client.service;
 
-import es.udc.ws.bikes.service.dto.ClientBikeDto;
-import es.udc.ws.bikes.service.exceptions.ClientBookExpirationException;
+import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import java.util.List;

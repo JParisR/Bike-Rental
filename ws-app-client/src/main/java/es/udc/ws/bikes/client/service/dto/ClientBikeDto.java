@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.service.dto;
+package es.udc.ws.bikes.client.service.dto;
 
 import java.util.Calendar;
 

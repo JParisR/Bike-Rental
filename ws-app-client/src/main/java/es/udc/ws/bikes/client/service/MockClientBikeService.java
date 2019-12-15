@@ -1,6 +1,6 @@
-package es.udc.ws.bikes.service;
+package es.udc.ws.bikes.client.service;
 
-import es.udc.ws.bikes.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
 import java.util.ArrayList;
 import java.util.List;
 

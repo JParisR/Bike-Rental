@@ -1,9 +1,9 @@
-package es.udc.ws.bikes.ui;
+package es.udc.ws.bikes.client.ui;
 
 import java.util.Calendar;
-import es.udc.ws.bikes.service.ClientBikeService;
-import es.udc.ws.bikes.service.ClientBikeServiceFactory;
-import es.udc.ws.bikes.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.ClientBikeService;
+import es.udc.ws.bikes.client.service.ClientBikeServiceFactory;
+import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import java.util.List;

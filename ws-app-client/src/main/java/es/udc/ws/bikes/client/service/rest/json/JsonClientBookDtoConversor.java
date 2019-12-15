@@ -1,4 +1,4 @@
-package es.udc.ws.bikes.service.rest.json;
+package es.udc.ws.bikes.client.service.rest.json;
 
 import java.io.InputStream;
 import java.util.Calendar;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import es.udc.ws.bikes.service.dto.ClientBookDto;
+import es.udc.ws.bikes.client.service.dto.ClientBookDto;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
