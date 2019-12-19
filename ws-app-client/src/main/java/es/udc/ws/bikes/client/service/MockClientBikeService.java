@@ -1,56 +1,32 @@
 package es.udc.ws.bikes.client.service;
 
-import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.dto.AdminClientBikeDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockClientBikeService implements ClientBikeService {
+public class MockClientBikeService implements AdminClientBikeService {
 
     @Override
-    public Long addBike(ClientBikeDto bike) {
+    public Long addBike(AdminClientBikeDto bike) {
         // TODO Auto-generated method stub
         return (long) 0;
     }
 
     @Override
-    public void updateBike(ClientBikeDto bike) {
-
-    }
-
-    @Override
-    public void removeBike(Long bikeId) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public List<ClientBikeDto> findBikes(String keywords) {
-
-        List<ClientBikeDto> bikes = new ArrayList<>();
-
-        bikes.add(new ClientBikeDto());
-        bikes.add(new ClientBikeDto());
-
-        return bikes;
+    public void updateBike(AdminClientBikeDto bike) {
 
     }
     
     @Override
-    public List<ClientBikeDto> findBikesById(Long bikeId) {
+    public List<AdminClientBikeDto> findBikesById(Long bikeId) {
     	
-    	List<ClientBikeDto> bikes = new ArrayList<>();
+    	List<AdminClientBikeDto> bikes = new ArrayList<>();
 
-        bikes.add(new ClientBikeDto());
-        bikes.add(new ClientBikeDto());
+        bikes.add(new AdminClientBikeDto());
+        bikes.add(new AdminClientBikeDto());
 
         return bikes;
         
-    }
-
-    @Override
-    public Long bookBike(Long bikeId, String email, String creditCardNumber) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

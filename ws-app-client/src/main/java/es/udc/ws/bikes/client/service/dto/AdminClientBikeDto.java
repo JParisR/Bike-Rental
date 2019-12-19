@@ -2,7 +2,7 @@ package es.udc.ws.bikes.client.service.dto;
 
 import java.util.Calendar;
 
-public class ClientBikeDto {
+public class AdminClientBikeDto {
 
     private Long bikeId;
     private String description;
@@ -10,10 +10,10 @@ public class ClientBikeDto {
     private float price;
     private int units;
 
-    public ClientBikeDto() {
+    public AdminClientBikeDto() {
     }    
     
-    public ClientBikeDto(Long bikeId, String description, Calendar startDate, float price, int units) {
+    public AdminClientBikeDto(Long bikeId, String description, Calendar startDate, float price, int units) {
 
         this.bikeId = bikeId;
         this.description = description;
@@ -68,7 +68,5 @@ public class ClientBikeDto {
         return "bikeDto [bikeId=" + bikeId + ", description=" + description
                 + ", startDate=" + startDate.toString() + "price=" + price + ", units=" + units + "]";
     }
-
-
 
 }

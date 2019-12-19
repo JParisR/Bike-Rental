@@ -5,95 +5,37 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import es.udc.ws.bikes.client.service.ClientBikeService;
-import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.UserClientBikeService;
+import es.udc.ws.bikes.client.service.dto.UserClientBikeDto;
+import es.udc.ws.bikes.client.service.dto.UserClientBookDto;
 import es.udc.ws.bikes.client.service.exceptions.ClientBookExpirationException;
+import es.udc.ws.bikes.client.service.rest.json.JsonUserClientBikeDtoConversor;
+import es.udc.ws.bikes.client.service.rest.json.JsonUserClientBookDtoConversor;
 import es.udc.ws.bikes.client.service.rest.json.JsonClientExceptionConversor;
-import es.udc.ws.bikes.client.service.rest.json.JsonClientBikeDtoConversor;
-import es.udc.ws.bikes.client.service.rest.json.JsonClientBookDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
-public class RestClientBikeService implements ClientBikeService {
+public class UserRestClientBikeService implements UserClientBikeService {
 
-    private final static String ENDPOINT_ADDRESS_PARAMETER = "RestClientbikeservice.endpointAddress";
+	private final static String ENDPOINT_ADDRESS_PARAMETER = "UserRestClientBikeService.endpointAddress";
     private String endpointAddress;
-
-    @Override
-    public Long addBike(ClientBikeDto bike) throws InputValidationException {
-
-        try {
-
-            HttpResponse response = Request.Post(getEndpointAddress() + "bikes").
-                    bodyStream(toInputStream(bike), ContentType.create("application/json")).
-                    execute().returnResponse();
-
-            validateStatusCode(HttpStatus.SC_CREATED, response);
-
-            return JsonClientBikeDtoConversor.toClientBikeDto(response.getEntity().getContent()).getBikeId();
-
-        } catch (InputValidationException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
-    public void updateBike(ClientBikeDto bike) throws InputValidationException,
-            InstanceNotFoundException {
-
-        try {
-
-            HttpResponse response = Request.Put(getEndpointAddress() + "bikes/" + bike.getBikeId()).
-                    bodyStream(toInputStream(bike), ContentType.create("application/json")).
-                    execute().returnResponse();
-
-            validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
-
-        } catch (InputValidationException | InstanceNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
-    public void removeBike(Long bikeId) throws InstanceNotFoundException {
-
-        try {
-
-            HttpResponse response = Request.Delete(getEndpointAddress() + "bikes/" + bikeId).
-                    execute().returnResponse();
-
-            validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
-
-        } catch (InstanceNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
-    public List<ClientBikeDto> findBikes(String keywords) {
+	
+	@Override
+    public List<UserClientBikeDto> findBikes(String keywords, Calendar startDate) {
 
         try {
 
@@ -103,7 +45,7 @@ public class RestClientBikeService implements ClientBikeService {
 
             validateStatusCode(HttpStatus.SC_OK, response);
 
-            return JsonClientBikeDtoConversor.toClientBikeDtos(response.getEntity()
+            return JsonUserClientBikeDtoConversor.toClientBikeDtos(response.getEntity()
                     .getContent());
 
         } catch (Exception e) {
@@ -113,7 +55,7 @@ public class RestClientBikeService implements ClientBikeService {
     }
 
     @Override
-    public Long bookBike(Long bikeId, String email, String creditCard)
+    public Long rentBike(Long bikeId, String email, String creditCard)
             throws InstanceNotFoundException, InputValidationException {
 
         try {
@@ -129,7 +71,7 @@ public class RestClientBikeService implements ClientBikeService {
 
             validateStatusCode(HttpStatus.SC_CREATED, response);
 
-            return JsonClientBookDtoConversor.toClientBookDto(
+            return JsonUserClientBookDtoConversor.toClientBookDto(
                     response.getEntity().getContent()).getBookId();
 
         } catch (InputValidationException | InstanceNotFoundException e) {
@@ -140,25 +82,16 @@ public class RestClientBikeService implements ClientBikeService {
 
     }
     
-    public List<ClientBikeDto> findBikesById(Long bikeId) {
-    	
-    	try {
-
-            HttpResponse response = Request.Get(getEndpointAddress() + "bikes?bikeId=")
-                            .execute().returnResponse();
-
-            validateStatusCode(HttpStatus.SC_OK, response);
-
-            return JsonClientBikeDtoConversor.toClientBikeDtos(response.getEntity()
-                    .getContent());
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+    public void rateBook(Long bookId, String email, int rating) {
     	
     }
-
+    
+    public List<UserClientBookDto> findBooks(String email) {
+		
+    	return null;
+    	
+    }
+    
     private synchronized String getEndpointAddress() {
         if (endpointAddress == null) {
             endpointAddress = ConfigurationParametersManager
@@ -167,13 +100,13 @@ public class RestClientBikeService implements ClientBikeService {
         return endpointAddress;
     }
 
-    private InputStream toInputStream(ClientBikeDto bike) {
+    private InputStream toInputStream(UserClientBikeDto bike) {
 
         try {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ObjectMapper objectMapper = ObjectMapperFactory.instance();
-            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, JsonClientBikeDtoConversor.toJsonObject(bike));
+            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, JsonUserClientBikeDtoConversor.toJsonObject(bike));
 
             return new ByteArrayInputStream(outputStream.toByteArray());
 
@@ -221,5 +154,5 @@ public class RestClientBikeService implements ClientBikeService {
         }
 
     }
-
+	
 }

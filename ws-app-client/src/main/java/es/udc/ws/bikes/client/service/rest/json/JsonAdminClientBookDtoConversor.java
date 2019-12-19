@@ -8,13 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import es.udc.ws.bikes.client.service.dto.ClientBookDto;
+import es.udc.ws.bikes.client.service.dto.AdminClientBookDto;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
-public class JsonClientBookDtoConversor {
+public class JsonAdminClientBookDtoConversor {
 
-	public static ClientBookDto toClientBookDto(InputStream jsonBook) throws ParsingException {
+	public static AdminClientBookDto toClientBookDto(InputStream jsonBook) throws ParsingException {
 		try {
 
 			ObjectMapper objectMapper = ObjectMapperFactory.instance();
@@ -36,7 +36,7 @@ public class JsonClientBookDtoConversor {
 				Calendar endDate = getDate(endDateNode);
 				int units = bikeObject.get("units").intValue();
 
-				return new ClientBookDto(bookId, bikeId, email, creditCard, startDate, endDate, units);
+				return new AdminClientBookDto(bookId, bikeId, email, creditCard, startDate, endDate, units);
 
 			}
 		} catch (ParsingException ex) {

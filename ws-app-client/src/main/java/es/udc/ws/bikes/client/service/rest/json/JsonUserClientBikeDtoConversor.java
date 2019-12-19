@@ -13,12 +13,13 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import es.udc.ws.bikes.client.service.dto.ClientBikeDto;
+import es.udc.ws.bikes.client.service.dto.UserClientBikeDto;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
-public class JsonClientBikeDtoConversor {
-	public static JsonNode toJsonObject(ClientBikeDto bike) throws IOException {
+public class JsonUserClientBikeDtoConversor {
+	
+	public static JsonNode toJsonObject(UserClientBikeDto bike) throws IOException {
 
 		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
 
@@ -32,7 +33,7 @@ public class JsonClientBikeDtoConversor {
 		return bikeObject;
 	}
 
-	public static ClientBikeDto toClientBikeDto(InputStream jsonBike) throws ParsingException {
+	public static UserClientBikeDto toClientBikeDto(InputStream jsonBike) throws ParsingException {
 		try {
 
 			ObjectMapper objectMapper = ObjectMapperFactory.instance();
@@ -49,7 +50,7 @@ public class JsonClientBikeDtoConversor {
 		}
 	}
 
-	public static List<ClientBikeDto> toClientBikeDtos(InputStream jsonBikes) throws ParsingException {
+	public static List<UserClientBikeDto> toClientBikeDtos(InputStream jsonBikes) throws ParsingException {
 		try {
 
 			ObjectMapper objectMapper = ObjectMapperFactory.instance();
@@ -58,7 +59,7 @@ public class JsonClientBikeDtoConversor {
 				throw new ParsingException("Unrecognized JSON (array expected)");
 			} else {
 				ArrayNode bikesArray = (ArrayNode) rootNode;
-				List<ClientBikeDto> bikeDtos = new ArrayList<>(bikesArray.size());
+				List<UserClientBikeDto> bikeDtos = new ArrayList<>(bikesArray.size());
 				for (JsonNode bikeNode : bikesArray) {
 					bikeDtos.add(toClientBikeDto(bikeNode));
 				}
@@ -72,7 +73,7 @@ public class JsonClientBikeDtoConversor {
 		}
 	}
 
-	private static ClientBikeDto toClientBikeDto(JsonNode bikeNode) throws ParsingException {
+	private static UserClientBikeDto toClientBikeDto(JsonNode bikeNode) throws ParsingException {
 		if (bikeNode.getNodeType() != JsonNodeType.OBJECT) {
 			throw new ParsingException("Unrecognized JSON (object expected)");
 		} else {
@@ -87,7 +88,7 @@ public class JsonClientBikeDtoConversor {
 			float price = bikeObject.get("price").floatValue();
 			int units = bikeObject.get("units").intValue();
 
-			return new ClientBikeDto(bikeId, description, startDate, price, units);
+			return new UserClientBikeDto(bikeId, description, startDate, price, units);
 		}
 	}
 	
