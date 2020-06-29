@@ -95,7 +95,7 @@ public class BikeServiceImpl implements BikeService{
 
 				/* Do work. */
 				Book bookAux = bookDao.findByBikeId(connection, bike.getBikeId());
-				if (bookAux.getInitDate().before(bike.getStartDate()) ) {
+				if (bookAux.getInitDate().after(bike.getStartDate()) ) {
 					throw new InvalidStartDateException(bookAux.getBikeId(), bookAux.getInitDate()); 
 				}
 				

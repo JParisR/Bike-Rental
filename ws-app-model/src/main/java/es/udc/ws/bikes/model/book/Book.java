@@ -22,6 +22,7 @@ public class Book {
 		this.initDate = initDate;
 		this.endDate = endDate;
 		this.numberBikes = numberBikes;
+		
 	}
 	
 	public Book(Long bikeId, String email, String creditCard, 
@@ -40,19 +41,21 @@ public class Book {
 		}
 	}
 	
-	public Book(Long bookId, Long bikeId, String email, 
+	public Book(Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes, Calendar bookDate) {
+			int numberBikes, Calendar bookDate, int bookRate) {
 		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
-		this.bookId = bookId;
+		this.bookRate = bookRate;
 	}
 	
 	public Book(Long bookId, Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
 			int numberBikes, Calendar bookDate, int bookRate) {
-		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
-		this.bookRate = bookRate;
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate, bookRate);
+		this.bookId = bookId;
 	}
+	
+
 
 	public Long getBookId() {
 		return bookId;

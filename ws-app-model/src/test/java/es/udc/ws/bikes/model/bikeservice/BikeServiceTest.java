@@ -41,7 +41,7 @@ public class BikeServiceTest {
 	
 	private final int NUMBER_OF_BIKES = 2;
 	private final int INVALID_NUMBER_OF_BIKES = 999;
-	
+	private final int BOOK_RATE = 5;
 	private static BikeService bikeService = null;
 
 	private static SqlBookDao bookDao = null;
@@ -83,7 +83,7 @@ public class BikeServiceTest {
 	
 	private Book getValidBook(Long bikeId, Calendar initDate, Calendar endDate, Calendar bookDate) {
 		
-		return new Book(bikeId, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate);
+		return new Book(bikeId, USER_EMAIL, VALID_CREDIT_CARD_NUMBER, initDate, endDate, NUMBER_OF_BIKES, bookDate, BOOK_RATE);
 	
 	}
 	
@@ -352,6 +352,7 @@ public class BikeServiceTest {
 			assertEquals(endDate, foundBook.getEndDate());
 			assertTrue(Calendar.getInstance().after(foundBook.getBookDate()));
 			assertEquals(book.getNumberBikes(), foundBook.getNumberBikes());
+			assertEquals(book.getBookRate(), foundBook.getBookRate());
 			
 		} finally {
 			//Clear database: remove book (if created) and bike
@@ -390,7 +391,9 @@ public class BikeServiceTest {
 			int rate = 7;
 			bikeService.rateBook(book.getBookId(), rate);
 			
-			assertEquals(rate, bikeService.findBook(book.getBookId()).getBookRate());
+			Book foundBook = bikeService.findBook(book.getBookId());
+			
+			assertEquals(rate, foundBook.getBookRate());
 			
 		} finally {
 			removeBike(bike.getBikeId());

@@ -8,11 +8,11 @@
 -- must be dropped first (otherwise, the corresponding checks on those tables
 -- could not be done).
 
-DROP TABLE book;
-DROP TABLE bike;
+DROP TABLE Book;
+DROP TABLE Bike;
 
 -- --------------------------------- Bike ------------------------------------
-CREATE TABLE bike ( bikeId BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE Bike ( bikeId BIGINT NOT NULL AUTO_INCREMENT,
     description VARCHAR(1024) COLLATE latin1_bin NOT NULL,
     startDate DATETIME NOT NULL,
     price FLOAT NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE bike ( bikeId BIGINT NOT NULL AUTO_INCREMENT,
 
 -- --------------------------------- Book ------------------------------------
 
-CREATE TABLE book( bookId BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE Book ( bookId BIGINT NOT NULL AUTO_INCREMENT,
     bikeId BIGINT NOT NULL,
     email VARCHAR(40) COLLATE latin1_bin NOT NULL,
     creditCard VARCHAR(16) NOT NULL,
@@ -36,4 +36,4 @@ CREATE TABLE book( bookId BIGINT NOT NULL AUTO_INCREMENT,
     bookRate TINYINT(2),
     CONSTRAINT BookPK PRIMARY KEY(bookId),
     CONSTRAINT BookBikeIdFK FOREIGN KEY(bikeId)
-        REFERENCES bike(bikeId) ON DELETE CASCADE ) ENGINE = InnoDB;
+        REFERENCES Bike(bikeId) ON DELETE CASCADE ) ENGINE = InnoDB;

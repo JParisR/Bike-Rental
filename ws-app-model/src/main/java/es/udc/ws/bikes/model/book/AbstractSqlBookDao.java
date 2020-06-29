@@ -22,7 +22,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
 
         /* Create "queryString". */
         String queryString = "SELECT bookId, email, creditCard, initDate,"
-                + " endDate, numberBikes, bookDate FROM Book WHERE bikeId = ?";
+                + " endDate, numberBikes, bookDate, bookRate FROM Book WHERE bikeId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -50,10 +50,11 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             int numberBikes = resultSet.getInt(i++);
             Calendar bookDate = Calendar.getInstance();
             bookDate.setTime(resultSet.getTimestamp(i++));
+            int bookRate = resultSet.getInt(i++);
 
             /* Return book. */
             return new Book(bookId, bikeId, email, creditCard,
-                    initDate, endDate, numberBikes, bookDate);
+                    initDate, endDate, numberBikes, bookDate, bookRate);
 
             
         } catch (SQLException e) {
@@ -114,7 +115,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
 
     	/* Create "queryString". */
         String queryString = "SELECT bookId, bikeId, email, creditCard," 
-        		+ " endDate, numberBikes, bookDate WHERE email = ?";
+        		+ " endDate, numberBikes, bookDate, bookRate WHERE email = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
         	
