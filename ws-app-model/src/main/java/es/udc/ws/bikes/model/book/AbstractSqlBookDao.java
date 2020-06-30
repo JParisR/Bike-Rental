@@ -54,7 +54,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
 
             /* Return book. */
             return new Book(bookId, bikeId, email, creditCard,
-                    initDate, endDate, numberBikes, bookDate, bookRate);
+                    initDate, endDate, numberBikes, bookRate, bookDate);
 
             
         } catch (SQLException e) {
@@ -101,7 +101,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
 
             /* Return book. */
             return new Book(bookId, bikeId, email, creditCard,
-                    initDate, endDate, numberBikes, bookDate, bookRate);
+                    initDate, endDate, numberBikes, bookRate, bookDate);
 
             
         } catch (SQLException e) {
@@ -142,9 +142,11 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
                 int numberBikes = resultSet.getInt(i++);
                 Calendar bookDate = Calendar.getInstance();
                 bookDate.setTime(resultSet.getTimestamp(i++));
+                int bookRate = resultSet.getInt(i++);
+
                 
                 books.add(new Book(bikeId, email, creditCard, initDate,
-                        endDate, numberBikes, bookDate));
+                        endDate, numberBikes, bookRate, bookDate));
 
             }
 
@@ -183,6 +185,9 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             preparedStatement.setInt(i++, book.getNumberBikes());
             preparedStatement.setInt(i++, book.getBookRate());
             preparedStatement.setLong(i++, book.getBookId());
+
+            
+
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();

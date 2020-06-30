@@ -131,6 +131,19 @@ public class BookServlet extends HttpServlet{
 	        	numberBikes = Integer.parseInt(numberBikesString);
 	        }
 	        
+	        int bookRate;
+	        String bookRateString = req.getParameter("numberBikes");
+	        if (bookRateString == null) {
+	        	ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+	            		JsonServiceExceptionConversor.toInputValidationException(new InputValidationException(
+	                            "Invalid Request: " + "parameter 'numberBikes' is mandatory")),
+	                    null);
+
+	            return;
+	        } else {
+	        	bookRate = Integer.parseInt(bookRateString);
+	        }
+	        
 	        Calendar bookDate;
 	        String bookDateString = req.getParameter("bookDate");	        
 	        if (bookDateString == null) {
@@ -158,7 +171,7 @@ public class BookServlet extends HttpServlet{
 	        try {
 	        	
 	        	//Long bikeId, String email, String creditCard, Calendar initDate, Calendar endDate, int numberBikes, Calendar bookDate
-	            bookBike = new Book(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+	            bookBike = new Book(bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate, bookDate);
 	        	book = BikeServiceFactory.getService().bookBike(bookBike);
 	        } catch (InstanceNotFoundException ex) {
 	            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,

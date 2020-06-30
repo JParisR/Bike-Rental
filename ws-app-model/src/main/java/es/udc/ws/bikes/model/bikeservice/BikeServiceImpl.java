@@ -184,44 +184,49 @@ public class BikeServiceImpl implements BikeService{
 		}
 		
 	}
+	
+	@Override
+	public void rateBook(Long bookId, int rate) throws InstanceNotFoundException, InvalidStartDateException {
 
-    public void rateBook(Long bookId, int rate) throws InstanceNotFoundException,
-    		InvalidStartDateException {
-    	
-    	Calendar actualDate = Calendar.getInstance();
-    	
-    	try (Connection connection = dataSource.getConnection()) {
-    		
-    		try {
-    			
-    			/* Prepare connection */
-    			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-    			connection.setAutoCommit(false);
-    			
-    			/* Do work */
-    			Book book = bookDao.findByBookId(connection, bookId);
-    			Bike bike = bikeDao.find(connection, book.getBikeId());
-    			
-    			if (bike.getStartDate().after(actualDate)) {
-    				throw new InvalidStartDateException(bike.getBikeId(), bike.getStartDate());
+		Calendar actualDate = Calendar.getInstance();
+
+		try (Connection connection = dataSource.getConnection()) {
+
+			try {
+
+				/* Prepare connection. */
+				connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+				connection.setAutoCommit(false);
+
+				/* Do work. */
+				Book bookAux = bookDao.findByBookId(connection, bookId);
+				Bike bikeAux = bikeDao.find(connection, bookAux.getBikeId());
+				
+    			if (bikeAux.getStartDate().after(actualDate)) {
+    				throw new InvalidStartDateException(bikeAux.getBikeId(), bikeAux.getStartDate());
     			}
-    			
-    			book.setBookRate(rate);
-    			bookDao.update(connection, book);
-    		
-    		} catch (SQLException e) {
-    			connection.commit();
-    			throw e;
-    		} catch (InstanceNotFoundException e) {
-    			connection.rollback();
-    			throw e;
-    		}
-    		
+				
+    			bookAux.setBookRate(rate);
+				bookDao.update(connection, bookAux);
+				/* Commit. */
+				connection.commit();
+
+			} catch (InstanceNotFoundException e) {
+				connection.commit();
+				throw e;
+			} catch (SQLException e) {
+				connection.rollback();
+				throw new RuntimeException(e);
+			} catch (RuntimeException | Error e) {
+				connection.rollback();
+				throw e;
+			}
+
 		} catch (SQLException e) {
-    		throw new RuntimeException(e);
-    	}
-    	
-    }
+			throw new RuntimeException(e);
+		}
+
+	}
 	
 	@Override
 	public Book bookBike(Book book)
@@ -251,7 +256,7 @@ public class BikeServiceImpl implements BikeService{
 				}
 			
 				Book createdBook = bookDao.create(connection, new Book(bike.getBikeId(), book.getEmail(), book.getCreditCard(), 
-								book.getInitDate(), book.getEndDate(), book.getNumberBikes(), book.getBookDate()));
+								book.getInitDate(), book.getEndDate(), book.getNumberBikes(), book.getBookRate(),book.getBookDate()));
 				
 				
 				/* Commit. */

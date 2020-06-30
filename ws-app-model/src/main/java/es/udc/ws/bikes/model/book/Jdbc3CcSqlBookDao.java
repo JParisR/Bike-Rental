@@ -16,8 +16,8 @@ public class Jdbc3CcSqlBookDao extends AbstractSqlBookDao{
         /* Create "queryString". */
         String queryString = "INSERT INTO Book"
                 + " (bikeId, email, creditCard,"
-                + " initDate, endDate, numberBikes, bookDate)" 
-                + " VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + " initDate, endDate, numberBikes, bookDate, bookRate)" 
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -38,6 +38,7 @@ public class Jdbc3CcSqlBookDao extends AbstractSqlBookDao{
             Timestamp bookDate = new Timestamp(book.getBookDate().getTime()
                     .getTime());
             preparedStatement.setTimestamp(i++, bookDate);
+            preparedStatement.setInt(i++, book.getBookRate());
             
             /* Execute query. */
             preparedStatement.executeUpdate();
@@ -54,7 +55,7 @@ public class Jdbc3CcSqlBookDao extends AbstractSqlBookDao{
             /* Return book. */
             return new Book(bookId, book.getBikeId(), book.getEmail(), 
             		book.getCreditCard(), book.getInitDate(), book.getEndDate(),
-            		book.getNumberBikes(), book.getBookDate(), book.getBookRate());
+            		book.getNumberBikes(), book.getBookRate(), book.getBookDate());
             
             
 
