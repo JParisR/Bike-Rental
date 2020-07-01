@@ -1,6 +1,8 @@
 package es.udc.ws.bikes.restservice.json;
 
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -55,10 +57,16 @@ public class JsonServiceBikeDtoConversor {
 				Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 
 				String description = bikeObject.get("description").textValue().trim();
+				
+				Long dateLong = bikeObject.get("startDate").asLong();
+				Date date = new Date(dateLong);
+				Calendar startDate = Calendar.getInstance();
+				startDate.setTime(date);
+				
 				int units =  bikeObject.get("units").intValue();
 				float price = bikeObject.get("price").floatValue();
 
-				return new ServiceBikeDto(bikeId, description, price, units);
+				return new ServiceBikeDto(bikeId, description, price, units, startDate);
 			}
 		} catch (ParsingException ex) {
 			throw ex;

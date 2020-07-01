@@ -17,7 +17,7 @@ public class BikeToBikeDtoConversor {
 	}
 
 	public static ServiceBikeDto toBikeDto(Bike bike) {
-		return new ServiceBikeDto(bike.getBikeId(), bike.getDescription(), bike.getPrice(), bike.getUnits());
+		return new ServiceBikeDto(bike.getBikeId(), bike.getDescription(), bike.getPrice(), bike.getUnits(), bike.getStartDate());
 	}
 
 	public static Bike toBike(ServiceBikeDto bike) {

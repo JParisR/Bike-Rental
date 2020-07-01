@@ -14,7 +14,7 @@ public class ServiceBikeDto {
 	private double avgRate;
 	
 	
-	public ServiceBikeDto(Long bikeId, String description, float price, int units) {
+	public ServiceBikeDto(Long bikeId, String description, float price, int units, Calendar startDate) {
 		this.bikeId = bikeId;
 		this.description = description;
 		this.price = price;
