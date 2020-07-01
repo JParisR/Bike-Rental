@@ -19,6 +19,7 @@ public class ServiceBikeDto {
 		this.description = description;
 		this.price = price;
 		this.units = units;
+		this.startDate = startDate;
 	}
 
 	public Long getBikeId() {
