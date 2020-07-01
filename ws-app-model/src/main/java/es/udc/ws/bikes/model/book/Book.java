@@ -15,25 +15,27 @@ public class Book {
 	private int bookRate;
 	
 	public Book(String email, String creditCard, Calendar initDate, 
-			Calendar endDate, int numberBikes) {
+			Calendar endDate, int numberBikes, int bookRate) {
 	
 		this.email = email;
 		this.creditCard = creditCard;
 		this.initDate = initDate;
 		this.endDate = endDate;
 		this.numberBikes = numberBikes;
+		this.bookRate = bookRate;
+		
 	}
 	
 	public Book(Long bikeId, String email, String creditCard, 
-			Calendar initDate, Calendar endDate, int numberBikes) {
-		this(email, creditCard, initDate, endDate, numberBikes);
+			Calendar initDate, Calendar endDate, int numberBikes, int bookRate) {
+		this(email, creditCard, initDate, endDate, numberBikes, bookRate);
 		this.bikeId = bikeId;
 	}
 	
 	public Book(Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes, Calendar bookDate) {
-		this(bikeId, email, creditCard, initDate, endDate, numberBikes);
+			int numberBikes, int bookRate, Calendar bookDate) {
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate);
 		this.bookDate = bookDate;
 		if (bookDate != null) {
 			this.bookDate.set(Calendar.MILLISECOND, 0);
@@ -42,17 +44,11 @@ public class Book {
 	
 	public Book(Long bookId, Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes, Calendar bookDate) {
-		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
+			int numberBikes,  int bookRate,Calendar bookDate) {
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate, bookDate);
 		this.bookId = bookId;
 	}
 	
-	public Book(Long bookId, Long bikeId, String email, 
-			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes, Calendar bookDate, int bookRate) {
-		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes, bookDate);
-		this.bookRate = bookRate;
-	}
 
 	public Long getBookId() {
 		return bookId;
@@ -61,7 +57,7 @@ public class Book {
 	public void setBookId(Long bookId) {
 		this.bookId = bookId;
 	}
-	
+
 	public Long getBikeId() {
 		return bikeId;
 	}
@@ -117,11 +113,11 @@ public class Book {
 	public void setBookDate(Calendar bookDate) {
 		this.bookDate = bookDate;
 	}
-	
+
 	public int getBookRate() {
 		return bookRate;
 	}
-	
+
 	public void setBookRate(int bookRate) {
 		this.bookRate = bookRate;
 	}
@@ -133,6 +129,7 @@ public class Book {
 		result = prime * result + ((bikeId == null) ? 0 : bikeId.hashCode());
 		result = prime * result + ((bookDate == null) ? 0 : bookDate.hashCode());
 		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
+		result = prime * result + bookRate;
 		result = prime * result + ((creditCard == null) ? 0 : creditCard.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
@@ -164,6 +161,8 @@ public class Book {
 			if (other.bookId != null)
 				return false;
 		} else if (!bookId.equals(other.bookId))
+			return false;
+		if (bookRate != other.bookRate)
 			return false;
 		if (creditCard == null) {
 			if (other.creditCard != null)
