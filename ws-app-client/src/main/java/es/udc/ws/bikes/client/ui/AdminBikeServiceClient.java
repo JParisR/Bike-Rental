@@ -1,15 +1,21 @@
 package es.udc.ws.bikes.client.ui;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
 import es.udc.ws.bikes.client.service.AdminClientBikeService;
 import es.udc.ws.bikes.client.service.AdminClientBikeServiceFactory;
 import es.udc.ws.bikes.client.service.dto.AdminClientBikeDto;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import java.util.List;
+import java.util.Locale;
 
 public class AdminBikeServiceClient {
-
+	
+	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
+	
     public static void main(String[] args) {
 
         if(args.length == 0) {
@@ -17,17 +23,24 @@ public class AdminBikeServiceClient {
         }
         AdminClientBikeService clientBikeService =
                 AdminClientBikeServiceFactory.getService();
+        
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
         if("-a".equalsIgnoreCase(args[0])) {
             validateArgs(args, 6, new int[] {4, 5});
 
             // [add] bikeServiceClient -a <name> <description> <startDate> <price> <units>
-
+            
+            Date dateStart = null;
+            
             try {
+            	dateStart = dateFormatter.parse(args[3]);
             	Calendar startDate = Calendar.getInstance();
+            	startDate.setTime(dateStart);
+            	/*Calendar startDate = Calendar.getInstance();
          	   	String date[] = args[3].split("-");
          	   	startDate.set(Integer.valueOf(date[2]), 
          			   			Integer.valueOf(date[1]), 
-         			   			Integer.valueOf(date[0]));
+         			   			Integer.valueOf(date[0]));*/
          	   	String bikeIdAdd[] = args[1].split(" ");
             	
                 Long bikeId = clientBikeService.addBike(new AdminClientBikeDto(Long.valueOf(bikeIdAdd[1]), args[2], startDate, 
