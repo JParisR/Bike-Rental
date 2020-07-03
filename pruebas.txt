@@ -40,15 +40,15 @@ mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient
 
 //6. Puntuar reserva
 -rateReservation <id> <userEmail> <points>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 1 'user1@udc.es' 4"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 3 'user1@udc.es' 4"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 3 'user2@udc.es' 8"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 4 'user3@udc.es' 9"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 1 'user1@udc.es' 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 2 'user1@udc.es' 4"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 9999 'user3@udc.es' 6"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 5 'user4@udc.es' 6"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 6 'user5@udc.es' 8"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 1 'user1@udc.es' 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 3 'user1@udc.es' 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 3 'user2@udc.es' 8"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 4 'user3@udc.es' 9"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 1 'user1@udc.es' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 2 'user1@udc.es' 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 9999 'user3@udc.es' 6"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 5 'user4@udc.es' 6"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-rb 6 'user5@udc.es' 8"
 
 
 //7. Buscar reservas
@@ -56,7 +56,7 @@ mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.USerBikeServiceClient" -Dexec.args="-fr 'user1@udc.es"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.USerBikeServiceClient" -Dexec.args="-fr 'user6@udc.es"
 
-//7. Buscar modelo por Id
+//8. Buscar modelo por Id
 //-findBike <bikeId>
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-fb 1"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-fb 9999"
