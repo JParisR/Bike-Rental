@@ -176,7 +176,16 @@ public class BikeServiceTest {
 			addedBike = bikeService.addBike(bike);
 			Bike foundBike = bikeService.findBike(addedBike.getBikeId());
 			
-			assertEquals(addedBike, foundBike);
+			assertEquals(addedBike.getBikeId(), foundBike.getBikeId());
+			assertEquals(addedBike.getClass(), foundBike.getClass());
+			assertEquals(addedBike.getCreationDate().get(Calendar.DAY_OF_MONTH), foundBike.getCreationDate().get(Calendar.DAY_OF_MONTH));
+			assertEquals(addedBike.getCreationDate().get(Calendar.MONTH), foundBike.getCreationDate().get(Calendar.MONTH));
+			assertEquals(addedBike.getCreationDate().get(Calendar.YEAR), foundBike.getCreationDate().get(Calendar.YEAR));
+			assertEquals(addedBike.getDescription(), foundBike.getDescription());
+			assertEquals(addedBike.getPrice(), foundBike.getPrice(), 0.001d);
+			assertEquals(addedBike.getUnits(), foundBike.getUnits());
+			assertEquals(addedBike.getAvgRating(), foundBike.getAvgRating(), 0.001d);
+			assertEquals(addedBike.getNumberOfRates(), foundBike.getNumberOfRates(), 0.01);
 		
 		} finally {
 			// Clear Database
@@ -293,7 +302,9 @@ public class BikeServiceTest {
 			bikeToUpdate.setCreationDate(bike.getCreationDate());
 			assertEquals(bikeToUpdate.getBikeId(), updatedBike.getBikeId());
 			assertEquals(bikeToUpdate.getClass(), updatedBike.getClass());
-			assertEquals(bikeToUpdate.getCreationDate(), updatedBike.getCreationDate());
+			assertEquals(bikeToUpdate.getCreationDate().get(Calendar.DAY_OF_MONTH), updatedBike.getCreationDate().get(Calendar.DAY_OF_MONTH));
+			assertEquals(bikeToUpdate.getCreationDate().get(Calendar.MONTH), updatedBike.getCreationDate().get(Calendar.MONTH));
+			assertEquals(bikeToUpdate.getCreationDate().get(Calendar.YEAR), updatedBike.getCreationDate().get(Calendar.YEAR));
 			assertEquals(bikeToUpdate.getDescription(), updatedBike.getDescription());
 			assertEquals(bikeToUpdate.getPrice(), updatedBike.getPrice(), 0.001d);
 			assertEquals(bikeToUpdate.getUnits(), updatedBike.getUnits());
