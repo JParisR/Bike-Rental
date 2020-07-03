@@ -50,6 +50,8 @@ public class BikeServiceImpl implements BikeService{
 	public Bike addBike(Bike bike) throws InputValidationException {
 
 		validateBike(bike);
+		Calendar creationDate = Calendar.getInstance();
+		bike.setCreationDate(creationDate);
 
 		try (Connection connection = dataSource.getConnection()) {
 

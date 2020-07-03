@@ -23,8 +23,8 @@ public class Jdbc3CcSqlBikeDao extends AbstractSqlBikeDao {
             /* Fill "preparedStatement". */
             int i = 1;
             preparedStatement.setString(i++, bike.getDescription());
-            Timestamp startDate = bike.getCreationDate() != null ? new Timestamp(
-                    bike.getCreationDate().getTime().getTime()) : null;
+            Timestamp startDate = bike.getStartDate() != null ? new Timestamp(
+                    bike.getStartDate().getTime().getTime()) : null;
             preparedStatement.setTimestamp(i++, startDate);
             preparedStatement.setFloat(i++, bike.getPrice());
             preparedStatement.setInt(i++, bike.getUnits());

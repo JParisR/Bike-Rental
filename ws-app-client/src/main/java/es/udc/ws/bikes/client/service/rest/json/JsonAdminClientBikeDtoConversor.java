@@ -2,9 +2,12 @@ package es.udc.ws.bikes.client.service.rest.json;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,6 +74,8 @@ public class JsonAdminClientBikeDtoConversor {
 			throw new ParsingException(e);
 		}
 	}
+	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
+	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
 
 	private static AdminClientBikeDto toClientBikeDto(JsonNode bikeNode) throws ParsingException {
 		if (bikeNode.getNodeType() != JsonNodeType.OBJECT) {
@@ -83,7 +88,17 @@ public class JsonAdminClientBikeDtoConversor {
 
 			String description = bikeObject.get("description").textValue().trim();
 			JsonNode startDateNode = bikeObject.get("startDate");
-			Calendar startDate = getDate(startDateNode);
+			//Calendar startDate = getDate(startDateNode);
+			
+			
+			Calendar startDate = Calendar.getInstance();
+			try {
+				startDate.setTime(sdf.parse(startDateNode.asText()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+						
 			float price = bikeObject.get("price").floatValue();
 			int units = bikeObject.get("units").intValue();
 

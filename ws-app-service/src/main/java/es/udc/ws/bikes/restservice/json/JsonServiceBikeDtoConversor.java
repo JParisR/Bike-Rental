@@ -20,7 +20,7 @@ import es.udc.ws.util.json.exceptions.ParsingException;
 
 public class JsonServiceBikeDtoConversor {
 	
-	public final static String CONVERSION_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
 	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
 	
 	private static String getStartDate(Calendar startDate) {
@@ -74,9 +74,21 @@ public class JsonServiceBikeDtoConversor {
 				Calendar startDate = Calendar.getInstance();
 				startDate.setTime(date);*/
 				
-				String startDateString = bikeObject.get("startDate").textValue().trim();
+				JsonNode startDateObject = bikeObject.get("startDate");
+				System.out.println("startDate: " + 
+				  startDateObject.get("day").intValue() +
+				  startDateObject.get("month").intValue() + 
+				  startDateObject.get("year").intValue());
+				
+				// <- 
+				//String startDateString = startDateObject.textValue().trim();
 				Calendar startDate = Calendar.getInstance();
-				startDate.setTime(sdf.parse(startDateString));
+				startDate.clear();
+				startDate.set(Calendar.DAY_OF_MONTH, startDateObject.get("day").intValue());
+				startDate.set(Calendar.MONTH, startDateObject.get("month").intValue()-1);
+				startDate.set(Calendar.YEAR, startDateObject.get("year").intValue());
+				
+				//startDate.setTime(sdf.parse(startDateString));
 				
 				int units =  bikeObject.get("units").intValue();
 				float price = bikeObject.get("price").floatValue();
