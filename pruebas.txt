@@ -1,16 +1,16 @@
 //1. Añadir modelo bicicleta (admin)
 //-a <name> <description> <availabilityDate> <price> <units>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-a 'Bicicleta 1' 'Bicicleta de montaña' '15-02-2020' 10 8"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-a 'Bicicleta 2' 'Modelo de paseo' '15-02-2020' 12 10"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-a 'Bicicleta 3' 'Bicicleta de carreras' '01-03-2020' 15 3"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-a 'Bicicleta 4' 'Bicicleta de montaña 2' '01-01-2020' 10 3"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-a 'Bicicleta 5' 'Bicicleta de carreras 2' '01-03-2020' 15 0"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-a 'Bicicleta 6' '' '01-03-2020' 8 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 1' 'Bicicleta de montaña' '15-02-2020' 10 8"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 2' 'Modelo de paseo' '15-02-2020' 12 10"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 3' 'Bicicleta de carreras' '01-03-2020' 15 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 4' 'Bicicleta de montaña 2' '01-01-2020' 10 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 5' 'Bicicleta de carreras 2' '01-03-2020' 15 0"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 6' '' '01-03-2020' 8 3"
 
 //2. Buscar modelo bicicleta (user)
 //-f <keywords> <date> 
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-f 'De CLeta' '15-02-2019'"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-f '' '15-02-2019'"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f 'De CLeta' '15-02-2019'"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f '' '15-02-2019'"
 
 //3. Reservar bicicleta
 //-reserve <userEmail> <bikeId> <creditCardNumber> <startDate> <endDate> <units>
