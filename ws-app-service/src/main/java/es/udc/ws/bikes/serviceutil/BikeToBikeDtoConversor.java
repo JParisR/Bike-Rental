@@ -22,8 +22,8 @@ public class BikeToBikeDtoConversor {
 	}
 
 	public static Bike toBike(ServiceBikeDto bike) {
-		return new Bike(bike.getBikeId(), bike.getName(), bike.getDescription(), bike.getStartDate(), bike.getPrice(),
-				bike.getUnits(), bike.getCreationDate(), bike.getAvgRate(),bike.getNumberOfRates());
+		return new Bike(bike.getName(), bike.getDescription(), bike.getStartDate(), bike.getPrice(),
+				bike.getUnits());
 	}
 
 }

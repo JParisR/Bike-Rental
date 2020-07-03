@@ -3,7 +3,6 @@ package es.udc.ws.bikes.restservice.json;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,34 +63,21 @@ public class JsonServiceBikeDtoConversor {
 				throw new ParsingException("Unrecognized JSON (object expected)");
 			} else {
 				ObjectNode bikeObject = (ObjectNode) rootNode;
-
-				JsonNode bikeIdNode = bikeObject.get("bikeId");
-				Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 				
 				String name = bikeObject.get("name").textValue().trim();
 				String description = bikeObject.get("description").textValue().trim();
 				
-				/*Long dateLong = bikeObject.get("startDate").asLong();
-				Date date = new Date(dateLong);
-				Calendar startDate = Calendar.getInstance();
-				startDate.setTime(date);*/
-				
 				JsonNode startDateObject = bikeObject.get("startDate");
-				
-				// <- 
-				//String startDateString = startDateObject.textValue().trim();
 				Calendar startDate = Calendar.getInstance();
 				startDate.clear();
 				startDate.set(Calendar.DAY_OF_MONTH, startDateObject.get("day").intValue());
 				startDate.set(Calendar.MONTH, startDateObject.get("month").intValue()-1);
 				startDate.set(Calendar.YEAR, startDateObject.get("year").intValue());
 				
-				//startDate.setTime(sdf.parse(startDateString));
-				
 				int units =  bikeObject.get("units").intValue();
 				float price = bikeObject.get("price").floatValue();
 
-				return new ServiceBikeDto(bikeId, name, description, price, units, startDate);
+				return new ServiceBikeDto(name, description, price, units, startDate);
 			}
 		} catch (ParsingException ex) {
 			throw ex;

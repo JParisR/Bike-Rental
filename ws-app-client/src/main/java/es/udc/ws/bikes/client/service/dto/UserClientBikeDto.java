@@ -14,14 +14,20 @@ public class UserClientBikeDto {
     public UserClientBikeDto() {
     }    
     
-    public UserClientBikeDto(Long bikeId, String name, String description, Calendar startDate, float price, int units) {
+    public UserClientBikeDto(String name, String description, Calendar startDate, float price, int units) {
 
-        this.bikeId = bikeId;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.price = price;
         this.units = units;
+
+    }
+    
+    public UserClientBikeDto(Long bikeId, String name, String description, Calendar startDate, float price, int units) {
+
+    	this(name, description, startDate, price, units);
+        this.bikeId = bikeId;
 
     }
 

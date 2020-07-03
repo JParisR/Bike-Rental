@@ -87,7 +87,7 @@ public class BookServlet extends HttpServlet{
 	        	initDate = null;
 	        	Date date1=null;
 				try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(initDateString);
+					date1 = new SimpleDateFormat("dd-MM-yyyy").parse(initDateString);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -109,7 +109,7 @@ public class BookServlet extends HttpServlet{
 	        	endDate = null;
 	        	Date date2=null;
 				try {
-					date2 = new SimpleDateFormat("dd/MM/yyyy").parse(endDateString);
+					date2 = new SimpleDateFormat("dd-MM-yyyy").parse(endDateString);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

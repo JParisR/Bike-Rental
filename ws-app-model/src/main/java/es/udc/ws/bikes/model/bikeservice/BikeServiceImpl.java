@@ -34,22 +34,22 @@ public class BikeServiceImpl implements BikeService{
 		bookDao = SqlBookDaoFactory.getDao();
 	}
 
-	private void validateBike(Bike bike) throws InputValidationException {
+	private void validateBike(Bike bike, boolean update) throws InputValidationException {
 		
-		if (bike.getBikeId() == null) {
+		if (update && bike.getBikeId() == null) {
 			throw new InputValidationException("The bikeId can't be null");
 		}
-		else {
+		else if (update) {
 			PropertyValidator.validateLong("bikeId", bike.getBikeId(), 0, MAX_BIKEID);
-			PropertyValidator.validateMandatoryString("description", bike.getDescription());
-			PropertyValidator.validateDouble("price", bike.getPrice(), 0, MAX_PRICE);
 		}
+		PropertyValidator.validateMandatoryString("description", bike.getDescription());
+		PropertyValidator.validateDouble("price", bike.getPrice(), 0, MAX_PRICE);
 	}
 
 	@Override
 	public Bike addBike(Bike bike) throws InputValidationException {
 
-		validateBike(bike);
+		validateBike(bike, false);
 		Calendar creationDate = Calendar.getInstance();
 		bike.setCreationDate(creationDate);
 
@@ -85,7 +85,7 @@ public class BikeServiceImpl implements BikeService{
 	@Override
 	public void updateBike(Bike bike) throws InputValidationException, InstanceNotFoundException, InvalidStartDateException {
 
-		validateBike(bike);
+		validateBike(bike, true);
 
 		try (Connection connection = dataSource.getConnection()) {
 

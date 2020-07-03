@@ -22,20 +22,31 @@ public class Bike {
 		this.price = price;
 		this.units = units;
 		this.creationDate = creationDate;
-		if (creationDate != null) {
+		if (creationDate == null) {
+			this.creationDate = Calendar.getInstance();
 			this.creationDate.set(Calendar.MILLISECOND, 0);
 		}
 	}
 	
+	public Bike(String name, String description, Calendar startDate, 
+			float price, int units) {
+		this(name, description, startDate, price, units, null);
+	}
+	
 	public Bike(Long bikeId, String name, String description, Calendar startDate, 
-			float price, int units, Calendar creationDate) {
-		this(name, description, startDate, price, units, creationDate);
+			float price, int units) {
+		this(name, description, startDate, price, units);
 		this.bikeId = bikeId;
 	}
 	
 	public Bike(Long bikeId, String name, String description, Calendar startDate, 
-			float price, int units, Calendar creationDate,
-			double avgRate, int numberOfRates) {
+			float price, int units, Calendar creationDate) {
+		this(bikeId, name, description, startDate, price, units);
+		this.creationDate = creationDate;
+	}
+	
+	public Bike(Long bikeId, String name, String description, Calendar startDate, 
+			float price, int units, Calendar creationDate, double avgRate, int numberOfRates) {
 		this(bikeId, name, description, startDate, price, units, creationDate);
 		this.avgRate = avgRate;
 		this.numberOfRates = numberOfRates;

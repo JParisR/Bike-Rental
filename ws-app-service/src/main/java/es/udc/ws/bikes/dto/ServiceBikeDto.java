@@ -15,15 +15,18 @@ public class ServiceBikeDto {
 	private double avgRate;
 	
 	
-	public ServiceBikeDto(Long bikeId, String name, String description, float price, int units, Calendar startDate) {
-		this.bikeId = bikeId;
+	public ServiceBikeDto(String name, String description, float price, int units, Calendar startDate) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.units = units;
 		this.startDate = startDate;
 	}
-
+	
+	public ServiceBikeDto(Long bikeId, String name, String description, float price, int units, Calendar startDate) {
+		this(name, description, price, units, startDate);
+		this.bikeId = bikeId;
+	}
 	public Long getBikeId() {
 		return bikeId;
 	}

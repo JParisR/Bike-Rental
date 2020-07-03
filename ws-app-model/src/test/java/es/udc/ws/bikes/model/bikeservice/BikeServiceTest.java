@@ -61,9 +61,7 @@ public class BikeServiceTest {
 	private Bike getValidBike(Long bikeId, String name, String description){
 		Calendar startDate = Calendar.getInstance();
 		startDate.set(Calendar.MILLISECOND, 0);
-		Calendar creationDate = Calendar.getInstance();
-		creationDate.set(Calendar.MILLISECOND, 0);
-		return new Bike(bikeId, name, description, startDate, 19.95F, 4, creationDate);
+		return new Bike(bikeId, name, description, startDate, 19.95F, 4);
 	}
 	
 	private Bike getValidBike() {
@@ -202,14 +200,6 @@ public class BikeServiceTest {
 		boolean exceptionCatched = false;
 
 		try {
-			// Check bikeId not null
-			bike.setBikeId(null);
-			try {
-				addedBike = bikeService.addBike(bike);
-			} catch (InputValidationException e) {
-				exceptionCatched = true;
-			}
-			assertTrue(exceptionCatched);
 
 			// Check bike description not null
 			exceptionCatched = false;
@@ -277,7 +267,7 @@ public class BikeServiceTest {
 			Calendar newDate = Calendar.getInstance();
 			newDate.set(Calendar.MONTH, Calendar.NOVEMBER);
 			float newPrice = 24.95f;
-			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike name", "Bike description", newDate, newPrice, 1, bike.getCreationDate());
+			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike name", "Bike description", newDate, newPrice, 1);
 			
 			Calendar initDate = Calendar.getInstance();
 			initDate.add(Calendar.DAY_OF_MONTH, 0);

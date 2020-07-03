@@ -36,14 +36,8 @@ public class AdminBikeServiceClient {
             	dateStart = dateFormatter.parse(args[3]);
             	Calendar startDate = Calendar.getInstance();
             	startDate.setTime(dateStart);
-            	/*Calendar startDate = Calendar.getInstance();
-         	   	String date[] = args[3].split("-");
-         	   	startDate.set(Integer.valueOf(date[2]), 
-         			   			Integer.valueOf(date[1]), 
-         			   			Integer.valueOf(date[0]));*/
-         	   	String bikeIdAdd[] = args[1].split(" ");
             	
-                Long bikeId = clientBikeService.addBike(new AdminClientBikeDto(Long.valueOf(bikeIdAdd[1]), args[1], args[2], 
+                Long bikeId = clientBikeService.addBike(new AdminClientBikeDto(args[1], args[2], 
                 		startDate, Float.valueOf(args[4]), Integer.valueOf(args[5])));
 
                 System.out.println("bike " + bikeId + " created sucessfully");
