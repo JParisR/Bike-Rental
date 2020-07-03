@@ -75,10 +75,6 @@ public class JsonServiceBikeDtoConversor {
 				startDate.setTime(date);*/
 				
 				JsonNode startDateObject = bikeObject.get("startDate");
-				System.out.println("startDate: " + 
-				  startDateObject.get("day").intValue() +
-				  startDateObject.get("month").intValue() + 
-				  startDateObject.get("year").intValue());
 				
 				// <- 
 				//String startDateString = startDateObject.textValue().trim();
