@@ -27,6 +27,17 @@ public class UserClientBookDto {
 	
     }
     
+    public UserClientBookDto(Long bikeId, String email, String creditCard, Calendar startDate, Calendar endDate, int units) {
+		
+		this.bikeId = bikeId;
+		this.email = email;
+		this.creditCard = creditCard;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.units = units;
+	
+    }
+    
 	public Long getBookId() {
         return bookId;
     }

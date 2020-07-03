@@ -14,14 +14,15 @@ public class Jdbc3CcSqlBikeDao extends AbstractSqlBikeDao {
 
         /* Create "queryString". */
         String queryString = "INSERT INTO Bike"
-                + " (description, startDate, price, units,"
-                + " creationDate) VALUES (?, ?, ?, ?, ?)";
+                + " (name, description, startDate, price, units, creationDate)"
+                + " VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                         queryString, Statement.RETURN_GENERATED_KEYS)) {
 
             /* Fill "preparedStatement". */
             int i = 1;
+            preparedStatement.setString(i++, bike.getName());
             preparedStatement.setString(i++, bike.getDescription());
             Timestamp startDate = bike.getStartDate() != null ? new Timestamp(
                     bike.getStartDate().getTime().getTime()) : null;
@@ -45,7 +46,7 @@ public class Jdbc3CcSqlBikeDao extends AbstractSqlBikeDao {
             Long bikeId = resultSet.getLong(1);
 
             /* Return bike. */
-            return new Bike(bikeId, bike.getDescription(), bike.getStartDate(), 
+            return new Bike(bikeId, bike.getName(), bike.getDescription(), bike.getStartDate(), 
             		bike.getPrice(), bike.getUnits(), bike.getCreationDate());
 
         } catch (SQLException e) {

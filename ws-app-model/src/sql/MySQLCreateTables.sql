@@ -13,6 +13,7 @@ DROP TABLE Bike;
 
 -- --------------------------------- Bike ------------------------------------
 CREATE TABLE Bike ( bikeId BIGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(512) COLLATE latin1_bin NOT NULL,
     description VARCHAR(1024) COLLATE latin1_bin NOT NULL,
     startDate DATETIME NOT NULL,
     price FLOAT NOT NULL,

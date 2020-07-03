@@ -12,6 +12,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.entity.ContentType;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,18 +56,13 @@ public class UserRestClientBikeService implements UserClientBikeService {
     }
 
     @Override
-    public Long rentBike(Long bikeId, String email, String creditCard)
+    public Long rentBike(UserClientBookDto book)
             throws InstanceNotFoundException, InputValidationException {
 
         try {
 
             HttpResponse response = Request.Post(getEndpointAddress() + "books").
-                    bodyForm(
-                            Form.form().
-                            add("bikeId", Long.toString(bikeId)).
-                            add("userId", email).
-                            add("creditCardNumber", creditCard).
-                            build()).
+                    bodyStream(toInputStream(book), ContentType.create("application/json")).
                     execute().returnResponse();
 
             validateStatusCode(HttpStatus.SC_CREATED, response);
@@ -100,13 +96,13 @@ public class UserRestClientBikeService implements UserClientBikeService {
         return endpointAddress;
     }
 
-    private InputStream toInputStream(UserClientBikeDto bike) {
+    private InputStream toInputStream(UserClientBookDto book) {
 
         try {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ObjectMapper objectMapper = ObjectMapperFactory.instance();
-            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, JsonUserClientBikeDtoConversor.toJsonObject(bike));
+            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, JsonUserClientBookDtoConversor.toJsonObject(book));
 
             return new ByteArrayInputStream(outputStream.toByteArray());
 

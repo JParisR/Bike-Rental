@@ -27,8 +27,9 @@ public class JsonUserClientBikeDtoConversor {
 			bikeObject.put("bikeId", bike.getBikeId());
 		}
 		
-		bikeObject.put("description", bike.getDescription()).put("price", bike.getPrice()).
-			put("units", bike.getUnits()).set("startDate", getNodeFromDate(bike.getStartDate()));
+		bikeObject.put("name", bike.getName()).put("description", bike.getDescription()).
+			put("price", bike.getPrice()).put("units", bike.getUnits());
+		bikeObject.set("startDate", getNodeFromDate(bike.getStartDate()));
 
 		return bikeObject;
 	}
@@ -82,13 +83,14 @@ public class JsonUserClientBikeDtoConversor {
 			JsonNode bikeIdNode = bikeObject.get("bikeId");
 			Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 
+			String name = bikeObject.get("name").textValue().trim();
 			String description = bikeObject.get("description").textValue().trim();
 			JsonNode startDateNode = bikeObject.get("startDate");
 			Calendar startDate = getDate(startDateNode);
 			float price = bikeObject.get("price").floatValue();
 			int units = bikeObject.get("units").intValue();
 
-			return new UserClientBikeDto(bikeId, description, startDate, price, units);
+			return new UserClientBikeDto(bikeId, name, description, startDate, price, units);
 		}
 	}
 	

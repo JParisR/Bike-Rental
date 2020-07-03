@@ -58,16 +58,16 @@ public class BikeServiceTest {
 		bookDao = SqlBookDaoFactory.getDao();
 	}
 	
-	private Bike getValidBike(Long bikeId, String description){
+	private Bike getValidBike(Long bikeId, String name, String description){
 		Calendar startDate = Calendar.getInstance();
 		startDate.set(Calendar.MILLISECOND, 0);
 		Calendar creationDate = Calendar.getInstance();
 		creationDate.set(Calendar.MILLISECOND, 0);
-		return new Bike(bikeId, description, startDate, 19.95F, 4, creationDate);
+		return new Bike(bikeId, name, description, startDate, 19.95F, 4, creationDate);
 	}
 	
 	private Bike getValidBike() {
-		return getValidBike((long) 0, "Bike description");
+		return getValidBike((long) 0, "Bike name", "Bike description");
 	}
 	
 	private Bike createBike(Bike bike) {
@@ -277,7 +277,7 @@ public class BikeServiceTest {
 			Calendar newDate = Calendar.getInstance();
 			newDate.set(Calendar.MONTH, Calendar.NOVEMBER);
 			float newPrice = 24.95f;
-			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike description", newDate, newPrice, 1, bike.getCreationDate());
+			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike name", "Bike description", newDate, newPrice, 1, bike.getCreationDate());
 			
 			Calendar initDate = Calendar.getInstance();
 			initDate.add(Calendar.DAY_OF_MONTH, 0);
@@ -335,11 +335,11 @@ public class BikeServiceTest {
 		//Add bikes
 		
 		List<Bike> bikes = new LinkedList<Bike>();
-		Bike bike1 = createBike(getValidBike((long) 0, "Bici verde 1"));
+		Bike bike1 = createBike(getValidBike((long) 0, "Bici 1", "Bici verde 1"));
 		bikes.add(bike1);
-		Bike bike2 = createBike(getValidBike((long) 1, "Bici verde 2"));
+		Bike bike2 = createBike(getValidBike((long) 1, "Bici 2", "Bici verde 2"));
 		bikes.add(bike2);
-		Bike bike3 = createBike(getValidBike((long) 2, "Bici verde 3"));
+		Bike bike3 = createBike(getValidBike((long) 2, "Bici 3", "Bici verde 3"));
 		bikes.add(bike3);
 		
 		try {

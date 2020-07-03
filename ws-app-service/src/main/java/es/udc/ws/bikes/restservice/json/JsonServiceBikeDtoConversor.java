@@ -34,7 +34,8 @@ public class JsonServiceBikeDtoConversor {
 		if (bike.getBikeId() != null) {
 			bikeObject.put("bikeId", bike.getBikeId());
 		}
-		bikeObject.put("description", bike.getDescription()).
+		bikeObject.put("name", bike.getName()).
+			put("description", bike.getDescription()).
 			put("price", bike.getPrice()).
 			put("units", bike.getUnits()).
 			put("startDate", getStartDate(bike.getStartDate()));
@@ -66,7 +67,8 @@ public class JsonServiceBikeDtoConversor {
 
 				JsonNode bikeIdNode = bikeObject.get("bikeId");
 				Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
-
+				
+				String name = bikeObject.get("name").textValue().trim();
 				String description = bikeObject.get("description").textValue().trim();
 				
 				/*Long dateLong = bikeObject.get("startDate").asLong();
@@ -89,7 +91,7 @@ public class JsonServiceBikeDtoConversor {
 				int units =  bikeObject.get("units").intValue();
 				float price = bikeObject.get("price").floatValue();
 
-				return new ServiceBikeDto(bikeId, description, price, units, startDate);
+				return new ServiceBikeDto(bikeId, name, description, price, units, startDate);
 			}
 		} catch (ParsingException ex) {
 			throw ex;

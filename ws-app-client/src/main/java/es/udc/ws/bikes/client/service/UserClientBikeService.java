@@ -12,7 +12,8 @@ public interface UserClientBikeService {
  
     public List<UserClientBikeDto> findBikes(String keywords, Calendar startDate);
 
-    public Long rentBike(Long bikeId, String email, String creditCard) throws InstanceNotFoundException, InputValidationException;
+    public Long rentBike(UserClientBookDto book) 
+    		throws InstanceNotFoundException, InputValidationException;
 	
     public void rateBook(Long bookId, String email, int rating);
     

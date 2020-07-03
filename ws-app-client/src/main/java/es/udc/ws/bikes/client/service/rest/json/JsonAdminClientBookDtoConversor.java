@@ -1,19 +1,37 @@
 package es.udc.ws.bikes.client.service.rest.json;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import es.udc.ws.bikes.client.service.dto.AdminClientBikeDto;
 import es.udc.ws.bikes.client.service.dto.AdminClientBookDto;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
 public class JsonAdminClientBookDtoConversor {
 
+	public static JsonNode toJsonObject(AdminClientBookDto book) throws IOException {
+
+		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
+
+		if (book.getBookId() != null) {
+			bikeObject.put("bookId", book.getBikeId());
+		}
+		
+		bikeObject.put("email", book.getEmail()).put("creditCard", book.getCreditCard()).put("units", book.getUnits());
+		bikeObject.set("startDate", getNodeFromDate(book.getStartDate()));
+		bikeObject.set("endDate", getNodeFromDate(book.getEndDate()));
+
+		return bikeObject;
+	}	
+	
 	public static AdminClientBookDto toClientBookDto(InputStream jsonBook) throws ParsingException {
 		try {
 
@@ -63,5 +81,21 @@ public class JsonAdminClientBookDtoConversor {
 		return releaseDate;
 
 	}
+	
+	private static ObjectNode getNodeFromDate(Calendar date) {
+
+		ObjectNode releaseDateObject = JsonNodeFactory.instance.objectNode();
+
+        int day = date.get(Calendar.DAY_OF_MONTH);
+        int month = date.get(Calendar.MONTH) - Calendar.JANUARY + 1;
+        int year = date.get(Calendar.YEAR);
+
+        releaseDateObject.put("day", day).
+			put("month", month).
+			put("year", year);
+
+        return releaseDateObject;
+
+    }
 
 }

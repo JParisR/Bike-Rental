@@ -43,8 +43,8 @@ public class AdminBikeServiceClient {
          			   			Integer.valueOf(date[0]));*/
          	   	String bikeIdAdd[] = args[1].split(" ");
             	
-                Long bikeId = clientBikeService.addBike(new AdminClientBikeDto(Long.valueOf(bikeIdAdd[1]), args[2], startDate, 
-                		Float.valueOf(args[4]), Integer.valueOf(args[5])));
+                Long bikeId = clientBikeService.addBike(new AdminClientBikeDto(Long.valueOf(bikeIdAdd[1]), args[1], args[2], 
+                		startDate, Float.valueOf(args[4]), Integer.valueOf(args[5])));
 
                 System.out.println("bike " + bikeId + " created sucessfully");
 
@@ -66,8 +66,8 @@ public class AdminBikeServiceClient {
         			   			Integer.valueOf(date[1]), 
         			   			Integer.valueOf(date[0]));
         	   
-               clientBikeService.updateBike(new AdminClientBikeDto(Long.valueOf(args[1]), args[3], startDate, 
-               		Float.valueOf(args[5]), Integer.valueOf(args[6])));
+               clientBikeService.updateBike(new AdminClientBikeDto(Long.valueOf(args[1]), args[2], args[3], 
+            		   startDate, Float.valueOf(args[5]), Integer.valueOf(args[6])));
 
                System.out.println("bike " + args[1] + " updated sucessfully");
 

@@ -27,7 +27,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             throws InstanceNotFoundException {
 
         /* Create "queryString". */
-        String queryString = "SELECT description,"
+        String queryString = "SELECT name, description,"
         		+ " startDate, price, units,"
         		+ " creationDate, avgRate, numberOfRates"
         		+ " FROM Bike WHERE bikeId = ?";
@@ -48,6 +48,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
             /* Get results. */
             i = 1;
+            String name = resultSet.getString(i++);
             String description = resultSet.getString(i++);
             Calendar startDate = Calendar.getInstance();
             startDate.setTime(resultSet.getTimestamp(i++));
@@ -59,7 +60,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             int numberOfRates = resultSet.getInt(i++);
             
             /* Return bike. */
-            return new Bike(bikeId, description, startDate, price, 
+            return new Bike(bikeId, name, description, startDate, price, 
             		units, creationDate, avgRate, numberOfRates);
 
         } catch (SQLException e) {
@@ -73,7 +74,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
         /* Create "queryString". */
         String[] words = keywords != null ? keywords.split(" ") : null;
-        String queryString = "SELECT bikeId, description, startDate, price,"
+        String queryString = "SELECT bikeId, name, description, startDate, price,"
                 + " units, creationDate, avgRate, numberOfRates FROM Bike";
         if (words != null && words.length > 0) {
             queryString += " WHERE";
@@ -104,6 +105,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
                 int i = 1;
                 Long bikeId = new Long(resultSet.getLong(i++));
+                String name = resultSet.getString(i++);
                 String description = resultSet.getString(i++);
                 Calendar startDate = Calendar.getInstance();
                 startDate.setTime(resultSet.getTimestamp(i++));
@@ -114,7 +116,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
                 Double avgRate = resultSet.getDouble(i++);
                 int numberOfRates = resultSet.getInt(i++);
 
-                bikes.add(new Bike(bikeId, description, startDate, price,
+                bikes.add(new Bike(bikeId, name, description, startDate, price,
                         units, creationDate, avgRate, numberOfRates));
 
             }
@@ -134,7 +136,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
         /* Create "queryString". */
         String[] words = keywords != null ? keywords.split(" ") : null;
-        String queryString = "SELECT bikeId, description, startDate, price,"
+        String queryString = "SELECT bikeId, name, description, startDate, price,"
                 + " units, creationDate, avgRate, numberOfRates FROM Bike";
         if (words != null && words.length > 0) {
             queryString += " WHERE";
@@ -171,6 +173,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
                 i = 1;
                 Long bikeId = new Long(resultSet.getLong(i++));
+                String name = resultSet.getString(i++);
                 String description = resultSet.getString(i++);
                 Calendar startDate = Calendar.getInstance();
                 startDate.setTime(resultSet.getTimestamp(i++));
@@ -181,7 +184,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
                 Double avgRate = resultSet.getDouble(i++);
                 int numberOfRates = resultSet.getInt(i++);
 
-                bikes.add(new Bike(bikeId, description, startDate, price,
+                bikes.add(new Bike(bikeId, name, description, startDate, price,
                         units, creationDate, avgRate, numberOfRates));
 
             }
@@ -201,7 +204,8 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
         /* Create "queryString". */
         String queryString = "UPDATE Bike "
-                + "SET description = ?, "
+                + "SET name = ?, "
+        		+ "description = ?, "
                 + "startDate = ?, "
                 + "price = ?, "
                 + "units = ? WHERE bikeId = ?";
@@ -210,6 +214,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
 
             /* Fill "preparedStatement". */
             int i = 1;
+            preparedStatement.setString(i++, bike.getName());
             preparedStatement.setString(i++, bike.getDescription());
             Timestamp startDate = bike.getStartDate() != null  ? new Timestamp(
             		bike.getStartDate().getTime().getTime()) : null;

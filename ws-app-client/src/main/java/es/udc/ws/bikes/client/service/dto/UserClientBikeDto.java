@@ -5,6 +5,7 @@ import java.util.Calendar;
 public class UserClientBikeDto {
 
 	private Long bikeId;
+	private String name;
     private String description;
     private Calendar startDate;
     private float price;
@@ -13,9 +14,10 @@ public class UserClientBikeDto {
     public UserClientBikeDto() {
     }    
     
-    public UserClientBikeDto(Long bikeId, String description, Calendar startDate, float price, int units) {
+    public UserClientBikeDto(Long bikeId, String name, String description, Calendar startDate, float price, int units) {
 
         this.bikeId = bikeId;
+        this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.price = price;
@@ -29,6 +31,14 @@ public class UserClientBikeDto {
     
     public void setBikeId(Long bikeId) {
         this.bikeId = bikeId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
     public String getDescription() {
@@ -65,7 +75,7 @@ public class UserClientBikeDto {
     
     @Override
     public String toString() {
-        return "bikeDto [bikeId=" + bikeId + ", description=" + description
+        return "bikeDto [bikeId=" + bikeId + ", description=" + description + ", name=" + name
                 + ", startDate=" + startDate.toString() + "price=" + price + ", units=" + units + "]";
     }
 

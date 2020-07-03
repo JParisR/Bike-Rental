@@ -5,6 +5,7 @@ import java.util.Calendar;
 public class Bike {
 	
 	private Long bikeId;
+	private String name;
 	private String description;
 	private Calendar startDate;
 	private float price;
@@ -13,8 +14,9 @@ public class Bike {
 	private int numberOfRates;
 	private double avgRate;
 
-	public Bike(String description, Calendar startDate, float price, 
+	public Bike(String name, String description, Calendar startDate, float price, 
 			int units, Calendar creationDate) {
+		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
 		this.price = price;
@@ -25,16 +27,16 @@ public class Bike {
 		}
 	}
 	
-	public Bike(Long bikeId, String description, Calendar startDate, 
+	public Bike(Long bikeId, String name, String description, Calendar startDate, 
 			float price, int units, Calendar creationDate) {
-		this(description, startDate, price, units, creationDate);
+		this(name, description, startDate, price, units, creationDate);
 		this.bikeId = bikeId;
 	}
 	
-	public Bike(Long bikeId, String description, Calendar startDate, 
+	public Bike(Long bikeId, String name, String description, Calendar startDate, 
 			float price, int units, Calendar creationDate,
 			double avgRate, int numberOfRates) {
-		this(bikeId, description, startDate, price, units, creationDate);
+		this(bikeId, name, description, startDate, price, units, creationDate);
 		this.avgRate = avgRate;
 		this.numberOfRates = numberOfRates;
 	}
@@ -46,7 +48,15 @@ public class Bike {
 	public void setBikeId(Long bikeId) {
 		this.bikeId = bikeId;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -110,6 +120,7 @@ public class Bike {
 		result = prime * result + ((bikeId == null) ? 0 : bikeId.hashCode());
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + Float.floatToIntBits(price);
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result + units;
@@ -139,6 +150,11 @@ public class Bike {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
 			return false;
