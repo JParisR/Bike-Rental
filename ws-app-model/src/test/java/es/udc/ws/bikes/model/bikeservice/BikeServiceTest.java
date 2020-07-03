@@ -192,8 +192,7 @@ public class BikeServiceTest {
 			if (addedBike!=null) {
 				removeBike(addedBike.getBikeId());
 			}
-		}
-		
+		}	
 	}
 	
 	@Test
@@ -268,7 +267,6 @@ public class BikeServiceTest {
 	public void testFindNonExistentBike() throws InstanceNotFoundException {
 
 		bikeService.findBike(NON_EXISTENT_BIKE_ID);
-
 	}
 
 	@Test
@@ -330,7 +328,6 @@ public class BikeServiceTest {
 		assertTrue(!exceptionCatched);
 
 		bikeService.findBike(bike.getBikeId());
-
 	}
 
 	@Test
@@ -347,21 +344,43 @@ public class BikeServiceTest {
 		
 		try {
 			List<Bike> foundBikes = bikeService.findBikesByKeywords("verDe");
-			assertEquals(bikes, foundBikes);
+			
+			assertEquals(bikes.get(0).getBikeId(), foundBikes.get(0).getBikeId());
+			assertEquals(bikes.get(0).getClass(), foundBikes.get(0).getClass());
+			assertEquals(bikes.get(0).getCreationDate().get(Calendar.DAY_OF_MONTH), foundBikes.get(0).getCreationDate().get(Calendar.DAY_OF_MONTH));
+			assertEquals(bikes.get(0).getCreationDate().get(Calendar.MONTH), foundBikes.get(0).getCreationDate().get(Calendar.MONTH));
+			assertEquals(bikes.get(0).getCreationDate().get(Calendar.YEAR), foundBikes.get(0).getCreationDate().get(Calendar.YEAR));
+			assertEquals(bikes.get(0).getDescription(), foundBikes.get(0).getDescription());
+			assertEquals(bikes.get(0).getPrice(), foundBikes.get(0).getPrice(), 0.001d);
+			assertEquals(bikes.get(0).getUnits(), foundBikes.get(0).getUnits());
+			assertEquals(bikes.get(0).getAvgRating(), foundBikes.get(0).getAvgRating(), 0.001d);
+			assertEquals(bikes.get(0).getNumberOfRates(), foundBikes.get(0).getNumberOfRates(), 0.01);
+			
+			assertEquals(bikes.get(1).getBikeId(), foundBikes.get(1).getBikeId());
+			assertEquals(bikes.get(2).getBikeId(), foundBikes.get(2).getBikeId());
 			
 			foundBikes = bikeService.findBikesByKeywords("Bici verde 2");
 			assertEquals(1, foundBikes.size());
-			assertEquals(bikes.get(1), foundBikes.get(0));
+			assertEquals(bikes.get(1).getBikeId(), foundBikes.get(0).getBikeId());
+			assertEquals(bikes.get(1).getClass(), foundBikes.get(0).getClass());
+			assertEquals(bikes.get(1).getCreationDate().get(Calendar.DAY_OF_MONTH), foundBikes.get(0).getCreationDate().get(Calendar.DAY_OF_MONTH));
+			assertEquals(bikes.get(1).getCreationDate().get(Calendar.MONTH), foundBikes.get(0).getCreationDate().get(Calendar.MONTH));
+			assertEquals(bikes.get(1).getCreationDate().get(Calendar.YEAR), foundBikes.get(0).getCreationDate().get(Calendar.YEAR));
+			assertEquals(bikes.get(1).getDescription(), foundBikes.get(0).getDescription());
+			assertEquals(bikes.get(1).getPrice(), foundBikes.get(0).getPrice(), 0.001d);
+			assertEquals(bikes.get(1).getUnits(), foundBikes.get(0).getUnits());
+			assertEquals(bikes.get(1).getAvgRating(), foundBikes.get(0).getAvgRating(), 0.001d);
+			assertEquals(bikes.get(1).getNumberOfRates(), foundBikes.get(0).getNumberOfRates(), 0.01);
 			
 			foundBikes = bikeService.findBikesByKeywords("description 9999");
 			assertEquals(0, foundBikes.size());
+		
 		} finally {
 			//Clear Database
 			for (Bike bike : bikes) {
 				removeBike(bike.getBikeId());
 			}
-		}
-		
+		}	
 	}
 
 	@Test
@@ -408,11 +427,8 @@ public class BikeServiceTest {
 				removeBook(book.getBookId());
 			}
 			removeBike(bike.getBikeId());
-		}
-		
+		}	
 	}
-	
-
 
 	@Test(expected = InputValidationException.class)
 	public void testUpdateInvalidBike() throws InputValidationException, InstanceNotFoundException, InvalidStartDateException{
