@@ -1,49 +1,62 @@
 //1. Añadir modelo bicicleta (admin)
 //-a <name> <description> <availabilityDate> <price> <units>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 1' 'Bicicleta de montaña' '15-02-2020' 10 8"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 2' 'Modelo de paseo' '15-02-2020' 12 10"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 3' 'Bicicleta de carreras' '01-03-2020' 15 3"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 4' 'Bicicleta de montaña 2' '01-01-2020' 10 3"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 5' 'Bicicleta de carreras 2' '01-03-2020' 15 0"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 6' '' '01-03-2020' 8 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 1' 'Bicicleta de montaña' '15-08-2020' 10 8"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 2' 'Modelo de paseo' '15-08-2020' 12 10"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 3' 'Bicicleta de carreras' '01-09-2020' 15 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 4' 'Bicicleta de montaña 2' '01-07-2019' 10 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 5' 'Bicicleta de carreras 2' '01-09-2020' 15 0"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 6' '' '01-09-2020' 8 3"
+
 
 //2. Buscar modelo bicicleta (user)
 //-f <keywords> <date> 
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f 'De CLeta' '15-02-2019'"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f '' '15-02-2019'"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f 'De CLeta' '15-08-2020'"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f '' '15-08-2020'"
+
 
 //3. Reservar bicicleta
 //-reserve <userEmail> <bikeId> <creditCardNumber> <startDate> <endDate> <units>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user1@udc.es' 1 '0123456789111111' '21-02-2020' '22-02-2020' 2"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user1@udc.es' 2 '0123456789111111' '28-02-2020' '05-03-2020' 3"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user2@udc.es' 1 '0123456789222222' '20-02-2020' '22-02-2020' 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user3@udc.es' 1 '0123456789333333' '20-02-2020' '27-02-2020' 2"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user4@udc.es' 1 '0123456789444444' '21-02-2020' '24-02-2020' 2"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user5@udc.es' 1 '0123456789555555' '22-02-2020' '25-02-2020' 2"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '01-03-2020' '10-03-2020' 15"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '20-02-2020' '25-02-2020' 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '20-02-2020' '20-03-2020' 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '01-11-2019' '03-11-2019' 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '15-02-2020' '10-02-2020' 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-r 'user6@udc.es' 9999 '0123456789333333' '15-02-2020' '20-02-2020' 1"
-
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user1@udc.es' 1 '0123456789111111' '21-08-2020' '22-08-2020' 2"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user1@udc.es' 2 '0123456789111111' '28-08-2020' '05-09-2020' 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user2@udc.es' 1 '0123456789222222' '20-08-2020' '22-08-2020' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user3@udc.es' 1 '0123456789333333' '20-08-2020' '27-08-2020' 2"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user4@udc.es' 1 '0123456789444444' '21-08-2020' '24-08-2020' 2"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user5@udc.es' 1 '0123456789555555' '22-08-2020' '25-08-2020' 2"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '01-09-2020' '10-09-2020' 15"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user6@udc.es' 3 '0123456789666666' '20-08-2020' '25-08-2020' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '20-08-2020' '20-09-2020' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '01-11-2019' '03-11-2019' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user6@udc.es' 1 '0123456789666666' '15-08-2020' '10-08-2020' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 'user6@udc.es' 9999 '0123456789333333' '15-08-2020' '20-02-2020' 1"
 
 
 //4. Actualizar modelo bicicleta
 //-u <id> <name> <description> <availabilityDate> <price> <units>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-u 1 'Bicicleta 1 bis' 'Bicicleta de montaña modificada' '10-02-2020' 9 10"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-u 2 'Bicicleta 2 bis' 'Bicicleta de paseo' '15-03-2020' 10 10"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-u 9999 'Bicicleta 7' 'Bicicleta de nueva' '01-07-2020' 12 4"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-u 3 'Bicicleta 3 bis' 'Bicicleta de carreras modificada' '01-07-2020' 0 4"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-u 3 '' 'Bicicleta modificada' '01-07-2020' 0 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 1 'Bicicleta 1 bis' 'Bicicleta de montaña modificada' '10-08-2020' 9 10"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 2 'Bicicleta 2 bis' 'Bicicleta de paseo' '15-09-2020' 10 10"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 9999 'Bicicleta 7' 'Bicicleta de nueva' '01-02-2021' 12 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 3 'Bicicleta 3 bis' 'Bicicleta de carreras modificada' '01-02-2021' 0 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 3 '' 'Bicicleta modificada' '01-02-2021' 0 4"
+
+//6. Puntuar reserva
+-rateReservation <id> <userEmail> <points>
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 1 'user1@udc.es' 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 3 'user1@udc.es' 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 3 'user2@udc.es' 8"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 4 'user3@udc.es' 9"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 1 'user1@udc.es' 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 2 'user1@udc.es' 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 9999 'user3@udc.es' 6"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 5 'user4@udc.es' 6"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-r 6 'user5@udc.es' 8"
 
 
-//6. Buscar reservas
+//7. Buscar reservas
 //-fr <userEmail>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-fr 'user1@udc.es"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-fr 'user6@udc.es"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.USerBikeServiceClient" -Dexec.args="-fr 'user1@udc.es"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.USerBikeServiceClient" -Dexec.args="-fr 'user6@udc.es"
 
 //7. Buscar modelo por Id
 //-findBike <bikeId>
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-fb 1"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.BikeServiceClient" -Dexec.args="-fb 9999"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-fb 1"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-fb 9999"
