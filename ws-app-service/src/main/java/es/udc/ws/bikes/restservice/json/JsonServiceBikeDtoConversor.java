@@ -1,7 +1,11 @@
 package es.udc.ws.bikes.restservice.json;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +20,14 @@ import es.udc.ws.util.json.exceptions.ParsingException;
 
 public class JsonServiceBikeDtoConversor {
 	
+	public final static String CONVERSION_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
+	
+	private static String getStartDate(Calendar startDate) {
+		String date = sdf.format(startDate.getTime());
+		return date;
+	}
+	
 	public static ObjectNode toObjectNode(ServiceBikeDto bike) {
 		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
 		
@@ -24,7 +36,8 @@ public class JsonServiceBikeDtoConversor {
 		}
 		bikeObject.put("description", bike.getDescription()).
 			put("price", bike.getPrice()).
-			put("units", bike.getUnits());
+			put("units", bike.getUnits()).
+			put("startDate", getStartDate(bike.getStartDate()));
 		
 		return bikeObject;
 	}
@@ -55,10 +68,20 @@ public class JsonServiceBikeDtoConversor {
 				Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 
 				String description = bikeObject.get("description").textValue().trim();
+				
+				/*Long dateLong = bikeObject.get("startDate").asLong();
+				Date date = new Date(dateLong);
+				Calendar startDate = Calendar.getInstance();
+				startDate.setTime(date);*/
+				
+				String startDateString = bikeObject.get("startDate").textValue().trim();
+				Calendar startDate = Calendar.getInstance();
+				startDate.setTime(sdf.parse(startDateString));
+				
 				int units =  bikeObject.get("units").intValue();
 				float price = bikeObject.get("price").floatValue();
 
-				return new ServiceBikeDto(bikeId, description, price, units);
+				return new ServiceBikeDto(bikeId, description, price, units, startDate);
 			}
 		} catch (ParsingException ex) {
 			throw ex;
