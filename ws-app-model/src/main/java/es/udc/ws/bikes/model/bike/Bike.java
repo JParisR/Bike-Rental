@@ -112,14 +112,14 @@ public class Bike {
 		return numberOfRates;
 	}
 
-	public void setNumberofRates(int numberOfRates) {
+	public void setNumberOfRates(int numberOfRates) {
 		this.numberOfRates = numberOfRates;
 	}
 	
 	public double getAvgRate() {
 		return avgRate;
 	}
-
+	
 	public void setAvgRate(double avgRate) {
 		this.avgRate = avgRate;
 	}
@@ -179,9 +179,12 @@ public class Bike {
 		return true;
 	}
 	
-	public double getAvgRating () {
-		return avgRate/numberOfRates;
+	public void rate(int rate) {
+		double mean = ((this.avgRate * numberOfRates) + rate) / (numberOfRates + 1);
+		numberOfRates++;
+		this.avgRate = mean;
 	}
+
 }
 	
 	

@@ -181,7 +181,7 @@ public class BookServlet extends HttpServlet{
 	            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
 	            		JsonServiceExceptionConversor.toInputValidationException(ex), null);
 	            return;
-	        } catch (InvalidStartDateException e) {
+	        } catch (InvalidStartDateToUpdateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvalidNumberOfBikesException e) {

@@ -11,11 +11,10 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface BikeService {
 	
-    public Bike addBike(Bike bike) throws InputValidationException;
+    public Bike addBike(Bike bike) throws InputValidationException, InvalidStartDateException;
 
-    public void updateBike(Bike bike) throws InputValidationException,
-    		InstanceNotFoundException, InvalidStartDateException;
-    
+    public void updateBike(Bike bike) throws InputValidationException, InstanceNotFoundException, 
+    		InvalidStartDateToUpdateException;   
     
     public Bike findBike(Long bikeId) throws InstanceNotFoundException;
     
@@ -26,9 +25,9 @@ public interface BikeService {
     public List<Bike> findBikesByKeywords(String keywords, Calendar startDate);
 
     public void rateBook(Long bookId, int rate) throws InstanceNotFoundException,
-    		InvalidStartDateException;
+    		InvalidStartDateToUpdateException;
     
-    public Book bookBike(Book book) throws InvalidStartDateException, InstanceNotFoundException, 
+    public Book bookBike(Book book) throws InvalidStartDateToUpdateException, InstanceNotFoundException, 
     		InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
 
     public Book findBook(Long bookId) throws InstanceNotFoundException;

@@ -36,8 +36,23 @@ public class BikeServiceImpl implements BikeService{
 
 	private void validateBike(Bike bike, boolean update) throws InputValidationException {
 		
+		if (bike.getUnits() < 1) {
+			throw new InputValidationException("The units can not be \"" + bike.getUnits() +
+					"\". Must be greater than 0.");
+		}
+		if (bike.getDescription() == "") {
+			throw new InputValidationException("The description can not be empty.");
+		}
+		if (bike.getName() == "") {
+			throw new InputValidationException("The name can not be empty.");
+		}
+		if (bike.getPrice() <= 0) {
+			throw new InputValidationException("The price can not be \"" + bike.getUnits() +
+					"\". Must be greater than 0.");
+		}
+		
 		if (update && bike.getBikeId() == null) {
-			throw new InputValidationException("The bikeId can't be null");
+			throw new InputValidationException("The bikeId can't be null.");
 		}
 		else if (update) {
 			PropertyValidator.validateLong("bikeId", bike.getBikeId(), 0, MAX_BIKEID);
@@ -47,11 +62,15 @@ public class BikeServiceImpl implements BikeService{
 	}
 
 	@Override
-	public Bike addBike(Bike bike) throws InputValidationException {
+	public Bike addBike(Bike bike) throws InputValidationException, InvalidStartDateException {
 
 		validateBike(bike, false);
+		
 		Calendar creationDate = Calendar.getInstance();
 		bike.setCreationDate(creationDate);
+		if (bike.getStartDate().before(creationDate)) {
+			throw new InvalidStartDateException();
+		}
 
 		try (Connection connection = dataSource.getConnection()) {
 
@@ -83,10 +102,11 @@ public class BikeServiceImpl implements BikeService{
 	}
 	
 	@Override
-	public void updateBike(Bike bike) throws InputValidationException, InstanceNotFoundException, InvalidStartDateException {
+	public void updateBike(Bike bike) throws InputValidationException, InstanceNotFoundException, 
+			InvalidStartDateToUpdateException {
 
 		validateBike(bike, true);
-
+		
 		try (Connection connection = dataSource.getConnection()) {
 
 			try {
@@ -98,7 +118,7 @@ public class BikeServiceImpl implements BikeService{
 				/* Do work. */
 				Book bookAux = bookDao.findByBikeId(connection, bike.getBikeId());
 				if (bookAux.getInitDate().after(bike.getStartDate()) ) {
-					throw new InvalidStartDateException(bookAux.getBikeId(), bookAux.getInitDate()); 
+					throw new InvalidStartDateToUpdateException(bookAux.getBikeId(), bookAux.getInitDate()); 
 				}
 				
 				bikeDao.update(connection, bike);
@@ -188,7 +208,7 @@ public class BikeServiceImpl implements BikeService{
 	}
 	
 	@Override
-	public void rateBook(Long bookId, int rate) throws InstanceNotFoundException, InvalidStartDateException {
+	public void rateBook(Long bookId, int rate) throws InstanceNotFoundException, InvalidStartDateToUpdateException {
 
 		Calendar actualDate = Calendar.getInstance();
 
@@ -204,12 +224,10 @@ public class BikeServiceImpl implements BikeService{
 				Book bookAux = bookDao.findByBookId(connection, bookId);
 				Bike bikeAux = bikeDao.find(connection, bookAux.getBikeId());
 				
-    			if (bikeAux.getStartDate().after(actualDate)) {
-    				throw new InvalidStartDateException(bikeAux.getBikeId(), bikeAux.getStartDate());
-    			}
-				
     			bookAux.setBookRate(rate);
+    			bikeAux.rate(rate);
 				bookDao.update(connection, bookAux);
+				bikeDao.update(connection, bikeAux);
 				/* Commit. */
 				connection.commit();
 
@@ -232,13 +250,13 @@ public class BikeServiceImpl implements BikeService{
 	
 	@Override
 	public Book bookBike(Book book)
-			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateException {
+			throws InstanceNotFoundException, InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidStartDateToUpdateException {
 
 		PropertyValidator.validateCreditCard(book.getCreditCard());
 		if((book.getEndDate().getTimeInMillis() - book.getInitDate().getTimeInMillis()) / (24 * 60 * 60 * 1000) > MAX_BOOK_DAYS) {
 			throw new InvalidDaysOfBookException(book.getInitDate(), book.getEndDate());
 		}
-		
+		Calendar bookDate = Calendar.getInstance();
 				
 		try (Connection connection = dataSource.getConnection()) {
 
@@ -254,11 +272,11 @@ public class BikeServiceImpl implements BikeService{
 					throw new InvalidNumberOfBikesException(bike.getBikeId(), bike.getUnits(),book.getNumberBikes());
 				}
 				else if(bike.getStartDate().after(book.getInitDate())){
-					throw new InvalidStartDateException(bike.getBikeId(), book.getInitDate());
+					throw new InvalidStartDateToUpdateException(bike.getBikeId(), book.getInitDate());
 				}
 			
 				Book createdBook = bookDao.create(connection, new Book(bike.getBikeId(), book.getEmail(), book.getCreditCard(), 
-								book.getInitDate(), book.getEndDate(), book.getNumberBikes(), book.getBookRate(),book.getBookDate()));
+								book.getInitDate(), book.getEndDate(), book.getNumberBikes(), book.getBookRate(), bookDate));
 				
 				
 				/* Commit. */

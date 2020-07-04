@@ -14,6 +14,7 @@ import es.udc.ws.bikes.dto.ServiceBikeDto;
 import es.udc.ws.bikes.model.bike.Bike;
 import es.udc.ws.bikes.model.bikeservice.BikeServiceFactory;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateToUpdateException;
 import es.udc.ws.bikes.restservice.json.JsonServiceExceptionConversor;
 import es.udc.ws.bikes.restservice.json.JsonServiceBikeDtoConversor;
 import es.udc.ws.bikes.serviceutil.BikeToBikeDtoConversor;
@@ -49,6 +50,10 @@ public class BikeServlet extends HttpServlet {
 		} catch (InputValidationException ex) {
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
 					JsonServiceExceptionConversor.toInputValidationException(ex), null);
+			return;
+		} catch (InvalidStartDateException ex) {
+			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST, 
+					JsonServiceExceptionConversor.toInvalidStartDateException(ex), null);
 			return;
 		}
 		bikeDto = BikeToBikeDtoConversor.toBikeDto(bike);
@@ -109,9 +114,9 @@ public class BikeServlet extends HttpServlet {
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
 					JsonServiceExceptionConversor.toInstanceNotFoundException(ex), null);
 			return;
-		} catch (InvalidStartDateException ex) {
+		} catch (InvalidStartDateToUpdateException ex) {
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
-					JsonServiceExceptionConversor.toInvalidStartDateException(ex), null);
+					JsonServiceExceptionConversor.toInvalidStartDateToUpdateException(ex), null);
 			return;
 		}
 		ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);

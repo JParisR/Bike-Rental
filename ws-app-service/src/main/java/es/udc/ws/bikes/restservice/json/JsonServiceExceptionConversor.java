@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidDaysOfBookException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidNumberOfBikesException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateToUpdateException;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
@@ -92,7 +93,7 @@ public class JsonServiceExceptionConversor {
 		return exceptionObject;
 	}
 	
-	public static JsonNode toInvalidStartDateException(InvalidStartDateException ex) {
+	public static JsonNode toInvalidStartDateToUpdateException(InvalidStartDateToUpdateException ex) {
 		
 		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
     	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
@@ -105,11 +106,22 @@ public class JsonServiceExceptionConversor {
     		dataObject.set("startDate", null);
     	}
 		
-    	exceptionObject.set("invalidStartDateException", dataObject);
+    	exceptionObject.set("invalidStartDateToUpdateException", dataObject);
     	
     	return exceptionObject;
 	}
 	
+	public static JsonNode toInvalidStartDateException(InvalidStartDateException ex) {
+		
+		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+    	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
+		
+    	dataObject.put("message", ex.getMessage());
+    	
+    	exceptionObject.set("invalidStartDateException", dataObject);
+
+        return exceptionObject;
+	}
 	
 	
 	
