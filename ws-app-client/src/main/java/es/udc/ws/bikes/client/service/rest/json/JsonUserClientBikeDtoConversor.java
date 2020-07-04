@@ -89,8 +89,9 @@ public class JsonUserClientBikeDtoConversor {
 			Calendar startDate = getDate(startDateNode);
 			float price = bikeObject.get("price").floatValue();
 			int units = bikeObject.get("units").intValue();
-
-			return new UserClientBikeDto(bikeId, name, description, startDate, price, units);
+			int numberOfRates = bikeObject.get("numberOfRates").intValue();
+			double avgRate = bikeObject.get("avgRate").doubleValue();
+			return new UserClientBikeDto(bikeId, name, description, startDate, price, units, numberOfRates, avgRate);
 		}
 	}
 	
