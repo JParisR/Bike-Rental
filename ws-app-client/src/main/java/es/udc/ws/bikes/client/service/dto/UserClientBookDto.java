@@ -13,31 +13,27 @@ public class UserClientBookDto {
     private int units;
     private int rating;
     
-    public UserClientBookDto() {
+    public UserClientBookDto(Long bikeId, String email, String creditCard, Calendar startDate, 
+			 Calendar endDate, int units) {
+
+    	this.bikeId = bikeId;
+    	this.email = email;
+    	this.creditCard = creditCard;
+    	this.startDate = startDate;
+    	this.endDate = endDate;
+    	this.units = units;
+    
     }
     
-    public UserClientBookDto(Long bookId, Long bikeId, String email, String creditCard, Calendar startDate, Calendar endDate, int units) {
+    public UserClientBookDto(Long bookId, Long bikeId, String email, String creditCard, 
+    						 Calendar startDate, Calendar endDate, int units) {
 		
+    	this(bikeId, email, creditCard, startDate, endDate, units);
     	this.bookId = bookId;
-		this.bikeId = bikeId;
-		this.email = email;
-		this.creditCard = creditCard;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.units = units;
 	
     }
     
-    public UserClientBookDto(Long bikeId, String email, String creditCard, Calendar startDate, Calendar endDate, int units) {
-		
-		this.bikeId = bikeId;
-		this.email = email;
-		this.creditCard = creditCard;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.units = units;
-	
-    }
+    
     
     public UserClientBookDto(Long bookId, String email, int rating) {
     	this.bookId = bookId;
@@ -111,8 +107,9 @@ public class UserClientBookDto {
 
 	@Override
 	public String toString() {
-		return "ClientBookDto [bookId=" + bookId + ", bikeId=" + bikeId + ", email=" + email + ", creditCard="
-				+ creditCard + ", startDate=" + startDate.toString() + ", endDate=" + endDate.toString() + ", units=" + units + "]";
+		return "UserClientBookDto [bookId=" + bookId + ", bikeId=" + bikeId + ", email=" + email + ", creditCard="
+				+ creditCard + ", startDate=" + startDate + ", endDate=" + endDate + ", units=" + units + ", rating="
+				+ rating + "]";
 	}
 	
 }

@@ -8,8 +8,6 @@ import java.util.Locale;
 
 import es.udc.ws.bikes.client.service.UserClientBikeService;
 import es.udc.ws.bikes.client.service.UserClientBikeServiceFactory;
-import es.udc.ws.bikes.client.service.dto.AdminClientBikeDto;
-import es.udc.ws.bikes.client.service.dto.AdminClientBookDto;
 import es.udc.ws.bikes.client.service.dto.UserClientBikeDto;
 import es.udc.ws.bikes.client.service.dto.UserClientBookDto;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -20,36 +18,45 @@ public class UserBikeServiceClient {
 	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
 	
 	public static void main(String[] args) {
-
+		
+		
 		if(args.length == 0) {
             printUsageAndExit();
         }
-        
-		UserClientBikeService clientBikeService = UserClientBikeServiceFactory.getService();
-		
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
 		
-		if ("-f".equalsIgnoreCase(args[0])) {
-            validateArgs(args, 2, new int[] {});
+		UserClientBikeService clientBikeService = UserClientBikeServiceFactory.getService();
+		
+		if("-f".equalsIgnoreCase(args[0])) {
+            validateArgs(args, 3, new int[] {});
 
             // [find] bikeServiceClient -f <keywords> <availabilityDate>
-
-            /*try {
-                List<UserClientBikeDto> bikes = clientBikeService.findBikes(args[1]);
-                System.out.println("Found " + bikes.size() +
-                        " bike(s) with keywords '" + args[1] + "'");
-                for (int i = 0; i < bikes.size(); i++) {
-                    AdminClientBikeDto bikeDto = bikes.get(i);
+                   
+            try {
+            	Date date = null;
+            	date = dateFormatter.parse(args[2]);
+            	Calendar startDate = Calendar.getInstance();
+            	startDate.setTime(date);
+                
+            	List<UserClientBikeDto> bikes = clientBikeService.findBikes(args[1], startDate);
+                
+            	System.out.println("Found " + bikes.size() + " bike(s) with keywords '" + args[1] + "'");
+                
+            	for (int i = 0; i < bikes.size(); i++) {
+                    UserClientBikeDto bikeDto = bikes.get(i);
+                    
                     System.out.println("Id: " + bikeDto.getBikeId() +
                             ", Description: " + bikeDto.getDescription() +
                             ", StartDate: " + bikeDto.getStartDate().toString() +                            
                             ", Price: " + bikeDto.getPrice() +
                     		", Units: " + bikeDto.getUnits());
                 }
+            	
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
-            }*/
+            }
 		} else if ("-r".equalsIgnoreCase(args[0])) {
+
             validateArgs(args, 7, new int[] {2, 6});
 
             // [reserve] bikeServiceClient -r <email> <bikeId> <creditCardNumber> <startDate> <endDate> <units>
@@ -66,6 +73,7 @@ public class UserBikeServiceClient {
             	dateStart = dateFormatter.parse(args[4]);
             	Calendar startDate = Calendar.getInstance();
             	startDate.setTime(dateStart);
+            	
             	dateEnd = dateFormatter.parse(args[5]);
             	Calendar endDate = Calendar.getInstance();
             	endDate.setTime(dateEnd);
@@ -100,8 +108,39 @@ public class UserBikeServiceClient {
 				ex.printStackTrace(System.err);
 			} catch (Exception ex) {
 				ex.printStackTrace(System.err);
-			}
-		}
+			}        
+		} else if("-fr".equalsIgnoreCase(args[0])) {
+        	validateArgs(args, 2, new int[] {});
+        	
+        	try {
+        		
+        		List<UserClientBookDto> Lista = clientBikeService.findBooks(args[1]);
+        		String scoreString;
+        		
+        		System.out.println("Found "+ Lista.size() + " reservation(s) with mail '"+ args[1]+"'");
+        		
+        		for(int i = 0 ; i< Lista.size();i++) {
+        			UserClientBookDto book = Lista.get(i);
+        			/*if(book.getScore()== -1){
+        				scoreString = "Not rated yet";
+        			} else {
+        				scoreString = book.getScore().toString();
+        			}*/
+                	System.out.println("ReservationId: "+ book.getBookId()+",\n"+
+                						"BikeId: " +book.getBikeId()+",\n"+
+                						"Mail: "+ book.getEmail()+",\n"+
+                						"CreditCardNumber: "+ book.getCreditCard()+",\n"+
+                						"StartDate: " + book.getStartDate().getTime()+",\n"+
+                						"Duration: " + book.getEndDate().getTime()+",\n"+
+                						"NumBikes: "+ book.getUnits()+",\n");
+                						
+                }
+        		
+        	} catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }
+        	
+        }
 
 	}
 		
@@ -130,7 +169,7 @@ public class UserBikeServiceClient {
 				"    [add]    	bikeserviceClient -a <name> <description> <startDate> <price> <units>\n" +
 				"    [delete] 	bikeserviceClient -d <bikeId>\n" +
 				"    [update] 	bikeserviceClient -u <bikeId> <name> <description> <availabilityDate> <price> <units>\n" +
-				"    [find]   	bikeserviceClient -f <keywords>\n" +
+				"    [find]   	bikeserviceClient -f <keywords> <date>\n" +
 				"    [reserve]	bikeserviceClient -r <bikeId> <userId> <creditCardNumber> <startDate> <endDate> <units>\n" +
 				"    [findId]  	bikeserviceClient -fb <bikeId>\n");
 	}
