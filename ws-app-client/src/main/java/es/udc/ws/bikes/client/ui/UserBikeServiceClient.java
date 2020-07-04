@@ -46,10 +46,13 @@ public class UserBikeServiceClient {
                     UserClientBikeDto bikeDto = bikes.get(i);
                     
                     System.out.println("Id: " + bikeDto.getBikeId() +
+                    		", Name: " + bikeDto.getName() +
                             ", Description: " + bikeDto.getDescription() +
                             ", StartDate: " + bikeDto.getStartDate().toString() +                            
                             ", Price: " + bikeDto.getPrice() +
-                    		", Units: " + bikeDto.getUnits());
+                    		", Units: " + bikeDto.getUnits() +
+                    		", NumberOfRates: " + bikeDto.getNumberOfRates() +
+                    		", AvgRate: " + bikeDto.getAvgRate());
                 }
             	
             } catch (Exception ex) {
@@ -91,6 +94,7 @@ public class UserBikeServiceClient {
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
             }
+            
 		} else if ("-rb".equalsIgnoreCase(args[0])) {
 			// [rateBook] -rb <id> <email> <rate>
 			validateArgs(args, 4, new int[] {1, 3});
@@ -109,31 +113,37 @@ public class UserBikeServiceClient {
 			} catch (Exception ex) {
 				ex.printStackTrace(System.err);
 			}        
+			
 		} else if("-fr".equalsIgnoreCase(args[0])) {
         	validateArgs(args, 2, new int[] {});
         	
         	try {
         		
         		List<UserClientBookDto> Lista = clientBikeService.findBooks(args[1]);
-        		String scoreString;
+        		String ratingString;
         		
         		System.out.println("Found "+ Lista.size() + " reservation(s) with mail '"+ args[1]+"'");
         		
         		for(int i = 0 ; i< Lista.size();i++) {
         			UserClientBookDto book = Lista.get(i);
-        			/*if(book.getScore()== -1){
-        				scoreString = "Not rated yet";
-        			} else {
-        				scoreString = book.getScore().toString();
-        			}*/
-                	System.out.println("ReservationId: "+ book.getBookId()+",\n"+
+        			
+        			int rate = book.getRating();
+        			if(rate == -1)
+        				ratingString = "Not rated yet";
+        			else 
+        				ratingString = String.valueOf(rate);
+        			
+                	System.out.println("BookId: "+ book.getBookId()+",\n"+
                 						"BikeId: " +book.getBikeId()+",\n"+
-                						"Mail: "+ book.getEmail()+",\n"+
+                						"Email: "+ book.getEmail()+",\n"+
                 						"CreditCardNumber: "+ book.getCreditCard()+",\n"+
                 						"StartDate: " + book.getStartDate().getTime()+",\n"+
-                						"Duration: " + book.getEndDate().getTime()+",\n"+
-                						"NumBikes: "+ book.getUnits()+",\n");
-                						
+                						"EndDate: " + book.getEndDate().getTime()+",\n"+
+                						"NumBikes: "+ book.getUnits()+",\n"+
+                						"Rate: "+ ratingString);        
+                	
+                	
+                	
                 }
         		
         	} catch (Exception ex) {
@@ -144,8 +154,7 @@ public class UserBikeServiceClient {
 
 	}
 		
-	public static void validateArgs(String[] args, int expectedArgs,
-                int[] numericArguments) {
+	public static void validateArgs(String[] args, int expectedArgs, int[] numericArguments) {
 		if(expectedArgs != args.length) {
 			printUsageAndExit();
 		}
@@ -166,12 +175,9 @@ public class UserBikeServiceClient {
 
 	public static void printUsage() {
 		System.err.println("Usage:\n" +
-				"    [add]    	bikeserviceClient -a <name> <description> <startDate> <price> <units>\n" +
-				"    [delete] 	bikeserviceClient -d <bikeId>\n" +
-				"    [update] 	bikeserviceClient -u <bikeId> <name> <description> <availabilityDate> <price> <units>\n" +
-				"    [find]   	bikeserviceClient -f <keywords> <date>\n" +
-				"    [reserve]	bikeserviceClient -r <bikeId> <userId> <creditCardNumber> <startDate> <endDate> <units>\n" +
-				"    [findId]  	bikeserviceClient -fb <bikeId>\n");
+				"    [find Books]    	bikeserviceClient -fr <email>\n" +
+				"    [find Bikes]   	bikeserviceClient -f <keywords> <date>\n" +
+				"    [reserve]	bikeserviceClient -r <userId> <bikeId> <creditCardNumber> <startDate> <endDate> <units>\n" +
+				"    [RateBook]  	bikeserviceClient -rb <bookId> <email> <rate>\n");
 	}
-
 }
