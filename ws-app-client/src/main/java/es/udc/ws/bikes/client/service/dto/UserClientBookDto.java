@@ -11,6 +11,7 @@ public class UserClientBookDto {
     private Calendar startDate;
     private Calendar endDate;
     private int units;
+    private int rating;
     
     public UserClientBookDto() {
     }
@@ -38,6 +39,12 @@ public class UserClientBookDto {
 	
     }
     
+    public UserClientBookDto(Long bookId, String email, int rating) {
+    	this.bookId = bookId;
+    	this.email = email;
+    	this.rating = rating;
+    }
+
 	public Long getBookId() {
         return bookId;
     }
@@ -92,6 +99,14 @@ public class UserClientBookDto {
 
 	public void setUnits(int units) {
 		this.units = units;
+	}
+	
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	@Override

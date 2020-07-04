@@ -26,9 +26,23 @@ public class JsonUserClientBookDtoConversor {
 		}
 		
 		bookObject.put("email", book.getEmail()).put("bikeId", book.getBikeId()).
-		put("creditCard", book.getCreditCard()).put("units", book.getUnits());
-		bookObject.set("startDate", getNodeFromDate(book.getStartDate()));
+		put("creditCard", book.getCreditCard()).put("numberBikes", book.getUnits());
+		bookObject.set("initDate", getNodeFromDate(book.getStartDate()));
 		bookObject.set("endDate", getNodeFromDate(book.getEndDate()));
+		
+		return bookObject;
+	}
+	
+	public static JsonNode toRateJsonObject(UserClientBookDto book) throws IOException {
+
+		ObjectNode bookObject = JsonNodeFactory.instance.objectNode();
+
+		if (book.getBookId() != null) {
+			bookObject.put("bookId", book.getBookId());
+		}
+		
+		bookObject.put("email", book.getEmail()).put("bikeId", book.getBikeId()).
+			put("rating", book.getRating());
 		
 		return bookObject;
 	}
@@ -49,12 +63,12 @@ public class JsonUserClientBookDtoConversor {
 				Long bikeId = bikeObject.get("bikeId").longValue();
 				String email = bikeObject.get("email").textValue();
 				String creditCard = bikeObject.get("creditCard").textValue();
-				JsonNode startDateNode = bikeObject.get("startDate");
-				Calendar startDate = getDate(startDateNode);
+				JsonNode startDateNode = bikeObject.get("initDate");
+				Calendar startDate = getDateFromNode(startDateNode);
 				JsonNode endDateNode = bikeObject.get("endDate");
-				Calendar endDate = getDate(endDateNode);
-				int units = bikeObject.get("units").intValue();
-
+				Calendar endDate = getDateFromNode(endDateNode);
+				int units = bikeObject.get("numberBikes").intValue();
+				
 				return new AdminClientBookDto(bookId, bikeId, email, creditCard, startDate, endDate, units);
 
 			}
@@ -65,7 +79,7 @@ public class JsonUserClientBookDtoConversor {
 		}
 	}
 
-	private static Calendar getDate(JsonNode dateNode) {
+	private static Calendar getDateFromNode(JsonNode dateNode) {
 
 		if (dateNode == null) {
 			return null;
@@ -88,7 +102,7 @@ public class JsonUserClientBookDtoConversor {
 		ObjectNode releaseDateObject = JsonNodeFactory.instance.objectNode();
 
         int day = date.get(Calendar.DAY_OF_MONTH);
-        int month = date.get(Calendar.MONTH) - Calendar.JANUARY + 1;
+        int month = date.get(Calendar.MONTH) + 1;
         int year = date.get(Calendar.YEAR);
 
         releaseDateObject.put("day", day).

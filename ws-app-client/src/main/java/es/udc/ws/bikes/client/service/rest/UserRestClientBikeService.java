@@ -15,7 +15,9 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 import es.udc.ws.bikes.client.service.UserClientBikeService;
 import es.udc.ws.bikes.client.service.dto.UserClientBikeDto;
@@ -59,10 +61,32 @@ public class UserRestClientBikeService implements UserClientBikeService {
     public Long rentBike(UserClientBookDto book)
             throws InstanceNotFoundException, InputValidationException {
 
+    	String initDate;
+    	String endDate;
+    	Calendar iDate;
+    	Calendar eDate;
+    	
         try {
+        	
+        	iDate = book.getStartDate();
+        	eDate = book.getEndDate();
+        	initDate = Integer.toString(iDate.get(Calendar.DAY_OF_MONTH)) + "-" +
+        			Integer.toString(iDate.get(Calendar.MONTH) + 1) + "-" +
+        			Integer.toString(iDate.get(Calendar.YEAR));
+        	endDate = Integer.toString(eDate.get(Calendar.DAY_OF_MONTH)) + "-" +
+        			Integer.toString(eDate.get(Calendar.MONTH) + 1) + "-" +
+        			Integer.toString(eDate.get(Calendar.YEAR));
 
             HttpResponse response = Request.Post(getEndpointAddress() + "books").
-                    bodyStream(toInputStream(book), ContentType.create("application/json")).
+            		bodyForm(
+                            Form.form().
+                            add("bikeId", Long.toString(book.getBikeId())).
+                            add("email", book.getEmail()).
+                            add("creditCard", book.getCreditCard()).
+                            add("initDate", initDate).
+                            add("endDate", endDate).
+                            add("numberBikes", Integer.toString(book.getUnits())).
+                            build()).
                     execute().returnResponse();
 
             validateStatusCode(HttpStatus.SC_CREATED, response);
@@ -78,8 +102,26 @@ public class UserRestClientBikeService implements UserClientBikeService {
 
     }
     
-    public void rateBook(Long bookId, String email, int rating) {
+    public void rateBook(Long bookId, String email, int rating) throws InstanceNotFoundException,
+    		InputValidationException {
+    		
+    	try {
+    		UserClientBookDto book = new UserClientBookDto(bookId, email, rating);
     	
+    		HttpResponse response = Request.Put(getEndpointAddress() + "books/" 
+    				+ Long.toString(bookId)).bodyStream(toInputStream(book), ContentType.create("application/json"))
+    				.execute().returnResponse();
+    		
+    		validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
+    		
+    		return;
+    
+    	} catch (InputValidationException | InstanceNotFoundException e) {
+    		throw e;
+    	} catch (Exception e) {
+    		throw new RuntimeException(e);
+    	}
+    
     }
     
     public List<UserClientBookDto> findBooks(String email) {
@@ -102,7 +144,8 @@ public class UserRestClientBikeService implements UserClientBikeService {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ObjectMapper objectMapper = ObjectMapperFactory.instance();
-            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, JsonUserClientBookDtoConversor.toJsonObject(book));
+            objectMapper.writer(new DefaultPrettyPrinter()).
+            	writeValue(outputStream, JsonUserClientBookDtoConversor.toRateJsonObject(book));
 
             return new ByteArrayInputStream(outputStream.toByteArray());
 
@@ -133,9 +176,12 @@ public class UserRestClientBikeService implements UserClientBikeService {
                             response.getEntity().getContent());
 
                 case HttpStatus.SC_BAD_REQUEST:
-                    throw JsonClientExceptionConversor.fromInputValidationException(
-                            response.getEntity().getContent());
-
+                	if (exceptionType(response.getEntity().getContent()).equalsIgnoreCase("inputValidationException")) {
+                			throw JsonClientExceptionConversor.fromInputValidationException(
+                					response.getEntity().getContent());
+                	} else {
+                		throw JsonClientExceptionConversor.fromException(response.getEntity().getContent());
+                	}
                 case HttpStatus.SC_GONE:
                     throw JsonClientExceptionConversor.fromBookExpirationException(
                             response.getEntity().getContent());
@@ -149,6 +195,23 @@ public class UserRestClientBikeService implements UserClientBikeService {
             throw new RuntimeException(e);
         }
 
+    }
+    
+    private String exceptionType(InputStream Exception)
+	            throws ParsingException {
+	        try {
+
+	        	ObjectMapper objectMapper = ObjectMapperFactory.instance();
+				JsonNode rootNode = objectMapper.readTree(Exception);
+				if (rootNode.getNodeType() != JsonNodeType.OBJECT) {
+					throw new ParsingException("Unrecognized JSON (object expected)");
+				} else {
+					String type = rootNode.get(0).asText();
+			    	return type;
+				}
+	        } catch (Exception e) {
+	            throw new ParsingException(e);
+	        }
     }
 	
 }

@@ -29,7 +29,7 @@ public class UserBikeServiceClient {
 		
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
 		
-		if("-f".equalsIgnoreCase(args[0])) {
+		if ("-f".equalsIgnoreCase(args[0])) {
             validateArgs(args, 2, new int[] {});
 
             // [find] bikeServiceClient -f <keywords> <availabilityDate>
@@ -49,7 +49,7 @@ public class UserBikeServiceClient {
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
             }*/
-		} else if("-r".equalsIgnoreCase(args[0])) {
+		} else if ("-r".equalsIgnoreCase(args[0])) {
             validateArgs(args, 7, new int[] {2, 6});
 
             // [reserve] bikeServiceClient -r <email> <bikeId> <creditCardNumber> <startDate> <endDate> <units>
@@ -71,7 +71,6 @@ public class UserBikeServiceClient {
             	endDate.setTime(dateEnd);
             	
             	int units = Integer.valueOf(args[6]);
-            	
                 bookId = clientBikeService.rentBike(new UserClientBookDto(bikeId, email, creditCard, startDate, endDate, units));
 
                 System.out.println("bike " + args[2] +
@@ -84,6 +83,24 @@ public class UserBikeServiceClient {
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
             }
+		} else if ("-rb".equalsIgnoreCase(args[0])) {
+			// [rateBook] -rb <id> <email> <rate>
+			validateArgs(args, 4, new int[] {1, 3});
+			
+			try {
+				Long bookId = Long.valueOf(args[1]);
+				String email = args[2];
+				int rating = Integer.valueOf(args[3]);
+			
+				clientBikeService.rateBook(bookId, email, rating);
+			
+				System.out.println("book " + bookId + " rated sucessfully with " + rating + " points.");
+		
+			} catch (InstanceNotFoundException | InputValidationException ex) {
+				ex.printStackTrace(System.err);
+			} catch (Exception ex) {
+				ex.printStackTrace(System.err);
+			}
 		}
 
 	}

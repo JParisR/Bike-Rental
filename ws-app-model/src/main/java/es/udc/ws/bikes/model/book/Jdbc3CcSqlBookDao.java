@@ -38,7 +38,7 @@ public class Jdbc3CcSqlBookDao extends AbstractSqlBookDao{
             Timestamp bookDate = new Timestamp(book.getBookDate().getTime()
                     .getTime());
             preparedStatement.setTimestamp(i++, bookDate);
-            preparedStatement.setInt(i++, book.getBookRate());
+            preparedStatement.setInt(i++, -1);
             
             /* Execute query. */
             preparedStatement.executeUpdate();

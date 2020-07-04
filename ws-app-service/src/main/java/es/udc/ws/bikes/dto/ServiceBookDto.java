@@ -6,23 +6,31 @@ public class ServiceBookDto {
 	
 	private Long bookId;
 	private Long bikeId;
+	private String email;
+	private String creditCard;
 	private Calendar initDate;
 	private Calendar endDate;
 	private int numberBikes;
+	private int rating;
 	
-	public ServiceBookDto() {
-		
-	}
 	
-	public ServiceBookDto(Long bookId, Long bikeId, Calendar initDate, 
-			Calendar endDate, int numberBikes) {
+	public ServiceBookDto(Long bookId, Long bikeId, String email, String creditCard,
+			Calendar initDate, Calendar endDate, int numberBikes) {
 		this.bookId = bookId;
 		this.bikeId = bikeId;
+		this.email = email;
+		this.creditCard = creditCard;
 		this.initDate = initDate;
 		this.endDate = endDate;
 		this.numberBikes = numberBikes;
 	}
 	
+	public ServiceBookDto(Long bookId, String email, int rating) {
+		this.bookId = bookId;
+		this.email = email;
+		this.rating = rating;
+	}
+
 	public Long getBookId() {
 		return bookId;
 	}
@@ -37,6 +45,22 @@ public class ServiceBookDto {
 	
 	public void setBikeId(Long bikeId) {
 		this.bikeId = bikeId;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(String creditCard) {
+		this.creditCard = creditCard;
 	}
 	
 	public Calendar getInitDate() {
@@ -63,4 +87,12 @@ public class ServiceBookDto {
 		this.numberBikes = numberBikes;
 	}
 
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	
 }

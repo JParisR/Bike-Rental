@@ -15,7 +15,8 @@ public interface UserClientBikeService {
     public Long rentBike(UserClientBookDto book) 
     		throws InstanceNotFoundException, InputValidationException;
 	
-    public void rateBook(Long bookId, String email, int rating);
+    public void rateBook(Long bookId, String email, int rating)
+    		throws InstanceNotFoundException, InputValidationException;
     
     public List<UserClientBookDto> findBooks(String email);
 }

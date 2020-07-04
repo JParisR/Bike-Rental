@@ -14,41 +14,58 @@ public class Book {
 	private Calendar bookDate;
 	private int bookRate;
 	
-	public Book(String email, String creditCard, Calendar initDate, 
-			Calendar endDate, int numberBikes, int bookRate) {
+	public Book(Long bikeId, String email, String creditCard, Calendar initDate, 
+			Calendar endDate, int numberBikes) {
 	
+		this.bikeId = bikeId;
 		this.email = email;
 		this.creditCard = creditCard;
 		this.initDate = initDate;
 		this.endDate = endDate;
 		this.numberBikes = numberBikes;
+		if (bookDate != null) {
+			bookDate.set(Calendar.MILLISECOND, 0);
+		}
+		
+	}
+	
+	public Book(Long bikeId, String email, String creditCard, Calendar initDate, 
+			Calendar endDate, int numberBikes, int bookRate) {
+	
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes);
 		this.bookRate = bookRate;
 		
 	}
 	
-	public Book(Long bikeId, String email, String creditCard, 
-			Calendar initDate, Calendar endDate, int numberBikes, int bookRate) {
-		this(email, creditCard, initDate, endDate, numberBikes, bookRate);
-		this.bikeId = bikeId;
+	public Book(Long bikeId, String email, String creditCard, Calendar initDate, 
+			Calendar endDate, int numberBikes, Calendar bookDate) {
+	
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes);
+		this.bookDate = bookDate;
+		
 	}
 	
-	public Book(Long bikeId, String email, 
-			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes, int bookRate, Calendar bookDate) {
+	public Book(Long bikeId, String email, String creditCard, Calendar initDate, 
+			Calendar endDate, int numberBikes, int bookRate, Calendar bookDate) {
+	
 		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate);
 		this.bookDate = bookDate;
-		if (bookDate != null) {
-			this.bookDate.set(Calendar.MILLISECOND, 0);
-		}
+		
 	}
 	
 	public Book(Long bookId, Long bikeId, String email, 
 			String creditCard, Calendar initDate, Calendar endDate, 
-			int numberBikes,  int bookRate,Calendar bookDate) {
-		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate, bookDate);
+			int numberBikes,  int bookRate) {
+		this(bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate);
 		this.bookId = bookId;
 	}
 	
+	public Book(Long bookId, Long bikeId, String email, 
+			String creditCard, Calendar initDate, Calendar endDate, 
+			int numberBikes,  int bookRate, Calendar bookDate) {
+		this(bookId, bikeId, email, creditCard, initDate, endDate, numberBikes, bookRate);
+		this.bookDate = bookDate;
+	}
 
 	public Long getBookId() {
 		return bookId;

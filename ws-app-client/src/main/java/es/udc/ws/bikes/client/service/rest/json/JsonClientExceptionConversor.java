@@ -81,4 +81,22 @@ public class JsonClientExceptionConversor {
 	            throw new ParsingException(e);
 	        }
 	    }
+	    
+	    public static InputValidationException fromException(InputStream ex) 
+	            throws ParsingException {
+	        try {
+
+	        	ObjectMapper objectMapper = ObjectMapperFactory.instance();
+				JsonNode rootNode = objectMapper.readTree(ex);
+				if (rootNode.getNodeType() != JsonNodeType.OBJECT) {
+					throw new ParsingException("Unrecognized JSON (object expected)");
+				} else {
+					String message = rootNode.get(0).get("message").textValue();
+					return new InputValidationException(message);
+				}
+	        } catch (Exception e) {
+	            throw new ParsingException(e);
+	        }
+	    }
+
 }

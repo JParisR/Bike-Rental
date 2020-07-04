@@ -7,10 +7,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import es.udc.ws.bikes.model.bikeservice.exceptions.BookAlreadyRatedException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.BookNotFinishedException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidBookDatesException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidDaysOfBookException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidNumberOfBikesException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateToBookException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateToUpdateException;
+import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidUserException;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
@@ -69,7 +74,6 @@ public class JsonServiceExceptionConversor {
 		
 	}
 	
-	//NO SE SI ESTÁ BIEN
 	public static JsonNode toInvalidNumberOfBikesException(InvalidNumberOfBikesException ex) {
 		
 		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
@@ -119,6 +123,61 @@ public class JsonServiceExceptionConversor {
     	dataObject.put("message", ex.getMessage());
     	
     	exceptionObject.set("invalidStartDateException", dataObject);
+
+        return exceptionObject;
+	}
+
+	public static JsonNode toInvalidBookDatesException(InvalidBookDatesException ex) {
+		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+    	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
+		
+    	dataObject.put("message", ex.getMessage());
+    	
+    	exceptionObject.set("invalidBookDatesException", dataObject);
+
+        return exceptionObject;
+	}
+
+	public static JsonNode toInvalidStartDaysToBookException(InvalidStartDateToBookException ex) {
+		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+    	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
+		
+    	dataObject.put("message", ex.getMessage());
+    	
+    	exceptionObject.set("invalidStartDateToBookException", dataObject);
+
+        return exceptionObject;
+	}
+
+	public static JsonNode toBookNotFinishedException(BookNotFinishedException ex) {
+		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+    	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
+		
+    	dataObject.put("message", ex.getMessage());
+    	
+    	exceptionObject.set("bookNotFinishedException", dataObject);
+
+        return exceptionObject;
+	}
+
+	public static JsonNode toBookAlreadyRatedException(BookAlreadyRatedException ex) {
+		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+    	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
+		
+    	dataObject.put("message", ex.getMessage());
+    	
+    	exceptionObject.set("bookAlreadyRatedException", dataObject);
+
+        return exceptionObject;
+	}
+
+	public static JsonNode toInvalidUserException(InvalidUserException ex) {
+		ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+    	ObjectNode dataObject = JsonNodeFactory.instance.objectNode();
+		
+    	dataObject.put("message", ex.getMessage());
+    	
+    	exceptionObject.set("bookAlreadyRatedException", dataObject);
 
         return exceptionObject;
 	}

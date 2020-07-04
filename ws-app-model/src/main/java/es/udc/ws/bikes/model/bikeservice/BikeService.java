@@ -24,11 +24,13 @@ public interface BikeService {
     
     public List<Bike> findBikesByKeywords(String keywords, Calendar startDate);
 
-    public void rateBook(Long bookId, int rate) throws InstanceNotFoundException,
-    		InvalidStartDateToUpdateException;
+    public void rateBook(Long bookId, String email, int rate) throws InputValidationException,
+    		InstanceNotFoundException, BookNotFinishedException, BookAlreadyRatedException,
+			InvalidUserException;
     
-    public Book bookBike(Book book) throws InvalidStartDateToUpdateException, InstanceNotFoundException, 
-    		InputValidationException, InvalidNumberOfBikesException, InvalidDaysOfBookException;
+    public Book bookBike(Book book) throws InstanceNotFoundException, InputValidationException, 
+    		InvalidNumberOfBikesException, InvalidDaysOfBookException, InvalidBookDatesException, 
+    		InvalidStartDateToBookException;
 
     public Book findBook(Long bookId) throws InstanceNotFoundException;
     
