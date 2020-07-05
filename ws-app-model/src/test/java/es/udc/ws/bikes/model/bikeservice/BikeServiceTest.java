@@ -27,15 +27,12 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
-import es.udc.ws.bikes.model.bikeservice.exceptions.BookAlreadyRatedException;
-import es.udc.ws.bikes.model.bikeservice.exceptions.BookNotFinishedException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidBookDatesException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidDaysOfBookException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidNumberOfBikesException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateToBookException;
 import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidStartDateToUpdateException;
-import es.udc.ws.bikes.model.bikeservice.exceptions.InvalidUserException;
 
 public class BikeServiceTest {
 	private final long NON_EXISTENT_BIKE_ID = -1;

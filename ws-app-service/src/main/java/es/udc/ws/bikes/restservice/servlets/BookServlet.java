@@ -1,9 +1,6 @@
 package es.udc.ws.bikes.restservice.servlets;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.*;
 import java.text.*;
 
@@ -13,15 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import es.udc.ws.bikes.model.book.Book;
-import es.udc.ws.bikes.serviceutil.BikeToBikeDtoConversor;
 import es.udc.ws.bikes.serviceutil.BookToBookDtoConversor;
-import es.udc.ws.bikes.dto.ServiceBikeDto;
 import es.udc.ws.bikes.dto.ServiceBookDto;
-import es.udc.ws.bikes.model.bike.Bike;
 import es.udc.ws.bikes.model.bikeservice.BikeServiceFactory;
 import es.udc.ws.bikes.model.bikeservice.exceptions.*;
 import es.udc.ws.bikes.restservice.json.JsonServiceExceptionConversor;
-import es.udc.ws.bikes.restservice.json.JsonServiceBikeDtoConversor;
 import es.udc.ws.bikes.restservice.json.JsonServiceBookDtoConversor;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -181,39 +174,21 @@ public class BookServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = ServletUtils.normalizePath(req.getPathInfo());
-        if (path == null || path.length() == 0) {
-            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
-            		JsonServiceExceptionConversor.toInputValidationException(
-                            new InputValidationException("Invalid Request: " + "invalid book id")),
-                    null);
-            return;
-        }
-        String bookIdAsString = path.substring(1);
-        Long bookId;
+        
+        String email = req.getParameter("email");
+        List<Book> books;
         try {
-            bookId = Long.valueOf(bookIdAsString);
-        } catch (NumberFormatException ex) {
-            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
-            		JsonServiceExceptionConversor.toInputValidationException(
-                            new InputValidationException("Invalid Request: " + "invalid book id '" + bookIdAsString)),
-                    null);
-            return;
-        }
-        Book book;
-        try {
-            book = BikeServiceFactory.getService().findBook(bookId);
+            books = BikeServiceFactory.getService().findBookByUser(email);
         } catch (InstanceNotFoundException ex) {
             ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
             		JsonServiceExceptionConversor.toInstanceNotFoundException(ex), null);
             return;
         } 
-
-        ServiceBookDto bookDto = BookToBookDtoConversor.toBookDto(book);
+        List<ServiceBookDto> booksDto = BookToBookDtoConversor.toBookDtos(books);
 
         ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
-                JsonServiceBookDtoConversor.toJsonObject(bookDto), null);
-
+                JsonServiceBookDtoConversor.toArrayNode(booksDto), null);
+        
     }
     
     @Override

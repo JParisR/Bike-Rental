@@ -114,8 +114,8 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
     public List<Book> findByUser(Connection connection, String email) {
 
     	/* Create "queryString". */
-        String queryString = "SELECT bookId, bikeId, email, creditCard," 
-        		+ " endDate, numberBikes, bookDate, bookRate WHERE email = ?";
+        String queryString = "SELECT bookId, bikeId, email, creditCard, initDate," 
+        		+ " endDate, numberBikes, bookDate, bookRate FROM Book WHERE email LIKE ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
         	
@@ -132,8 +132,9 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
             while (resultSet.next()) {
 
                 i = 1;
-                //Long bookId = new Long(resultSet.getLong(i++));
+                Long bookId = new Long(resultSet.getLong(i++));
                 Long bikeId = new Long(resultSet.getLong(i++));
+                String emailQuery = resultSet.getString(i++);
                 String creditCard = resultSet.getString(i++);
                 Calendar initDate = Calendar.getInstance();
                 initDate.setTime(resultSet.getTimestamp(i++));
@@ -145,7 +146,7 @@ public abstract class AbstractSqlBookDao implements SqlBookDao {
                 int bookRate = resultSet.getInt(i++);
 
                 
-                books.add(new Book(bikeId, email, creditCard, initDate,
+                books.add(new Book(bookId, bikeId, emailQuery, creditCard, initDate,
                         endDate, numberBikes, bookRate, bookDate));
 
             }

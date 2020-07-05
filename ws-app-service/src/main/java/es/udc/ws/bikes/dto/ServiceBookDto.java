@@ -2,6 +2,8 @@ package es.udc.ws.bikes.dto;
 
 import java.util.Calendar;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class ServiceBookDto {
 	
 	private Long bookId;
@@ -28,6 +30,15 @@ public class ServiceBookDto {
 	public ServiceBookDto(Long bookId, String email, int rating) {
 		this.bookId = bookId;
 		this.email = email;
+		this.rating = rating;
+	}
+	
+	public ServiceBookDto(Long bookId, String email, Calendar initDate, 
+			Calendar endDate, int rating) {
+		this.bookId = bookId;
+		this.email = email;
+		this.initDate = initDate;
+		this.endDate = endDate;
 		this.rating = rating;
 	}
 
@@ -93,6 +104,11 @@ public class ServiceBookDto {
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	public int getDays() {
+		Long days = (endDate.getTimeInMillis() - initDate.getTimeInMillis()) / (24 * 60 * 60 * 1000);
+		return days.intValue();
 	}
 	
 }

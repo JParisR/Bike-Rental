@@ -121,31 +121,21 @@ public class UserBikeServiceClient {
         	
         	try {
         		
-        		List<UserClientBookDto> Lista = clientBikeService.findBooks(args[1]);
-        		String ratingString;
+        		List<UserClientBookDto> lista = clientBikeService.findBooks(args[1]);
         		
-        		System.out.println("Found "+ Lista.size() + " reservation(s) with mail '"+ args[1]+"'");
+        		System.out.println("Found " + lista.size() + " reservation(s) with email '"
+        				+ args[1] + "'");
         		
-        		for(int i = 0 ; i< Lista.size();i++) {
-        			UserClientBookDto book = Lista.get(i);
+        		for(int i = 0 ; i< lista.size();i++) {
+        			UserClientBookDto book = lista.get(i);
         			
-        			int rate = book.getRating();
-        			if(rate == -1)
-        				ratingString = "Not rated yet";
-        			else 
-        				ratingString = String.valueOf(rate);
-        			
-                	System.out.println("BookId: "+ book.getBookId()+",\n"+
-                						"BikeId: " +book.getBikeId()+",\n"+
-                						"Email: "+ book.getEmail()+",\n"+
-                						"CreditCardNumber: "+ book.getCreditCard()+",\n"+
-                						"StartDate: " + book.getStartDate().getTime()+",\n"+
-                						"EndDate: " + book.getEndDate().getTime()+",\n"+
-                						"NumBikes: "+ book.getUnits()+",\n"+
-                						"Rate: "+ ratingString);        
-                	
-                	
-                	
+                	System.out.print("BookId: " + book.getBookId() + ", ");
+                	System.out.print("days: " + book.getDays() + ", ");
+                	if (book.getRating() != -1) {
+                		System.out.println("rate: " + book.getRating());       
+                	} else {
+                		System.out.println("not rated yet");
+                	}
                 }
         		
         	} catch (Exception ex) {

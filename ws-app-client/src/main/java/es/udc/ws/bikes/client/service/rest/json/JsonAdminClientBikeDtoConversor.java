@@ -21,6 +21,10 @@ import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
 public class JsonAdminClientBikeDtoConversor {
+	
+	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
+	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
+	
 	public static JsonNode toJsonObject(AdminClientBikeDto bike) throws IOException {
 
 		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
@@ -75,10 +79,9 @@ public class JsonAdminClientBikeDtoConversor {
 			throw new ParsingException(e);
 		}
 	}
-	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
-	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
 
-	private static AdminClientBikeDto toClientBikeDto(JsonNode bikeNode) throws ParsingException {
+	private static AdminClientBikeDto toClientBikeDto(JsonNode bikeNode) throws ParsingException,
+			ParseException {
 		if (bikeNode.getNodeType() != JsonNodeType.OBJECT) {
 			throw new ParsingException("Unrecognized JSON (object expected)");
 		} else {
@@ -90,15 +93,13 @@ public class JsonAdminClientBikeDtoConversor {
 			String name = bikeObject.get("name").textValue().trim();
 			String description = bikeObject.get("description").textValue().trim();
 			JsonNode startDateNode = bikeObject.get("startDate");
-			//Calendar startDate = getDate(startDateNode);
 			
 			
 			Calendar startDate = Calendar.getInstance();
 			try {
 				startDate.setTime(sdf.parse(startDateNode.asText()));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw e;
 			}
 						
 			float price = bikeObject.get("price").floatValue();
@@ -108,23 +109,6 @@ public class JsonAdminClientBikeDtoConversor {
 		}
 	}
 	
-	private static Calendar getDate(JsonNode dateNode) {
-
-		if (dateNode == null) {
-			return null;
-		}
-		int day = dateNode.get("day").intValue();
-		int month = dateNode.get("month").intValue();
-		int year = dateNode.get("year").intValue();
-		Calendar releaseDate = Calendar.getInstance();
-
-		releaseDate.set(Calendar.DAY_OF_MONTH, day);
-		releaseDate.set(Calendar.MONTH, month - 1);
-		releaseDate.set(Calendar.YEAR, year);
-
-		return releaseDate;
-
-	}
 	
 	private static ObjectNode getNodeFromDate(Calendar date) {
 

@@ -10,30 +10,33 @@ public class UserClientBookDto {
     private String creditCard;
     private Calendar startDate;
     private Calendar endDate;
-    private int units;
+    private int days;
+	private int units;
     private int rating;
     
     public UserClientBookDto(Long bikeId, String email, String creditCard, Calendar startDate, 
 			 Calendar endDate, int units) {
-
     	this.bikeId = bikeId;
     	this.email = email;
     	this.creditCard = creditCard;
     	this.startDate = startDate;
     	this.endDate = endDate;
     	this.units = units;
-    
+   
     }
     
     public UserClientBookDto(Long bookId, Long bikeId, String email, String creditCard, 
-    						 Calendar startDate, Calendar endDate, int units) {
-		
+    						 Calendar startDate, Calendar endDate, int units) {	
     	this(bikeId, email, creditCard, startDate, endDate, units);
     	this.bookId = bookId;
-	
     }
     
-    
+    public UserClientBookDto(Long bookId, String email, int days, int rating) {
+    	this.bookId = bookId;
+    	this.email = email;
+    	this.days = days;
+    	this.rating = rating;
+    }
     
     public UserClientBookDto(Long bookId, String email, int rating) {
     	this.bookId = bookId;
@@ -87,6 +90,14 @@ public class UserClientBookDto {
 
 	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
+	}
+	
+	public int getDays() {
+		return days;
+	}
+
+	public void setDays(int days) {
+		this.days = days;
 	}
 
 	public int getUnits() {

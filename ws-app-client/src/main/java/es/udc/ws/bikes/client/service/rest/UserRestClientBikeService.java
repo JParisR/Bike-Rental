@@ -145,7 +145,21 @@ public class UserRestClientBikeService implements UserClientBikeService {
     
     public List<UserClientBookDto> findBooks(String email) {
 		
-    	return null;
+    	try {
+    		HttpResponse response = Request.Get(getEndpointAddress() + "books?email=" + 
+    				URLEncoder.encode(email, "UTF-8")).
+    				execute().returnResponse();
+		
+		
+			validateStatusCode(HttpStatus.SC_OK, response);
+			
+			return JsonUserClientBookDtoConversor.toClientBookDtos(
+                    response.getEntity().getContent());
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+    	
     	
     }
     
