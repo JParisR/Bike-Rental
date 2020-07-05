@@ -281,7 +281,7 @@ public class BikeServiceTest {
 		Bike bike = createBike(getValidBike());
 		try {
 			Calendar newDate = Calendar.getInstance();
-			newDate.set(Calendar.MONTH, Calendar.NOVEMBER);
+			newDate.add(Calendar.DAY_OF_MONTH, -1);
 			float newPrice = 24.95f;
 			Bike bikeToUpdate = new Bike(bike.getBikeId(), "Bike name", "Bike description", newDate, newPrice, 1);
 			

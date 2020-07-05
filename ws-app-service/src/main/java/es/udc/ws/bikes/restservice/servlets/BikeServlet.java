@@ -100,13 +100,8 @@ public class BikeServlet extends HttpServlet {
 			return;
 
 		}
-		if (!bikeId.equals(bikeDto.getBikeId())) {
-			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST, JsonServiceExceptionConversor
-					.toInputValidationException(new InputValidationException("Invalid Request: " + "invalid bikeId")),
-					null);
-			return;
-		}
 		Bike bike = BikeToBikeDtoConversor.toBike(bikeDto);
+		bike.setBikeId(bikeId);
 		try {
 			BikeServiceFactory.getService().updateBike(bike);
 		} catch (InputValidationException ex) {

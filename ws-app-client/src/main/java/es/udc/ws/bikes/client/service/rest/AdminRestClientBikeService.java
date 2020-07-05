@@ -57,7 +57,7 @@ public class AdminRestClientBikeService implements AdminClientBikeService {
 
         try {
 
-            HttpResponse response = Request.Put(getEndpointAddress() + "bikes/" + bike.getBikeId()).
+            HttpResponse response = Request.Put(getEndpointAddress() + "bikes/" + Long.toString(bike.getBikeId())).
                     bodyStream(toInputStream(bike), ContentType.create("application/json")).
                     execute().returnResponse();
 
@@ -106,7 +106,8 @@ public class AdminRestClientBikeService implements AdminClientBikeService {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ObjectMapper objectMapper = ObjectMapperFactory.instance();
-            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, JsonAdminClientBikeDtoConversor.toJsonObject(bike));
+            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream, 
+            		JsonAdminClientBikeDtoConversor.toJsonObject(bike));
 
             return new ByteArrayInputStream(outputStream.toByteArray());
 

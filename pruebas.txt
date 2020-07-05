@@ -5,13 +5,13 @@ mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 3' 'Bicicleta de carreras' '01-09-2020' 15 3"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 4' 'Bicicleta de montaña 2' '01-07-2019' 10 3"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 5' 'Bicicleta de carreras 2' '01-09-2020' 15 0"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 6' '' '01-09-2020' 8 3"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-a 'Bicicleta 6' ' ' '01-09-2020' 8 3"
 
 
 //2. Buscar modelo bicicleta (user)
 //-f <keywords> <date> 
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f 'De CLeta' '15-08-2020'"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f '' '15-08-2020'"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.UserBikeServiceClient" -Dexec.args="-f ' ' '15-08-2020'"
 
 
 //3. Reservar bicicleta (user)
@@ -36,7 +36,7 @@ mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 2 'Bicicleta 2 bis' 'Bicicleta de paseo' '15-09-2020' 10 10"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 9999 'Bicicleta 7' 'Bicicleta de nueva' '01-02-2021' 12 4"
 mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 3 'Bicicleta 3 bis' 'Bicicleta de carreras modificada' '01-02-2021' 0 4"
-mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 3 '' 'Bicicleta modificada' '01-02-2021' 0 4"
+mvn exec:java -Dexec.mainClass="es.udc.ws.bikes.client.ui.AdminBikeServiceClient" -Dexec.args="-u 3 ' ' 'Bicicleta modificada' '01-02-2021' 0 4"
 
 //5. Puntuar reserva
 //-rb <id> <userEmail> <points>

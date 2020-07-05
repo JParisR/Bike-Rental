@@ -47,7 +47,7 @@ public class BikeServiceImpl implements BikeService{
 			throw new InputValidationException("The name can not be empty.");
 		}
 		if (bike.getPrice() <= 0) {
-			throw new InputValidationException("The price can not be \"" + bike.getUnits() +
+			throw new InputValidationException("The price can not be \"" + bike.getPrice() +
 					"\". Must be greater than 0.");
 		}
 		
@@ -135,11 +135,12 @@ public class BikeServiceImpl implements BikeService{
 				connection.setAutoCommit(false);
 
 				/* Do work. */
-				Book bookAux = bookDao.findByBikeId(connection, bike.getBikeId());
-				if (bookAux.getInitDate().after(bike.getStartDate()) ) {
-					throw new InvalidStartDateToUpdateException(bookAux.getBikeId(), bookAux.getInitDate()); 
-				}
-				
+				try {
+					Book bookAux = bookDao.findByBikeId(connection, bike.getBikeId());
+					if (bookAux.getInitDate().before(bike.getStartDate()) ) {
+						throw new InvalidStartDateToUpdateException(bookAux.getBikeId(), bookAux.getInitDate()); 
+					}
+				} catch (InstanceNotFoundException e) {}
 				bikeDao.update(connection, bike);
 				/* Commit. */
 				connection.commit();

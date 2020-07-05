@@ -57,7 +57,7 @@ public class AdminBikeServiceClient {
         	   Calendar startDate = Calendar.getInstance();
         	   String date[] = args[4].split("-");
         	   startDate.set(Integer.valueOf(date[2]), 
-        			   			Integer.valueOf(date[1]), 
+        			   			Integer.valueOf(date[1]) - 1, 
         			   			Integer.valueOf(date[0]));
         	   
                clientBikeService.updateBike(new AdminClientBikeDto(Long.valueOf(args[1]), args[2], args[3], 
@@ -103,6 +103,11 @@ public class AdminBikeServiceClient {
         if(expectedArgs != args.length) {
             printUsageAndExit();
         }
+        for (int i = 0; i < args.length; i++) {
+			if (args[i].equals(" ")) {
+				args[i] = "";
+			}
+		}
         for(int i = 0 ; i< numericArguments.length ; i++) {
             int position = numericArguments[i];
             try {
