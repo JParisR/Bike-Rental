@@ -11,7 +11,7 @@ public class BikeToBikeDtoConversor {
 		List<ServiceBikeDto> bikeDtos = new ArrayList<>(bikes.size());
 		for (int i = 0; i < bikes.size(); i++) {
 			Bike bike = bikes.get(i);
-			bikeDtos.add(toBikeDto(bike));
+			bikeDtos.add(toFindBikeDto(bike));
 		}
 		return bikeDtos;
 	}
@@ -19,6 +19,12 @@ public class BikeToBikeDtoConversor {
 	public static ServiceBikeDto toBikeDto(Bike bike) {
 		return new ServiceBikeDto(bike.getBikeId(), bike.getName(), bike.getDescription(), 
 				bike.getPrice(), bike.getUnits(), bike.getStartDate());
+	}
+	
+	public static ServiceBikeDto toFindBikeDto(Bike bike) {
+		return new ServiceBikeDto(bike.getBikeId(),  bike.getName(), bike.getDescription(), 
+				bike.getPrice(), bike.getUnits(), bike.getStartDate(), bike.getNumberOfRates(),
+				bike.getAvgRate());
 	}
 
 	public static Bike toBike(ServiceBikeDto bike) {

@@ -10,10 +10,8 @@ public class ServiceBikeDto {
 	private Calendar startDate;
 	private float price;
 	private int units;
-	private Calendar creationDate;
 	private int numberOfRates;
 	private double avgRate;
-	
 	
 	public ServiceBikeDto(String name, String description, float price, int units, Calendar startDate) {
 		this.name = name;
@@ -27,6 +25,14 @@ public class ServiceBikeDto {
 		this(name, description, price, units, startDate);
 		this.bikeId = bikeId;
 	}
+	
+	public ServiceBikeDto(Long bikeId, String name, String description, float price, int units, Calendar startDate,
+			int numberOfRates, double avgRate) {
+		this(bikeId, name, description, price, units, startDate);
+		this.numberOfRates = numberOfRates;
+		this.avgRate = avgRate;
+	}
+	
 	public Long getBikeId() {
 		return bikeId;
 	}
@@ -73,14 +79,6 @@ public class ServiceBikeDto {
 
 	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
-	}
-
-	public Calendar getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Calendar creationDate) {
-		this.creationDate = creationDate;
 	}
 
 	public int getNumberOfRates() {

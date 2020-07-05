@@ -1,8 +1,11 @@
 package es.udc.ws.bikes.restservice.servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -123,43 +126,20 @@ public class BikeServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String path = ServletUtils.normalizePath(req.getPathInfo());
-		if (path == null || path.length() == 0) {
-			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST, JsonServiceExceptionConversor
-					.toInputValidationException(new InputValidationException("Invalid Request: " + "invalid bike id")),
-					null);
-			return;
-		}
-		String bikeIdAsString = path.substring(1);
-		Long bikeId;
-		try {
-			bikeId = Long.valueOf(bikeIdAsString);
-		} catch (NumberFormatException ex) {
-			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
-					JsonServiceExceptionConversor.toInputValidationException(new InputValidationException(
-							"Invalid Request: " + "invalid bike id '" + bikeIdAsString + "'")),
-					null);
-
-			return;
-		}
-		try {
-			BikeServiceFactory.getService().removeBike(bikeId);
-		} catch (InstanceNotFoundException ex) {
-			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
-					JsonServiceExceptionConversor.toInstanceNotFoundException(ex), null);
-			return;
-		}
-		ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NO_CONTENT, null, null);
-	}
-
-	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = ServletUtils.normalizePath(req.getPathInfo());
+		List<Bike> bikes;
+		List<ServiceBikeDto> bikeDtos;
 		if (path == null || path.length() == 0) {
-			String keyWords = req.getParameter("keywords");
-			List<Bike> bikes = BikeServiceFactory.getService().findBikesByKeywords(keyWords);
-			List<ServiceBikeDto> bikeDtos = BikeToBikeDtoConversor.toBikeDtos(bikes);
+			String keywords = req.getParameter("keywords");
+			if (req.getParameter("startDate") != null) {
+				String strStartDate = req.getParameter("startDate");
+				Calendar startDate = calendarFromString(strStartDate);
+				bikes = BikeServiceFactory.getService().findBikesByKeywords(keywords, startDate);
+			} else {
+				bikes = BikeServiceFactory.getService().findBikesByKeywords(keywords);
+			}
+			bikeDtos = BikeToBikeDtoConversor.toBikeDtos(bikes);
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
 					JsonServiceBikeDtoConversor.toArrayNode(bikeDtos), null);
 		} else {
@@ -168,6 +148,17 @@ public class BikeServlet extends HttpServlet {
 							new InputValidationException("Invalid Request: " + "invalid path " + path)),
 					null);
 		}
+	}
+	
+	private static Calendar calendarFromString(String date) {
+		String[] strDate = date.split("-");
+		Calendar cDate = Calendar.getInstance();
+		cDate.clear();
+		cDate.set(Calendar.DAY_OF_MONTH, Integer.valueOf(strDate[0]));
+		cDate.set(Calendar.MONTH, Integer.valueOf(strDate[1]) - 1);
+		cDate.set(Calendar.YEAR, Integer.valueOf(strDate[2]));
+		
+		return cDate;
 	}
 	
 }

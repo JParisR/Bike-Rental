@@ -33,27 +33,29 @@ public class UserBikeServiceClient {
             // [find] bikeServiceClient -f <keywords> <availabilityDate>
                    
             try {
-            	Date date = null;
-            	date = dateFormatter.parse(args[2]);
-            	Calendar startDate = Calendar.getInstance();
-            	startDate.setTime(date);
-                
-            	List<UserClientBikeDto> bikes = clientBikeService.findBikes(args[1], startDate);
-                
-            	System.out.println("Found " + bikes.size() + " bike(s) with keywords '" + args[1] + "'");
-                
-            	for (int i = 0; i < bikes.size(); i++) {
-                    UserClientBikeDto bikeDto = bikes.get(i);
+            	
+            	List<UserClientBikeDto> bikes;
+            	
+        		Date date = null;
+        		date = dateFormatter.parse(args[2]);
+        		Calendar startDate = Calendar.getInstance();
+        		startDate.setTime(date);
+            		
+        		bikes = clientBikeService.findBikes(args[1], startDate);
+        		System.out.println("Found " + bikes.size() + " bike(s) with keywords '" + args[1] + "'" + 
+        				" and available from " + args[2]);
+            
+        		for (int i = 0; i < bikes.size(); i++) {
+                	UserClientBikeDto bikeDto = bikes.get(i);
                     
-                    System.out.println("Id: " + bikeDto.getBikeId() +
-                    		", Name: " + bikeDto.getName() +
-                            ", Description: " + bikeDto.getDescription() +
-                            ", StartDate: " + bikeDto.getStartDate().toString() +                            
-                            ", Price: " + bikeDto.getPrice() +
-                    		", Units: " + bikeDto.getUnits() +
-                    		", NumberOfRates: " + bikeDto.getNumberOfRates() +
-                    		", AvgRate: " + bikeDto.getAvgRate());
-                }
+                	System.out.print("Id: " + bikeDto.getBikeId());
+                	if (bikeDto.getNumberOfRates() == 0) {
+                		System.out.println(", no rates yet");
+                	} else {
+                    	System.out.print(", Number of rates: " + bikeDto.getNumberOfRates());
+                    	System.out.println(", Mean rate: " + bikeDto.getAvgRate());
+                	}
+            	}
             	
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
@@ -157,6 +159,11 @@ public class UserBikeServiceClient {
 	public static void validateArgs(String[] args, int expectedArgs, int[] numericArguments) {
 		if(expectedArgs != args.length) {
 			printUsageAndExit();
+		}
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals(" ")) {
+				args[i] = "";
+			}
 		}
 		for(int i = 0 ; i< numericArguments.length ; i++) {
 			int position = numericArguments[i];

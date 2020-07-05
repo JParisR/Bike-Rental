@@ -38,12 +38,35 @@ public class UserRestClientBikeService implements UserClientBikeService {
     private String endpointAddress;
 	
 	@Override
-    public List<UserClientBikeDto> findBikes(String keywords, Calendar startDate) {
+    public List<UserClientBikeDto> findBikes(String keywords) {
 
         try {
 
             HttpResponse response = Request.Get(getEndpointAddress() + "bikes?keywords="
                             + URLEncoder.encode(keywords, "UTF-8")).
+                    execute().returnResponse();
+
+            validateStatusCode(HttpStatus.SC_OK, response);
+
+            return JsonUserClientBikeDtoConversor.toClientBikeDtos(response.getEntity()
+                    .getContent());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+	
+	@Override
+	public List<UserClientBikeDto> findBikes(String keywords, Calendar startDate) {
+
+        try {
+        	
+        	String strStartDate = calendarToString(startDate);
+
+            HttpResponse response = Request.Get(getEndpointAddress() + "bikes?keywords="
+                            + URLEncoder.encode(keywords, "UTF-8") + "&startDate=" 
+                            + URLEncoder.encode(strStartDate, "UTF-8")).
                     execute().returnResponse();
 
             validateStatusCode(HttpStatus.SC_OK, response);
@@ -70,14 +93,10 @@ public class UserRestClientBikeService implements UserClientBikeService {
         	
         	iDate = book.getStartDate();
         	eDate = book.getEndDate();
-        	initDate = Integer.toString(iDate.get(Calendar.DAY_OF_MONTH)) + "-" +
-        			Integer.toString(iDate.get(Calendar.MONTH) + 1) + "-" +
-        			Integer.toString(iDate.get(Calendar.YEAR));
-        	endDate = Integer.toString(eDate.get(Calendar.DAY_OF_MONTH)) + "-" +
-        			Integer.toString(eDate.get(Calendar.MONTH) + 1) + "-" +
-        			Integer.toString(eDate.get(Calendar.YEAR));
-
-            HttpResponse response = Request.Post(getEndpointAddress() + "books").
+        	initDate = calendarToString(iDate);
+        	endDate = calendarToString(eDate);
+        	
+            HttpResponse response = Request.Post(getEndpointAddress() + "books/").
             		bodyForm(
                             Form.form().
                             add("bikeId", Long.toString(book.getBikeId())).
@@ -136,6 +155,12 @@ public class UserRestClientBikeService implements UserClientBikeService {
                     .getParameter(ENDPOINT_ADDRESS_PARAMETER);
         }
         return endpointAddress;
+    }
+    
+    private String calendarToString(Calendar date) {
+    	return Integer.toString(date.get(Calendar.DAY_OF_MONTH)) + "-" +
+				Integer.toString(date.get(Calendar.MONTH) + 1) + "-" +
+				Integer.toString(date.get(Calendar.YEAR));
     }
 
     private InputStream toInputStream(UserClientBookDto book) {

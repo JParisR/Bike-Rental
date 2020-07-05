@@ -108,7 +108,7 @@ public class Bike {
 		this.creationDate = creationDate;
 	}
 
-	public double getNumberOfRates() {
+	public int getNumberOfRates() {
 		return numberOfRates;
 	}
 

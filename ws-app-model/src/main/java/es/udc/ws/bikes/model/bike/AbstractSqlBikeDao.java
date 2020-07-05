@@ -146,8 +146,11 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
                 }
                 queryString += " LOWER(description) LIKE LOWER(?)";
             }
+            queryString += " AND";
+        } else {
+        	queryString += " WHERE";
         }
-        queryString += " AND startDate <= ?";
+        queryString += " startDate <= ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
         	
@@ -161,7 +164,7 @@ public abstract class AbstractSqlBikeDao implements SqlBikeDao {
             
             date.set(Calendar.MILLISECOND, 0);
             Timestamp dateBd = new Timestamp(date.getTimeInMillis());
-            preparedStatement.setTimestamp(i++, dateBd);
+            preparedStatement.setTimestamp(++i, dateBd);
 
             /* Execute query. */
             ResultSet resultSet = preparedStatement.executeQuery();

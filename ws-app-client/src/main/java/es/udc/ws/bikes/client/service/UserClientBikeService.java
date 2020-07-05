@@ -10,6 +10,8 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface UserClientBikeService {
  
+    public List<UserClientBikeDto> findBikes(String keywords);
+    
     public List<UserClientBikeDto> findBikes(String keywords, Calendar startDate);
 
     public Long rentBike(UserClientBookDto book) 

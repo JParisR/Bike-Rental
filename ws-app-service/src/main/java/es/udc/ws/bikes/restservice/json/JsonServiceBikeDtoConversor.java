@@ -42,12 +42,24 @@ public class JsonServiceBikeDtoConversor {
 		return bikeObject;
 	}
 	
+	public static ObjectNode toObjectArrayNode(ServiceBikeDto bike) {
+		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
+		
+		if (bike.getBikeId() != null) {
+			bikeObject.put("bikeId", bike.getBikeId());
+		}
+		bikeObject.put("numberOfRates", bike.getNumberOfRates()).
+			put("avgRate", bike.getAvgRate());
+		
+		return bikeObject;
+	}
+	
 	public static ArrayNode toArrayNode(List<ServiceBikeDto> bikes) {
 
 		ArrayNode bikesNode = JsonNodeFactory.instance.arrayNode();
 		for (int i = 0; i < bikes.size(); i++) {
 			ServiceBikeDto bikeDto = bikes.get(i);
-			ObjectNode bikeObject = toObjectNode(bikeDto);
+			ObjectNode bikeObject = toObjectArrayNode(bikeDto);
 			bikesNode.add(bikeObject);
 		}
 
