@@ -133,15 +133,23 @@ public class BikeServlet extends HttpServlet {
 				bikes = BikeServiceFactory.getService().findBikesByKeywords(keywords, startDate);
 			} else {
 				bikes = BikeServiceFactory.getService().findBikesByKeywords(keywords);
-			}
+			}	
 			bikeDtos = BikeToBikeDtoConversor.toBikeDtos(bikes);
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
 					JsonServiceBikeDtoConversor.toArrayNode(bikeDtos), null);
 		} else {
-			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
-					JsonServiceExceptionConversor.toInputValidationException(
-							new InputValidationException("Invalid Request: " + "invalid path " + path)),
-					null);
+			String bikeIdStr = path.substring(1);
+			Long bikeId = Long.valueOf(bikeIdStr);
+			Bike bike;
+			try {
+				bike = BikeServiceFactory.getService().findBike(bikeId);
+				ServiceBikeDto bikeDto = BikeToBikeDtoConversor.toBikeDto(bike);
+				ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+						JsonServiceBikeDtoConversor.toObjectNode(bikeDto), null);
+			} catch (InstanceNotFoundException e) {
+				ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND, JsonServiceExceptionConversor
+						.toInstanceNotFoundException(e), null);
+			}
 		}
 	}
 	

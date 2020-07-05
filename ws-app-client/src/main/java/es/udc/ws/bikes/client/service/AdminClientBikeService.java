@@ -13,6 +13,6 @@ public interface AdminClientBikeService {
     public void updateBike(AdminClientBikeDto bike)
             throws InputValidationException, InstanceNotFoundException;
     
-    public List<AdminClientBikeDto> findBikesById(Long bikeId);
+    public AdminClientBikeDto findBikesById(Long bikeId);
 
 }

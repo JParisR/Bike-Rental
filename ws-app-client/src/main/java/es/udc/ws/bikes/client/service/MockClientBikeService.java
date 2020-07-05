@@ -18,14 +18,15 @@ public class MockClientBikeService implements AdminClientBikeService {
     }
     
     @Override
-    public List<AdminClientBikeDto> findBikesById(Long bikeId) {
+    public AdminClientBikeDto findBikesById(Long bikeId) {
     	
-    	List<AdminClientBikeDto> bikes = new ArrayList<>();
+    	/*List<AdminClientBikeDto> bikes = new ArrayList<>();
 
         bikes.add(new AdminClientBikeDto());
-        bikes.add(new AdminClientBikeDto());
-
-        return bikes;
+        bikes.add(new AdminClientBikeDto());*/
+    	
+    	AdminClientBikeDto bikeDto = new AdminClientBikeDto();
+        return bikeDto;
         
     }
 

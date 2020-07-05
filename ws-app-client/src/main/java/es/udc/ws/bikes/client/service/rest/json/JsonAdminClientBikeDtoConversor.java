@@ -21,6 +21,10 @@ import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
 
 public class JsonAdminClientBikeDtoConversor {
+	
+	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
+	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
+	
 	public static JsonNode toJsonObject(AdminClientBikeDto bike) throws IOException {
 
 		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
@@ -75,15 +79,13 @@ public class JsonAdminClientBikeDtoConversor {
 			throw new ParsingException(e);
 		}
 	}
-	public final static String CONVERSION_PATTERN = "dd-MM-yyyy";
-	public final static SimpleDateFormat sdf = new SimpleDateFormat(CONVERSION_PATTERN, Locale.ENGLISH);
 
 	private static AdminClientBikeDto toClientBikeDto(JsonNode bikeNode) throws ParsingException {
 		if (bikeNode.getNodeType() != JsonNodeType.OBJECT) {
 			throw new ParsingException("Unrecognized JSON (object expected)");
 		} else {
 			ObjectNode bikeObject = (ObjectNode) bikeNode;
-
+			
 			JsonNode bikeIdNode = bikeObject.get("bikeId");
 			Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 
