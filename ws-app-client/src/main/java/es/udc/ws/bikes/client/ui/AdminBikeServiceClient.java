@@ -9,7 +9,6 @@ import es.udc.ws.bikes.client.service.AdminClientBikeServiceFactory;
 import es.udc.ws.bikes.client.service.dto.AdminClientBikeDto;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
-import java.util.List;
 import java.util.Locale;
 
 public class AdminBikeServiceClient {
@@ -79,13 +78,15 @@ public class AdminBikeServiceClient {
 
             try {
                 AdminClientBikeDto bikeDto = clientBikeService.findBikesById(Long.valueOf(args[1]));
-                /*for (int i = 0; i < bikes.size(); i++) {
-                	AdminClientBikeDto bikeDto = bikes.get(i);*/
-	            System.out.println("Id: " + bikeDto.getBikeId() +
-	                            ", Description: " + bikeDto.getDescription() +
-	                            //", StartDate: " + bikeDto.getStartDate().toString() +                            
-	                            ", Price: " + bikeDto.getPrice() +
-	                    		", Units: " + bikeDto.getUnits());
+                
+	            System.out.println("ID: " + bikeDto.getBikeId() +
+	            				", name: " + bikeDto.getName() +
+	                            ", description: " + bikeDto.getDescription() +
+	                            ", availability date: " + stringDate(bikeDto.getStartDate()) +
+	                            ", price: " + bikeDto.getPrice() +
+	                    		", units: " + bikeDto.getUnits() + 
+	            				", number of rates: " + bikeDto.getNumberOfRates() +
+	            				", mean rate: " + bikeDto.getAvgRate());
 	                
       
             } catch (NumberFormatException ex) {
@@ -96,7 +97,13 @@ public class AdminBikeServiceClient {
         }
 
     }
-
+    
+    private static String stringDate(Calendar date) {
+		return Integer.toString(date.get(Calendar.DAY_OF_MONTH)) + "-" +
+				Integer.toString(date.get(Calendar.MONTH) + 1) + "-" +
+				Integer.toString(date.get(Calendar.YEAR));
+	}
+    
     public static void validateArgs(String[] args, int expectedArgs,
                                     int[] numericArguments) {
         if(expectedArgs != args.length) {

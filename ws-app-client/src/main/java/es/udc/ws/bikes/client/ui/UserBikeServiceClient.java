@@ -48,7 +48,9 @@ public class UserBikeServiceClient {
         		for (int i = 0; i < bikes.size(); i++) {
                 	UserClientBikeDto bikeDto = bikes.get(i);
                     
-                	System.out.print("Id: " + bikeDto.getBikeId());
+                	System.out.print("Name: " + bikeDto.getName());
+                	System.out.print(", description: " + bikeDto.getDescription());
+                	System.out.print(", availability date: " + stringDate(bikeDto.getStartDate()));
                 	if (bikeDto.getNumberOfRates() == 0) {
                 		System.out.println(", no rates yet");
                 	} else {
@@ -129,12 +131,14 @@ public class UserBikeServiceClient {
         		for(int i = 0 ; i< lista.size();i++) {
         			UserClientBookDto book = lista.get(i);
         			
-                	System.out.print("BookId: " + book.getBookId() + ", ");
-                	System.out.print("days: " + book.getDays() + ", ");
+                	System.out.print("BookId: " + book.getBookId());
+                	System.out.print(", bikeId: " + book.getBikeId());
+                	System.out.print(", start date: " + stringDate(book.getStartDate()));
+                	System.out.print(", days: " + book.getDays());
                 	if (book.getRating() != -1) {
-                		System.out.println("rate: " + book.getRating());       
+                		System.out.println(", rate: " + book.getRating());       
                 	} else {
-                		System.out.println("not rated yet");
+                		System.out.println(", not rated yet");
                 	}
                 }
         		
@@ -164,6 +168,12 @@ public class UserBikeServiceClient {
 			}
 		}
 	}
+	
+	private static String stringDate(Calendar date) {
+		return Integer.toString(date.get(Calendar.DAY_OF_MONTH)) + "-" +
+				Integer.toString(date.get(Calendar.MONTH) + 1) + "-" +
+				Integer.toString(date.get(Calendar.YEAR));
+	}
 
 	public static void printUsageAndExit() {
 		printUsage();
@@ -172,9 +182,9 @@ public class UserBikeServiceClient {
 
 	public static void printUsage() {
 		System.err.println("Usage:\n" +
-				"    [find Books]    	bikeserviceClient -fr <email>\n" +
-				"    [find Bikes]   	bikeserviceClient -f <keywords> <date>\n" +
-				"    [reserve]	bikeserviceClient -r <userId> <bikeId> <creditCardNumber> <startDate> <endDate> <units>\n" +
+				"    [find Books]   bikeserviceClient -fr <email>\n" +
+				"    [find Bikes]   bikeserviceClient -f <keywords> <date>\n" +
+				"    [reserve]		bikeserviceClient -r <userId> <bikeId> <creditCardNumber> <startDate> <endDate> <units>\n" +
 				"    [RateBook]  	bikeserviceClient -rb <bookId> <email> <rate>\n");
 	}
 }

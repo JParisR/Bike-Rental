@@ -124,17 +124,23 @@ public class BikeServlet extends HttpServlet {
 		List<Bike> bikes;
 		List<ServiceBikeDto> bikeDtos;
 		if (path == null || path.length() == 0) {
-			String keywords = req.getParameter("keywords");
-			if (req.getParameter("startDate") != null) {
+			try {
+				String keywords = req.getParameter("keywords");
 				String strStartDate = req.getParameter("startDate");
+				if (keywords == null || strStartDate == null) {
+					throw new InputValidationException("Wrong parameters.");
+				}
 				Calendar startDate = calendarFromString(strStartDate);
 				bikes = BikeServiceFactory.getService().findBikesByKeywords(keywords, startDate);
-			} else {
-				bikes = BikeServiceFactory.getService().findBikesByKeywords(keywords);
-			}	
-			bikeDtos = BikeToBikeDtoConversor.toBikeDtos(bikes);
-			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
-					JsonServiceBikeDtoConversor.toArrayNode(bikeDtos), null);
+			
+				bikeDtos = BikeToBikeDtoConversor.toBikeDtos(bikes);
+				ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+						JsonServiceBikeDtoConversor.toArrayNode(bikeDtos), null);
+			} catch (InputValidationException ex) {
+				ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+						JsonServiceExceptionConversor.toInputValidationException(ex), null);
+				return;
+			}
 		} else {
 			String bikeIdStr = path.substring(1);
 			Long bikeId = Long.valueOf(bikeIdStr);

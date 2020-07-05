@@ -37,18 +37,8 @@ public class JsonServiceBikeDtoConversor {
 			put("description", bike.getDescription()).
 			put("price", bike.getPrice()).
 			put("units", bike.getUnits()).
-			put("startDate", getStartDate(bike.getStartDate()));
-		
-		return bikeObject;
-	}
-	
-	public static ObjectNode toObjectArrayNode(ServiceBikeDto bike) {
-		ObjectNode bikeObject = JsonNodeFactory.instance.objectNode();
-		
-		if (bike.getBikeId() != null) {
-			bikeObject.put("bikeId", bike.getBikeId());
-		}
-		bikeObject.put("numberOfRates", bike.getNumberOfRates()).
+			put("startDate", getStartDate(bike.getStartDate())).
+			put("numberOfRates", bike.getNumberOfRates()).
 			put("avgRate", bike.getAvgRate());
 		
 		return bikeObject;
@@ -59,7 +49,7 @@ public class JsonServiceBikeDtoConversor {
 		ArrayNode bikesNode = JsonNodeFactory.instance.arrayNode();
 		for (int i = 0; i < bikes.size(); i++) {
 			ServiceBikeDto bikeDto = bikes.get(i);
-			ObjectNode bikeObject = toObjectArrayNode(bikeDto);
+			ObjectNode bikeObject = toObjectNode(bikeDto);
 			bikesNode.add(bikeObject);
 		}
 
@@ -82,9 +72,9 @@ public class JsonServiceBikeDtoConversor {
 				JsonNode startDateObject = bikeObject.get("startDate");
 				Calendar startDate = Calendar.getInstance();
 				startDate.clear();
-				startDate.set(Calendar.DAY_OF_MONTH, startDateObject.get("day").intValue());
-				startDate.set(Calendar.MONTH, startDateObject.get("month").intValue()-1);
-				startDate.set(Calendar.YEAR, startDateObject.get("year").intValue());
+				startDate.set(startDateObject.get("year").intValue(),
+						startDateObject.get("month").intValue()-1,
+						startDateObject.get("day").intValue());
 				
 				int units =  bikeObject.get("units").intValue();
 				float price = bikeObject.get("price").floatValue();

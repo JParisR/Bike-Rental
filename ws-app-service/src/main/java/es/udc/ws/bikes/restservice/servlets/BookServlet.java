@@ -87,7 +87,6 @@ public class BookServlet extends HttpServlet{
 			try {
 				date1 = new SimpleDateFormat("dd-MM-yyyy").parse(initDateString);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	initDate = Calendar.getInstance();
@@ -109,7 +108,6 @@ public class BookServlet extends HttpServlet{
 			try {
 				date2 = new SimpleDateFormat("dd-MM-yyyy").parse(endDateString);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	endDate = Calendar.getInstance();

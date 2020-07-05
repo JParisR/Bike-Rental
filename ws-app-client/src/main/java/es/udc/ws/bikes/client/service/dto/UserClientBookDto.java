@@ -31,9 +31,11 @@ public class UserClientBookDto {
     	this.bookId = bookId;
     }
     
-    public UserClientBookDto(Long bookId, String email, int days, int rating) {
+    public UserClientBookDto(Long bookId, Long bikeId, String email, Calendar startDate, int days, int rating) {
     	this.bookId = bookId;
+    	this.bikeId = bikeId;
     	this.email = email;
+    	this.startDate = startDate;
     	this.days = days;
     	this.rating = rating;
     }
@@ -83,7 +85,7 @@ public class UserClientBookDto {
 	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
 	}
-
+	
 	public Calendar getEndDate() {
 		return endDate;
 	}
@@ -91,7 +93,7 @@ public class UserClientBookDto {
 	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
-	
+
 	public int getDays() {
 		return days;
 	}
@@ -119,7 +121,7 @@ public class UserClientBookDto {
 	@Override
 	public String toString() {
 		return "UserClientBookDto [bookId=" + bookId + ", bikeId=" + bikeId + ", email=" + email + ", creditCard="
-				+ creditCard + ", startDate=" + startDate + ", endDate=" + endDate + ", units=" + units + ", rating="
+				+ creditCard + ", startDate=" + startDate + ", units=" + units + ", rating="
 				+ rating + "]";
 	}
 	

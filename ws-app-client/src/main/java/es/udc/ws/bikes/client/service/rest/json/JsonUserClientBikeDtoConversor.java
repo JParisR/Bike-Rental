@@ -2,6 +2,7 @@ package es.udc.ws.bikes.client.service.rest.json;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -65,10 +66,27 @@ public class JsonUserClientBikeDtoConversor {
 			JsonNode bikeIdNode = bikeObject.get("bikeId");
 			Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 
+			String name = bikeObject.get("name").asText();
+			String description = bikeObject.get("description").asText();
+			Calendar startDate = getDateFromString(bikeObject.get("startDate").asText());
 			int numberOfRates = bikeObject.get("numberOfRates").intValue();
 			double avgRate = bikeObject.get("avgRate").doubleValue();
-			return new UserClientBikeDto(bikeId, numberOfRates, avgRate);
+			
+			return new UserClientBikeDto(bikeId, name, description, startDate, numberOfRates, avgRate);
 		}
+	}
+	
+	private static Calendar getDateFromString(String date) {
+
+		String[] strDate = date.split("-");
+		Calendar calDate = Calendar.getInstance();
+
+		calDate.set(Integer.valueOf(strDate[2]), 
+				Integer.valueOf(strDate[1]) + 1, 
+				Integer.valueOf(strDate[0]));
+
+		return calDate;
+
 	}
 	
 }

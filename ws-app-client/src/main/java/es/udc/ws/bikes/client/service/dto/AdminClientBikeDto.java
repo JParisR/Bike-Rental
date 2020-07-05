@@ -10,28 +10,48 @@ public class AdminClientBikeDto {
     private Calendar startDate;
     private float price;
     private int units;
-
-    public AdminClientBikeDto() {
-    }    
+    private int numberOfRates;
+    private double avgRate;
     
-    public AdminClientBikeDto(String name, String description, Calendar startDate, float price, int units) {
 
+    public AdminClientBikeDto(String name, String description, Calendar startDate, float price, int units) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.price = price;
         this.units = units;
-
     }
     
-    public AdminClientBikeDto(Long bikeId, String name, String description, Calendar startDate, float price, int units) {
+    public AdminClientBikeDto(Long bikeId, String name, String description, Calendar startDate, float price, 
+    		int units) {
     	
     	this(name, description, startDate, price, units);
         this.bikeId = bikeId;
 
     }
+    
+    public AdminClientBikeDto(String name, String description, Calendar startDate, float price, int units,
+    		int numberOfRates, double avgRate) {
 
-    public Long getBikeId() {
+        this(name, description, startDate, price, units);
+        this.numberOfRates = numberOfRates;
+        this.avgRate = avgRate;
+
+    }
+    
+    public AdminClientBikeDto(Long bikeId, String name, String description, Calendar startDate, float price, 
+    		int units, int numberOfRates, double avgRate) {
+    	
+    	this(name, description, startDate, price, units, numberOfRates, avgRate);
+        this.bikeId = bikeId;
+
+    }
+
+    public AdminClientBikeDto() {
+    	
+	}
+
+	public Long getBikeId() {
         return bikeId;
     }
     
@@ -79,7 +99,23 @@ public class AdminClientBikeDto {
         this.units = units;
     }
     
-    @Override
+    public int getNumberOfRates() {
+		return numberOfRates;
+	}
+
+	public void setNumberOfRates(int numberOfRates) {
+		this.numberOfRates = numberOfRates;
+	}
+
+	public double getAvgRate() {
+		return avgRate;
+	}
+
+	public void setAvgRate(double avgRate) {
+		this.avgRate = avgRate;
+	}
+
+	@Override
     public String toString() {
         return "bikeDto [bikeId=" + bikeId + ", description=" + description + ", name=" + name
                 + ", startDate=" + startDate.toString() + "price=" + price + ", units=" + units + "]";

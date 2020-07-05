@@ -28,7 +28,8 @@ public class JsonUserClientBookDtoConversor {
 		}
 		
 		bookObject.put("email", book.getEmail()).put("bikeId", book.getBikeId()).
-		put("creditCard", book.getCreditCard()).put("numberBikes", book.getUnits());
+				put("creditCard", book.getCreditCard()).put("numberBikes", book.getUnits()).
+				put("rating", book.getRating());
 		bookObject.set("initDate", getNodeFromDate(book.getStartDate()));
 		bookObject.set("endDate", getNodeFromDate(book.getEndDate()));
 		
@@ -112,12 +113,14 @@ public class JsonUserClientBookDtoConversor {
 
 				JsonNode bookIdNode = bikeObject.get("bookId");
 				Long bookId = (bookIdNode != null) ? bookIdNode.longValue() : null;
-
+				
+				Long bikeId = bikeObject.get("bikeId").longValue();
 				String email = bikeObject.get("email").textValue();
+				Calendar startDate = getDateFromNode(bikeObject.get("initDate"));
 				int days = bikeObject.get("days").intValue();
 				int rating = bikeObject.get("rating").intValue();
 				
-				return new UserClientBookDto(bookId, email, days, rating);
+				return new UserClientBookDto(bookId, bikeId, email, startDate, days, rating);
 
 			}
 		} catch (ParsingException ex) {

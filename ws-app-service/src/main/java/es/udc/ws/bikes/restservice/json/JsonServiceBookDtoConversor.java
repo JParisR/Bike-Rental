@@ -63,8 +63,10 @@ public class JsonServiceBookDtoConversor {
 		if (book.getBookId() != null) {
 			bookObject.put("bookId", book.getBookId());
 		}
-		bookObject.put("email", book.getEmail()).put("rating", book.getRating()).
-				put("days", book.getDays());
+		bookObject.put("bikeId", book.getBikeId()).put("email", book.getEmail()).
+				put("numberOfBikes", book.getNumberBikes()).put("rating", book.getRating()).
+				put("creditCard", book.getCreditCard()).put("days", book.getDays());
+		bookObject.set("initDate", getNodeFromDate(book.getInitDate()));
 		
 		return bookObject;
 	}

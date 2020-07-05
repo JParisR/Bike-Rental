@@ -25,7 +25,8 @@ public class JsonAdminClientBookDtoConversor {
 			bikeObject.put("bookId", book.getBikeId());
 		}
 		
-		bikeObject.put("email", book.getEmail()).put("creditCard", book.getCreditCard()).put("units", book.getUnits());
+		bikeObject.put("email", book.getEmail()).put("creditCard", book.getCreditCard()).
+				put("units", book.getUnits());
 		bikeObject.set("startDate", getNodeFromDate(book.getStartDate()));
 		bikeObject.set("endDate", getNodeFromDate(book.getEndDate()));
 

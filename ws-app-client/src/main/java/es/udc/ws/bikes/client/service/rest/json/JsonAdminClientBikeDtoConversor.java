@@ -104,8 +104,11 @@ public class JsonAdminClientBikeDtoConversor {
 						
 			float price = bikeObject.get("price").floatValue();
 			int units = bikeObject.get("units").intValue();
+			int numberOfRates = bikeObject.get("numberOfRates").intValue();
+			double avgRate = bikeObject.get("avgRate").asDouble();
 
-			return new AdminClientBikeDto(bikeId, name, description, startDate, price, units);
+			return new AdminClientBikeDto(bikeId, name, description, startDate, price, units, 
+					numberOfRates, avgRate);
 		}
 	}
 	

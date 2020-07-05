@@ -23,7 +23,7 @@ public class BookToBookDtoConversor {
     }
 	
 	public static ServiceBookDto toFindBookDto(Book book) {
-		return new ServiceBookDto(book.getBookId(), book.getEmail(), book.getInitDate(),
+		return new ServiceBookDto(book.getBookId(), book.getBikeId(), book.getEmail(), book.getInitDate(),
 				book.getEndDate(), book.getBookRate());
 	}
 	

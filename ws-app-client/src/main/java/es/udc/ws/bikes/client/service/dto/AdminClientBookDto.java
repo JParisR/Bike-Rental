@@ -12,9 +12,6 @@ public class AdminClientBookDto {
     private Calendar endDate;
     private int units;
     
-    public AdminClientBookDto() {
-    }
-    
     public AdminClientBookDto(Long bookId, Long bikeId, String email, String creditCard, Calendar startDate, Calendar endDate, int units) {
 		
     	this.bookId = bookId;
