@@ -86,7 +86,7 @@ public class JsonAdminClientBikeDtoConversor {
 			throw new ParsingException("Unrecognized JSON (object expected)");
 		} else {
 			ObjectNode bikeObject = (ObjectNode) bikeNode;
-
+			
 			JsonNode bikeIdNode = bikeObject.get("bikeId");
 			Long bikeId = (bikeIdNode != null) ? bikeIdNode.longValue() : null;
 

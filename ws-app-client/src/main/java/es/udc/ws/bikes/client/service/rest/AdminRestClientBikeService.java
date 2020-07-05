@@ -73,16 +73,16 @@ public class AdminRestClientBikeService implements AdminClientBikeService {
 
     
     
-    public List<AdminClientBikeDto> findBikesById(Long bikeId) {
+    public AdminClientBikeDto findBikesById(Long bikeId) {
     	
     	try {
-
-            HttpResponse response = Request.Get(getEndpointAddress() + "bikes?bikeId=")
+    		
+            HttpResponse response = Request.Get(getEndpointAddress() + "bikes/" + bikeId)
                             .execute().returnResponse();
 
             validateStatusCode(HttpStatus.SC_OK, response);
 
-            return JsonAdminClientBikeDtoConversor.toClientBikeDtos(response.getEntity()
+            return JsonAdminClientBikeDtoConversor.toClientBikeDto(response.getEntity()
                     .getContent());
 
         } catch (Exception e) {

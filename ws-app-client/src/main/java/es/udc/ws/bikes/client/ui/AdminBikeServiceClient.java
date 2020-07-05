@@ -78,17 +78,16 @@ public class AdminBikeServiceClient {
             // [find bikeId] bikeserviceClient -fb <bikeId>
 
             try {
-                List<AdminClientBikeDto> bikes = clientBikeService.findBikesById(Long.parseLong(args[1]));
-
-                for (int i = 0; i < bikes.size(); i++) {
-                    AdminClientBikeDto bikeDto = bikes.get(i);
-                    System.out.println("Id: " + bikeDto.getBikeId() +
-                            ", Description: " + bikeDto.getDescription() +
-                            //", StartDate: " + bikeDto.getStartDate().toString() +                            
-                            ", Price: " + bikeDto.getPrice() +
-                    		", Units: " + bikeDto.getUnits());
-                }
-                
+                AdminClientBikeDto bikeDto = clientBikeService.findBikesById(Long.valueOf(args[1]));
+                /*for (int i = 0; i < bikes.size(); i++) {
+                	AdminClientBikeDto bikeDto = bikes.get(i);*/
+	            System.out.println("Id: " + bikeDto.getBikeId() +
+	                            ", Description: " + bikeDto.getDescription() +
+	                            //", StartDate: " + bikeDto.getStartDate().toString() +                            
+	                            ", Price: " + bikeDto.getPrice() +
+	                    		", Units: " + bikeDto.getUnits());
+	                
+      
             } catch (NumberFormatException ex) {
                 ex.printStackTrace(System.err);
             } catch (Exception ex) {
