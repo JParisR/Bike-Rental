@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: BikeRental-name
+  annotations:
+    github.com/project-slug: JParisR/BikeRental
+spec:
+  type: other
+  lifecycle: unknown
+  owner: team-a
