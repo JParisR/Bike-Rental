@@ -2,6 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: BikeRental-name
+  links:
+    - url: https://empathy.co
+      title: My Dashboard
+      icon: dashboard
   annotations:
     github.com/project-slug: JParisR/BikeRental
 spec:
