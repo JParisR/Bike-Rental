@@ -11,8 +11,7 @@ metadata:
       title: My Dashboard
       icon: dashboard
   annotations:
-    backstage.io/techdocs-ref: value
-    github.com/project-slug: JParisR/BikeRental
+    backstage.io/techdocs-ref: url:https://github.com/JParisR/BikeRental
 spec:
   type: app
   lifecycle: production
