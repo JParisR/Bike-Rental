@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: BikeRental-name
+  tags:
+    - java
+    - playback
+  description: BikeRental app  
+  links:
+    - url: https://empathy.co
+      title: ha cambiado
+      icon: dashboard
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/JParisR/BikeRental/tree/master
+spec:
+  type: app
+  lifecycle: production
+  owner: team-a
