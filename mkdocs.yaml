@@ -1,7 +1,8 @@
-site_name: 'Funciona con .yaml'
+site_name: 'Funciona con .yml'
 
 nav:
   - Home: index.md
+  - Home: information.md
 
 plugins:
   - techdocs-core
