@@ -5,9 +5,9 @@ plugins:
   - techdocs-core
   - search
       theme:
-        features:
-          - search.highlight
-          - search.suggest
+      features:
+        - search.highlight
+        - search.suggest
 nav:
   - Home: index.md
   - Home: information.md
