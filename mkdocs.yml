@@ -4,7 +4,6 @@ repo_url: https://github.com/JParisR/BikeRental/
 plugins:
   - techdocs-core
   - search
-      theme:
       features:
         - search.highlight
         - search.suggest
