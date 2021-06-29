@@ -8,4 +8,7 @@ nav:
 plugins:
   - techdocs-core
   - search
-      separator: '[\s\-\.]+'
+      theme:
+        features:
+          - search.highlight
+          - search.suggest
