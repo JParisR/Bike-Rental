@@ -1,6 +1,9 @@
 site_name: 'Funciona con .yml'
 repo_url: https://github.com/JParisR/BikeRental/
 
+markdown_extensions:
+  - admonition
+  
 plugins:
   - techdocs-core
   - search:
