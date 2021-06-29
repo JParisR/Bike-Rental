@@ -1,4 +1,4 @@
-site_name: 'Usa este yaml'
+site_name: 'Funciona con .yaml'
 
 nav:
   - Home: index.md
