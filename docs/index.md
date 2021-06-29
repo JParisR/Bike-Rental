@@ -13,6 +13,10 @@ When the command finishes running, it should open up a browser window displaying
 
 ***Important note:** You will only be able to log in as a Guest User, Google authentication method won't work*
 
+
+!!! tsting
+    aqui va el texto 
+    
 ## Deployment
 
 ### Using Docker and PostgreSQL
